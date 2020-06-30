@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import Login from './login/Login';
 
 ReactDOM.render(
-  <div><h2>ScribbleBow</h2></div> 
+  <div><Login /></div>
   ,
   document.getElementById('root')
 );
