@@ -34,5 +34,14 @@
 }
 
 .sl-bottom{
-    margin-bottom: 20%;
+    margin-bottom: 10%;
+}
+
+.submit{
+    padding-bottom: 10%;
+}
+
+
+.mybtn{
+	transition: 0.5s ease;
 }
