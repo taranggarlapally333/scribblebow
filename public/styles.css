@@ -1,16 +1,16 @@
 .login-bg{
-    position: fixed;
+position: fixed;
     width: 100%;
     height: 100%;
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('loginbg.jpg');    
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('loginbg.jpg');    
     background-repeat: no-repeat;
     background-size: cover; 
     background-position: center;
 }
 
 .login-bar{
-    background-color: white;
-    width: 50%;
+    background-color: white; 
+width: 50%;
     height: auto;
     position: absolute;
     top: 20%;
@@ -22,19 +22,31 @@
    
 }
 
+.loginlogo{
+    margin-top: 8%;
+    width: 100%;
+    margin-bottom: -20%;
+}
+
+.signuplogo{
+    margin-top: 8%;
+    width: 100%;
+    margin-bottom: -20%;
+}
+
 .sl-top{
- 
-    height: 50%;
+    height: 20vh;
+    
     
 }
 
 .sl{
     margin-top: 20px;
-    width: 80%;
+    width: 100%;
 }
 
 .sl-bottom{
-    margin-bottom: 10%;
+   
 }
 
 .submit{
@@ -43,5 +55,33 @@
 
 
 .mybtn{
-	transition: 0.5s ease;
+    transition: 0.5s ease;
+}
+
+.mybtn:active, .mybtn:focus,.mybtn:visited{
+border: none;
+outline: 0;
+text-decoration: none;
+outline-width: 0;
+
+}
+
+
+.social-login{
+    
+  align-items: center;
+
+}
+.hr{
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+
+
+.f{
+    font-family: 'Josefin Sans', sans-serif;
+    margin-bottom: -20px;
+}
+.myshadow{
+    box-shadow: 0px 2px 4px 0px #0f0f0f;
 }
