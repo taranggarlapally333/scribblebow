@@ -4,6 +4,7 @@ import db from "../database/db";
 import {AuthContext} from "../Auth";
 import { app } from 'firebase';
 import { Username } from '../database/funcs';
+import Header from '../components/Header';
 
 
 function Login({history}) {
@@ -31,7 +32,9 @@ function Login({history}) {
        return <Redirect to="/" />;
     }
 
-    return (<div className="login-bg">
+    return (<div>
+    <Header title="Login"/>
+    <div className="login-bg">
         <div className="login-bar">
 
             <div className="col-md-6" style={{ paddingLeft: "4%" }}> 
@@ -57,6 +60,7 @@ function Login({history}) {
             </div>
             </div>
         </div>
+    </div>
     </div>);
 }
 

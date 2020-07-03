@@ -5,6 +5,19 @@ import { AuthContext } from "../Auth";
 
 export const Test = function(){
 
+    // // f12fd4d5-1e50-45a2-a021-abcbe8ce8af5
+
+    //     Email.send({
+    //         SecureToken: "f1acbb1a-831a-408e-ad8c-670914a2de7c",
+    //         To : 'taranggarlapally@gmail.com',
+    //         From : "theconscienceofficial@gmail.com",
+    //         Subject : "This is the subject",
+    //         Body : "And this is the body"
+    //     }).then(
+    //       message => alert(message)
+    //     );
+    
+
 
     return (
         <div className="login-bg">

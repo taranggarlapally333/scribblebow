@@ -7,10 +7,10 @@ function navbar(props)
 {
     var currentLocation = window.location.pathname;
     var forhome = <ul className="nav navbar-nav ">
-    <li><a href= "">CREATE</a></li>
-    <li><a href = "">DISCOVER</a></li>
+    <li><a href= "/create">CREATE</a></li>
+    <li><a href = "/discover">DISCOVER</a></li>
 </ul> ; 
-    return (<nav className="navbar  fixed-top navbar-expand-md" >
+    return (<nav className="navbar mynav fixed-top navbar-expand-md" >
 
     <div className="container-fluid ">
 
@@ -21,10 +21,10 @@ function navbar(props)
        </button>
        <div className="collapse navbar-collapse" id="Cnav">
     
-        {currentLocation == "/home" ? forhome : null }
+        {forhome}
      <ul className="nav navbar-nav navbar-right">
-              <li><a>MYSHELF</a></li>
-              <li><a>NOTIFICATIONS</a></li>
+              <li><a href="/my-shelf">MY SHELF</a></li>
+              <li><a href=""><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 
             <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span class="caret"></span></a>
                   <ul class="dropdown-menu">

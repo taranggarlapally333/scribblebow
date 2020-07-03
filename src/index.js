@@ -27,6 +27,8 @@ ReactDOM.render(
       />
       <Route exact path="/Read/Story" component={ReadStory}
       />
+      <Route exact path="/Read-Story" component={ReadStory}
+      />
       <Route exact path="/test" component={Test}
       />
       <Route exact path="/Pref0" component={Pref0}

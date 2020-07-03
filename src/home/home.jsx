@@ -12,8 +12,6 @@ function Home(){
     var aboutUs = <funs.default/>   ; 
     var currentLocation = window.location.pathname;
     if(currentUser){
-
-
         return (
                 <div>
                    <Header title="HOME"/> 

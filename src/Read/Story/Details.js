@@ -34,6 +34,7 @@ function StoryDetails(props)
                     <span class="label label-info box">#Story</span>
                 </div>
                 {currLoc=="Read/Story"?LikeCommentAdd:null}
+                {LikeCommentAdd}
             </div>
         </div>
     ); 
