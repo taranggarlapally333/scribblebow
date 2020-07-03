@@ -4,6 +4,7 @@ import db from "../database/db";
 import { UserUid } from '../database/funcs';
 import { AuthContext } from '../Auth';
 import Pref0 from './Pref0';
+import Header from '../components/Header';
 
 
 function Signup(props) {
@@ -164,7 +165,9 @@ function Signup(props) {
     if(stage===4){
         return <Pref0 newuser={newuser} />
     }else{
-    return <div className="login-bg">
+    return <div>
+    <Header title="SIGNUP"/> 
+    <div className="login-bg">
     <div className="login-bar">
         <div className="col-md-6" style={{ paddingLeft: "4%" }}> 
         <img className="signuplogo" src={process.env.PUBLIC_URL + '/myimage.png'}/>
@@ -183,7 +186,7 @@ function Signup(props) {
             </div>
         </div>
     </div>
-        ;
+        </div>;
     
 }
 }
