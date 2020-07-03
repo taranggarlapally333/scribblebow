@@ -4,7 +4,7 @@ import {UserEmail, UserUid, Username, Userdata} from "../database/funcs";
 import { Redirect } from "react-router";
 import { AuthContext } from "../Auth";
 import Gravatar from 'react-gravatar'
-import Header from '../components/Header' ; 
+import Header from '../components/NavHeader' ; 
 import Navbar from '../components/navbar' ; 
 import * as funs from "./homeFuns"; 
 function Home(){
@@ -15,7 +15,6 @@ function Home(){
         return (
                 <div>
                    <Header title="HOME"/> 
-                   <Navbar  Username = {Username()}/>
                    {currentLocation == "/home" ? aboutUs : null }
                    <funs.FamousStories title="Story"/> 
                    <funs.FamousStories title="Poem"/> 

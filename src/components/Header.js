@@ -6,7 +6,7 @@ function Header(props)
     const history= useHistory();
     return (
         <header className= "row myheader">
-        <img className="header-logo" onClick = {()=>history.push("/")} src={process.env.PUBLIC_URL + '/myimage.png'} />
+        {/* <img className="header-logo" onClick = {()=>history.push("/")} src={process.env.PUBLIC_URL + '/myimage.png'} /> */}
             <h1>{props.title}</h1>
         </header>
         

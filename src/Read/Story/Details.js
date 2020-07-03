@@ -15,26 +15,25 @@ function StoryDetails(props)
 </div>  ; 
     return (
         <div>
-            <div className = {currLoc =="Read/Story" ? Details+shadow : Details} >
+            <div className = {currLoc !="/home" ? Details+shadow : Details} >
                 {currLoc =="/home" ? firstprice : null}
-                <p style = {{fontSize:40}}>{props.title}</p>
+                <p style = {{fontSize:40}}> {props.title}</p>
                 <div className= "row container">
-                    <span class="badge bg-white border box">COMEDY</span>
-                    <span class="badge bg-white border box">ROMANCE</span>
-                    <span class="badge bg-white border box">ACTION</span>
+                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">COMEDY</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">ROMANCE</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">ACTION</span></a>
                 </div> 
                 <hr />
                 <p>Description: This is a Story of ......</p>
                 <p>Rating : {props.rating} </p>
                 <p>Hashtags: </p>
                 <div className = "row container">
-                    <span class="label label-danger box">#Story</span>
-                    <span class="label label-warning box">#Story</span>
-                    <span class="label label-primary box">#Story</span>
-                    <span class="label label-info box">#Story</span>
+                    <a href = "/ReadStory?hashtag=" ><span class="label label-danger box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span class="label label-warning box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span class="label label-primary box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span class="label label-info box">#Story</span></a>
                 </div>
-                {currLoc=="Read/Story"?LikeCommentAdd:null}
-                {LikeCommentAdd}
+                {currLoc!="/home"?LikeCommentAdd:null}
             </div>
         </div>
     ); 

@@ -6,11 +6,11 @@ import Signup from './login/Signup';
 import {Test} from './login/Test';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import { AuthProvider } from './Auth';
-import PrivateRoute from './PrivateRoute';
 import ReadStory from './Read/Story/Story' ;  
-import navbar from './components/navbar'; 
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
+import WriteStory from './Write/Story/Story' ;
+import Create from './Write/create' ; 
 
 
 ReactDOM.render(
@@ -25,10 +25,14 @@ ReactDOM.render(
       />
       <Route exact path="/signup" component={Signup}
       />
-      <Route exact path="/Read/Story" component={ReadStory}
-      />
-      <Route exact path="/Read-Story" component={ReadStory}
-      />
+       <Route exact path="/ReadStory" component={ReadStory}  />
+
+      <Route exact path="/Create" component={Create}/>
+      <Route exact path="/WriteStory" ><WriteStory title="Story"/></Route>
+      <Route exact path="/WritePoem" ><WriteStory title="Poem"/></Route>
+      <Route exact path="/WriteBlog" ><WriteStory title="Blog"/></Route>
+      <Route exact path="/WriteArticle" ><WriteStory title="Article"/></Route>
+
       <Route exact path="/test" component={Test}
       />
       <Route exact path="/Pref0" component={Pref0}
