@@ -4,17 +4,27 @@ import {UserEmail, UserUid, Username, Userdata} from "../database/funcs";
 import { Redirect } from "react-router";
 import { AuthContext } from "../Auth";
 import Gravatar from 'react-gravatar'
-
+import Header from '../components/Header' ; 
+import Navbar from '../components/navbar' ; 
+import * as funs from "./homeFuns"; 
 function Home(){
     const {currentUser} = useContext(AuthContext);
-
+    var aboutUs = <funs.default/>   ; 
+    var currentLocation = window.location.pathname;
     if(currentUser){
-        return <div>
-        <p>{UserEmail()}</p>
-        <p>{UserUid()}</p>
-        <p>{Username()}</p>
-        {/* <p>{Userdata().fname + " " + Userdata().lname }</p> */}
-        <Gravatar email={UserEmail()} size={200}/><h2>Home Page</h2><button onClick={()=> db.auth().signOut()}>Logout</button></div>;
+
+
+        return (
+                <div>
+                   <Header title="HOME"/> 
+                   <Navbar  Username = {Username()}/>
+                   {currentLocation == "/home" ? aboutUs : null }
+                   <funs.FamousStories title="Story"/> 
+                   <funs.FamousStories title="Poem"/> 
+                   <funs.FamousStories title="Article"/> 
+                </div>
+        ); 
+       
     
     }
     return <Redirect to="/login" />;

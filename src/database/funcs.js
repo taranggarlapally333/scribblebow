@@ -1,6 +1,7 @@
 import React, {useState, useContext } from "react";
 import { AuthContext } from "../Auth";
 import db from "./db";
+import {futureObject} from "react-futures";
 
 
 
@@ -18,9 +19,9 @@ export const UserUid = function(){
     return User().uid;
 }
 
-export const Username = function(){
+export const Username =  function() {
     const [uname,setUname] = useState("");
-    db.firestore()
+     db.firestore()
     .collection('myauth')
     .doc(UserUid())
     .get()
@@ -31,17 +32,23 @@ export const Username = function(){
     return uname;
 }
 
-export const Userdata= function(){
 
-    const [udata,setData] = useState({});
-    db.firestore()
-    .collection('users')
-    .doc(localStorage.getItem('username'))
-    .get()
-    .then(doc => {
-    setData(doc.data());
-    }).catch(error =>
-        alert(error));
-    return udata;
+export const Userdata= function(){
+   const [udata,setData] = useState({});
+    const snapshot = db.firestore()
+        .collection('users')
+        .where("uid","==",UserUid())
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(function(doc) {
+                 setData(doc.data());
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+        return udata;
+        
+    
 }
 

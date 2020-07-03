@@ -5,7 +5,9 @@ import {AuthContext} from "../Auth";
 import { app } from 'firebase';
 import { Username } from '../database/funcs';
 
+
 function Login({history}) {
+
 
     const handleLogin = useCallback(
         async event =>{
@@ -20,7 +22,6 @@ function Login({history}) {
             }catch (error){
                 alert(error);
             }
-
             },[history]                
     );
 
