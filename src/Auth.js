@@ -63,7 +63,7 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem("fname", fName(nameArray));
             localStorage.setItem("username",custom_id);
             localStorage.setItem("uid",user.uid);
-            console.log(user);
+            
             Add_to_db();
             }catch(error){
                 

@@ -19,19 +19,19 @@ function StoryDetails(props)
                 {currLoc =="/home" ? firstprice : null}
                 <p style = {{fontSize:40}}> {props.title}</p>
                 <div className= "row container">
-                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">COMEDY</span></a>
-                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">ROMANCE</span></a>
-                    <a href ="/ReadStory?genre=comedy" ><span class="badge bg-white border box">ACTION</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">COMEDY</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ROMANCE</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ACTION</span></a>
                 </div> 
                 <hr />
                 <p>Description: This is a Story of ......</p>
                 <p>Rating : {props.rating} </p>
                 <p>Hashtags: </p>
                 <div className = "row container">
-                    <a href = "/ReadStory?hashtag=" ><span class="label label-danger box">#Story</span></a>
-                    <a href = "/ReadStory?hashtag="><span class="label label-warning box">#Story</span></a>
-                    <a href = "/ReadStory?hashtag="><span class="label label-primary box">#Story</span></a>
-                    <a href = "/ReadStory?hashtag="><span class="label label-info box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag=" ><span className="label label-danger box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span className="label label-warning box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span className="label label-primary box">#Story</span></a>
+                    <a href = "/ReadStory?hashtag="><span className="label label-info box">#Story</span></a>
                 </div>
                 {currLoc!="/home"?LikeCommentAdd:null}
             </div>
@@ -55,7 +55,7 @@ function CoverPage(props)
     return (
         
             <div className= "col-md-3">
-                <div class = "myshadow" style = {{width:160}}>
+                <div className = "myshadow" style = {{width:160}}>
                 <img src = {props.imageAddress} alt = "Cover " style = {{height:277}}></img>
                 </div>
             </div>

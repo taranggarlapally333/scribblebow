@@ -21,7 +21,7 @@ function Login({history}) {
                
                 history.push("/Log0");
             }catch (error){
-                alert(error);
+                console.log(error);
             }
             },[history]                
     );
@@ -71,8 +71,7 @@ function Login({history}) {
                 uiConfig={uiConfig}
                 firebaseAuth = {firebase.auth()}
             />
-            <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow" id="google"><i className="fa fa-google" style={{fontSize:"18px",color:"red"}}></i> Login with Google</button>
-            <button type="submit" className="mybtn sl btn btn-lg myshadow" style={{backgroundColor: "#4267B2",color: "white"}} id="facebook"><i className="fa fa-facebook" style={{fontSize:"18px",color:"white"}}></i> Login with Facebook</button>
+            
             <hr className="hr"/><p className="f">Don't have an account yet?</p>
             <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow"  onClick={()=> history.push('/signup')}>Signup</button>
             </div>

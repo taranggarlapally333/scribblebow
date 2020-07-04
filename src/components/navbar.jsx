@@ -7,7 +7,10 @@ function navbar(props)
     <li><a href= "/Create">CREATE</a></li>
     <li><a href = "/ReadStory">DISCOVER</a></li>
 </ul> ; 
-    return (<nav className="navbar mynav fixed-top navbar-expand-md" style={{}}>
+
+    
+
+    return (<nav className="navbar mynav fixed-top navbar-expand-md" id="navbar" style={{}}>
 
     <div className="container-fluid ">
 
@@ -21,9 +24,9 @@ function navbar(props)
         {forhome}
      <ul className="nav navbar-nav navbar-right">
               <li><a href="/my-shelf">MY SHELF</a></li>
-              <li><a href=""><i class="fa fa-bell" aria-hidden="true"></i></a></li>
+              <li><a href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
 
-            <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span class="caret"></span></a>
+            <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span className="caret"></span></a>
                   <ul className="dropdown-menu">
                   <li ><a style={{fontWeight:"bold"}}>{props.Username}</a></li>
                   <hr></hr>
