@@ -1,20 +1,17 @@
 import React from 'react';
-import { Nav, Navbar, NavDropdown, Button, Form, FormControl } from 'react-bootstrap';
-import { Redirect } from "react-router";
-import { MdCreate } from 'react-icons/md';
 import db from '../database/db' ;
 function navbar(props)
 {
     var currentLocation = window.location.pathname;
     var forhome = <ul className="nav navbar-nav ">
-    <li><a href= "/create">CREATE</a></li>
-    <li><a href = "/discover">DISCOVER</a></li>
+    <li><a href= "/Create">CREATE</a></li>
+    <li><a href = "/ReadStory">DISCOVER</a></li>
 </ul> ; 
-    return (<nav className="navbar mynav fixed-top navbar-expand-md" >
+    return (<nav className="navbar mynav fixed-top navbar-expand-md" style={{}}>
 
     <div className="container-fluid ">
 
-       <a className="navbar-brand " href="/">HOME</a>
+       <a className="navbar-brand" href ="/home" >HOME</a>
 
     <button className="navbar-toggle navbar-toggle-right" type="button" data-toggle="collapse" data-target="#Cnav" aria-controls="Cnav" aria-expanded="false" aria-label="Toggle navigation">
         <i className="fa fa-navicon" ></i>

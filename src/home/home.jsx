@@ -4,12 +4,13 @@ import {UserEmail, UserUid, Username, Userdata} from "../database/funcs";
 import { Redirect } from "react-router";
 import { AuthContext } from "../Auth";
 import Gravatar from 'react-gravatar'
-import Header from '../components/Header' ; 
+import Header from '../components/NavHeader' ; 
 import Navbar from '../components/navbar' ; 
-import * as funs from "./homeFuns"; 
+import * as funs from "./homeFuns";
+
 function Home(){
     const {currentUser} = useContext(AuthContext);
-    var aboutUs = <funs.default/>   ; 
+    var aboutUs = <funs.default/> ; 
     var currentLocation = window.location.pathname;
     
     if(localStorage.getItem("username")){
@@ -19,7 +20,7 @@ function Home(){
                 <div>
                 
                    <Header title="HOME"/> 
-                   <Navbar  Username = {localStorage.getItem("username")}/>
+                  
                    {currentLocation == "/home" ? aboutUs : null }
                    <funs.FamousStories title="Story"/> 
                    <funs.FamousStories title="Poem"/> 

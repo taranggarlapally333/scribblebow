@@ -23,6 +23,7 @@ function Pref0(props){
         
         const custom_id = props.newuser.email.split("@")[0];
         
+        
         db.firestore().collection("users").doc(custom_id).set({
             bio: props.newuser.bio,
             email: props.newuser.email,
@@ -76,7 +77,7 @@ function Pref0(props){
             bio: newuser.bio,
             title: newuser.title
         });
-        history.push("/");
+        history.push("/home");
         
     }
 

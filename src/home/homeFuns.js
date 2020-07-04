@@ -56,9 +56,9 @@ function  FamousStories(props)
                 <hr></hr>
                 <div className = "row container myshadow rounded" style={{marginBottom:"20px"}}>
                         <div class = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
-                        <StoryDetails.CoverPage 
+                        <a href= "ReadStory?title="><StoryDetails.CoverPage 
                 imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 
-                />
+                /></a>
                         </div>
                         <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
                             <StoryDetails.StoryDetails  
@@ -67,23 +67,23 @@ function  FamousStories(props)
                         </div>
                 </div>
                 <h3>Trending</h3>
-                <div className = "row container" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
-                    <Tabs 
+                <div className = "row container myscroller" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
+                    <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
-                    />
-                    <Tabs 
+                    /></a>
+                    <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
-                    />
-                     <Tabs 
+                    /></a>
+                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
-                    />
-                     <Tabs 
+                    /></a>
+                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
-                    />
+                    /></a>
     
                     
                 </div>

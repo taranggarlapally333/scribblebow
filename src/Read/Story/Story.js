@@ -1,14 +1,12 @@
 import React from 'react' ; 
-import Header from '../../components/Header' ; 
+import Header from '../../components/NavHeader' ; 
 import * as p from './Details' ; 
-import Navbar from '../../components/navbar'; 
 function ReadStory()
 {
     return (
     <div>
          
         <Header title ="STORY" />
-        <Navbar />
         <div className = "container">
             <div className= "row">
                 <p.CoverPage 
