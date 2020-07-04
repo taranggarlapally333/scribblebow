@@ -6,7 +6,7 @@ import { AuthContext } from "../Auth";
 
 export const Test = function(){
     
-
+    var currentLocation = window.location.pathname;
     const [email,setEmail]=useState("")
     // // f12fd4d5-1e50-45a2-a021-abcbe8ce8af5
 
@@ -32,13 +32,12 @@ export const Test = function(){
        
     }
     
-    if(localStorage.getItem("username")===null){
-        return <Redirect to="/login" />;
-    }
+  
 
     return (
         <div className="login-bg">
     <div className="login-bar">
+    <p>{currentLocation}</p>
     <p>{Date.now() + Math.random()}</p>
     <form onSubmit ={checkEmail}>
     <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email}/>    

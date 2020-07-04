@@ -42,6 +42,8 @@ ReactDOM.render(
       />
       <Route exact path="/Log0" component={Log0}
       />
+      <Route exact path="/testnow" component={Test}
+      />
 
     </div>
   </Router>

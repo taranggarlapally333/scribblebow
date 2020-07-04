@@ -40,8 +40,9 @@ function Login({history}) {
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         ],
+        signInSuccessUrl: "/",
         callbacks: {
-            signInSuccessWithAuthResult: ()=> false
+            signInSuccessWithAuthResult: ()=> true
         }
     }
 
