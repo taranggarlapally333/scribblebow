@@ -1,10 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { Username } from "../database/funcs";
 import { AuthContext } from "../Auth";
 
-export const Test = function(){
 
+export const Test = function(){
+    
+
+    const [email,setEmail]=useState("")
     // // f12fd4d5-1e50-45a2-a021-abcbe8ce8af5
 
     //     Email.send({
@@ -16,12 +19,31 @@ export const Test = function(){
     //     }).then(
     //       message => alert(message)
     //     );
+   
+    function handleChange(event){
+        const newemail = event.target.value;
+        setEmail(newemail);
+    }
+    function checkEmail(event){
+        event.preventDefault();
+       
+        console.log(email);
+        
+       
+    }
     
-
+    if(localStorage.getItem("username")===null){
+        return <Redirect to="/login" />;
+    }
 
     return (
         <div className="login-bg">
     <div className="login-bar">
+    <p>{Date.now() + Math.random()}</p>
+    <form onSubmit ={checkEmail}>
+    <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email}/>    
+    <input type="submit" name="submit" value="Check" />
+    </form>
     
         <form >
         <img className="signuplogo2" src={process.env.PUBLIC_URL + '/myimage.png'}/>

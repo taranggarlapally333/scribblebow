@@ -11,11 +11,15 @@ function Home(){
     const {currentUser} = useContext(AuthContext);
     var aboutUs = <funs.default/>   ; 
     var currentLocation = window.location.pathname;
-    if(currentUser){
+    
+    if(localStorage.getItem("username")){
+        
+            
         return (
                 <div>
+                
                    <Header title="HOME"/> 
-                   <Navbar  Username = {Username()}/>
+                   <Navbar  Username = {localStorage.getItem("username")}/>
                    {currentLocation == "/home" ? aboutUs : null }
                    <funs.FamousStories title="Story"/> 
                    <funs.FamousStories title="Poem"/> 
@@ -25,7 +29,7 @@ function Home(){
        
     
     }
-    return <Redirect to="/login" />;
+    return <Redirect to="/log0" />;
 }
 
 export default Home;

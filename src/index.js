@@ -11,6 +11,7 @@ import ReadStory from './Read/Story/Story' ;
 import navbar from './components/navbar'; 
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
+import Log0 from './login/Log0';
 
 
 ReactDOM.render(
@@ -34,6 +35,8 @@ ReactDOM.render(
       <Route exact path="/Pref0" component={Pref0}
       />
       <Route exact path="/Pref1" component={Pref1}
+      />
+      <Route exact path="/Log0" component={Log0}
       />
 
     </div>

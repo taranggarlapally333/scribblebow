@@ -14,7 +14,7 @@ function navbar(props)
 
     <div className="container-fluid ">
 
-       <a className="navbar-brand ">HOME</a>
+       <a className="navbar-brand " href="/">HOME</a>
 
     <button className="navbar-toggle navbar-toggle-right" type="button" data-toggle="collapse" data-target="#Cnav" aria-controls="Cnav" aria-expanded="false" aria-label="Toggle navigation">
         <i className="fa fa-navicon" ></i>
@@ -27,14 +27,14 @@ function navbar(props)
               <li><a href=""><i class="fa fa-bell" aria-hidden="true"></i></a></li>
 
             <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span class="caret"></span></a>
-                  <ul class="dropdown-menu">
+                  <ul className="dropdown-menu">
                   <li ><a style={{fontWeight:"bold"}}>{props.Username}</a></li>
                   <hr></hr>
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="profile.php#mylist">My list</a></li>
                     <li><a href="Settings.php">Settings</a></li>
                     <li><a href="#">Report</a></li>
-                    <li><a type= "button" onClick={()=> db.auth().signOut()}>Logout</a></li>
+                    <li><a type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
        </ul>

@@ -2,10 +2,10 @@ import React,{useCallback, useContext} from 'react';
 import {withRouter, Redirect} from "react-router";
 import db from "../database/db";
 import {AuthContext} from "../Auth";
-import { app } from 'firebase';
+import firebase,{ app } from 'firebase';
 import { Username } from '../database/funcs';
 import Header from '../components/Header';
-
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 function Login({history}) {
 
@@ -19,7 +19,7 @@ function Login({history}) {
                 .auth()
                 .signInWithEmailAndPassword(email.value, password.value);
                
-                history.push("/");
+                history.push("/Log0");
             }catch (error){
                 alert(error);
             }
@@ -28,8 +28,21 @@ function Login({history}) {
 
     const {currentUser} = useContext(AuthContext);
 
-    if(currentUser){
+    if(localStorage.getItem("username")){
        return <Redirect to="/" />;
+    }
+
+
+    const uiConfig = {
+        signInFlow: "popup",
+        
+        signInOptions:[
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        ],
+        callbacks: {
+            signInSuccessWithAuthResult: ()=> false
+        }
     }
 
     return (<div>
@@ -53,6 +66,10 @@ function Login({history}) {
                 
             </div>
             <div className="sl-bottom">
+            <StyledFirebaseAuth 
+                uiConfig={uiConfig}
+                firebaseAuth = {firebase.auth()}
+            />
             <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow" id="google"><i className="fa fa-google" style={{fontSize:"18px",color:"red"}}></i> Login with Google</button>
             <button type="submit" className="mybtn sl btn btn-lg myshadow" style={{backgroundColor: "#4267B2",color: "white"}} id="facebook"><i className="fa fa-facebook" style={{fontSize:"18px",color:"white"}}></i> Login with Facebook</button>
             <hr className="hr"/><p className="f">Don't have an account yet?</p>
