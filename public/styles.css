@@ -4,6 +4,35 @@ html{
 a{
     text-decoration: none;
 }
+
+textarea::-webkit-scrollbar {
+    width: .5em;
+  }
+   
+textarea::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+textarea::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+/* for MyScroller */
+.myscroller::-webkit-scrollbar {
+    width : .5em ; 
+    height: 1em;
+  }
+   
+.myscroller::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+.myscroller::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+/* end for my scroller part  */
+  
 .myshadow
 {
     box-shadow: 0 1px 5px rgb(138, 137, 137);
@@ -67,6 +96,7 @@ position: fixed;
     background-repeat: no-repeat;
     background-size: cover; 
     background-position: center;
+    overflow-y: auto;
 }
 
 .login-bar{

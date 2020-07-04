@@ -166,7 +166,7 @@ function Signup(props) {
         return <Pref0 newuser={newuser} />
     }else{
     return <div>
-    <Header title="SIGNUP"/> 
+    {/* <Header title="SIGNUP"/>  */}
     <div className="login-bg">
     <div className="login-bar">
         <div className="col-md-6" style={{ paddingLeft: "4%" }}> 

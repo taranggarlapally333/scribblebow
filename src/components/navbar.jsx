@@ -7,7 +7,7 @@ function navbar(props)
     <li><a href= "/Create">CREATE</a></li>
     <li><a href = "/ReadStory">DISCOVER</a></li>
 </ul> ; 
-    return (<nav className="navbar mynav fixed-top navbar-expand-md" >
+    return (<nav className="navbar mynav fixed-top navbar-expand-md" style={{}}>
 
     <div className="container-fluid ">
 

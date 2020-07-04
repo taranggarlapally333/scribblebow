@@ -5,7 +5,7 @@ import {AuthContext} from "../Auth";
 import { app } from 'firebase';
 import { Username } from '../database/funcs';
 import Header from '../components/Header';
-
+import UserDetails from './UserAtts'; 
 
 function Login({history}) {
 
@@ -18,7 +18,7 @@ function Login({history}) {
                 await db
                 .auth()
                 .signInWithEmailAndPassword(email.value, password.value);
-               
+                
                 history.push("/home");
             }catch (error){
                 alert(error);
@@ -29,11 +29,15 @@ function Login({history}) {
     const {currentUser} = useContext(AuthContext);
 
     if(currentUser){
+        
+        UserDetails.UserEmail = currentUser.email ; 
+        UserDetails.Userid = currentUser.uid ; 
+        UserDetails.Username = UserDetails.UserEmail.split("@")[0] ; 
        return <Redirect to="/home" />;
     }
 
     return (<div>
-    <Header title="Login"/>
+    {/* <Header title="Login"/> */}
     <div className="login-bg">
         <div className="login-bar">
 

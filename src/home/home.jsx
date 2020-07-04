@@ -6,12 +6,13 @@ import { AuthContext } from "../Auth";
 import Gravatar from 'react-gravatar'
 import Header from '../components/NavHeader' ; 
 import Navbar from '../components/navbar' ; 
-import * as funs from "./homeFuns"; 
+import * as funs from "./homeFuns";
+import UserDetails from '../login/UserAtts' ; 
 function Home(){
-    const {currentUser} = useContext(AuthContext);
-    var aboutUs = <funs.default/>   ; 
+    //const {currentUser} = useContext(AuthContext);
+    var aboutUs = <funs.default/> ; 
     var currentLocation = window.location.pathname;
-    if(currentUser){
+    if(UserDetails.Userid != ""){
         return (
                 <div>
                    <Header title="HOME"/> 

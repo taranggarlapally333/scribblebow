@@ -6,6 +6,7 @@ import { UserUid } from '../database/funcs';
 import Pref1 from "./Pref1";
 import Signup from "./Signup";
 import Header from "../components/Header";
+import UserDetails from './UserAtts' ; 
 
 function Pref0(props){
     const {currentUser} =useContext(AuthContext);
@@ -21,6 +22,12 @@ function Pref0(props){
     const AddUser = function(){
         
         const custom_id = props.newuser.email.split("@")[0];
+        UserDetails = {
+            ...props.newuser,
+            "Username" : custom_id ,
+            "Userid" : currentUser.uid , 
+             
+        }
         
         db.firestore().collection("users").doc(custom_id).set({
             bio: props.newuser.bio,
@@ -75,7 +82,7 @@ function Pref0(props){
             bio: newuser.bio,
             title: newuser.title
         });
-        history.push("/");
+        history.push("/home");
         
     }
 

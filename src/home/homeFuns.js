@@ -67,7 +67,7 @@ function  FamousStories(props)
                         </div>
                 </div>
                 <h3>Trending</h3>
-                <div className = "row container" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
+                <div className = "row container myscroller" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
