@@ -4,8 +4,8 @@ function navbar(props)
 {
     var currentLocation = window.location.pathname;
     var forhome = <ul className="nav navbar-nav ">
-    <li><a href= "/Create">CREATE</a></li>
-    <li><a href = "/ReadStory">DISCOVER</a></li>
+    <li><a className="nav-btn" href= "/Create">CREATE</a></li>
+    <li><a className="nav-btn" href = "/ReadStory">DISCOVER</a></li>
 </ul> ; 
 
     
@@ -14,7 +14,7 @@ function navbar(props)
 
     <div className="container-fluid ">
 
-       <a className="navbar-brand" href ="/home" >HOME</a>
+       <a className="navbar-brand nav-btn" href ="/home" >HOME</a>
 
     <button className="navbar-toggle navbar-toggle-right" type="button" data-toggle="collapse" data-target="#Cnav" aria-controls="Cnav" aria-expanded="false" aria-label="Toggle navigation">
         <i className="fa fa-navicon" ></i>
@@ -23,8 +23,8 @@ function navbar(props)
     
         {forhome}
      <ul className="nav navbar-nav navbar-right">
-              <li><a href="/my-shelf">MY SHELF</a></li>
-              <li><a href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
+              <li><a className="nav-btn" href="/my-shelf">MY SHELF</a></li>
+              <li><a className="nav-btn" href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
 
             <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span className="caret"></span></a>
                   <ul className="dropdown-menu">

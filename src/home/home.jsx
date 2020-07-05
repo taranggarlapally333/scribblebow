@@ -12,25 +12,21 @@ function Home(){
     const {currentUser} = useContext(AuthContext);
     var aboutUs = <funs.default/> ; 
     var currentLocation = window.location.pathname;
-    
+    var logged=0;
     if(localStorage.getItem("username")){
-        
-            
-        return (
-                <div>
-                
-                   <Header title="HOME"/> 
-                  
-                   {currentLocation == "/home" ? aboutUs : null }
-                   <funs.FamousStories title="Story"/> 
-                   <funs.FamousStories title="Poem"/> 
-                   <funs.FamousStories title="Article"/> 
-                </div>
-        ); 
-       
-    
+        logged=1;
     }
-    return <Redirect to="/log0" />;
+    return (
+        <div>
+        
+           <Header title="HOME" logged={logged}/> 
+          
+           {currentLocation == "/home" ? aboutUs : null }
+           <funs.FamousStories title="Story"/> 
+           <funs.FamousStories title="Poem"/> 
+           <funs.FamousStories title="Article"/> 
+        </div>
+); 
 }
 
 export default Home;

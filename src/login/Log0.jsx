@@ -11,7 +11,7 @@ export default function Log0(){
         const name = Username();
         const uid=UserUid();
         if(name===null){
-            return <Redirect to="/test" />;
+            return <Redirect to="/" />;
         }else{
             localStorage.setItem("username", name);
             localStorage.setItem("uid", uid );
