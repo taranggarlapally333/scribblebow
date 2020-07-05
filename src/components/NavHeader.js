@@ -10,7 +10,7 @@ function Header(props)
             <header className= "row myheader">
                 <h1>{props.title}</h1>
             </header>
-            <Navbar  Username = {UserDetails.Username}/>
+            <Navbar  Username = {props.Username}/>
         </div>
     ); 
 }

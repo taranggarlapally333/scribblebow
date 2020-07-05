@@ -1,6 +1,23 @@
 import React from 'react' ; 
 var fontsAvailable = ["'Pacifico', cursive","Arial, Helvetica, sans-serif" ,"'Teko', sans-serif"]; 
+var GenreAvailable = ["COMEDY" , "HORROR" , "ROMANCE" , "ACTION" ,"ADVENTURE","SCI-FI" ,"FAN_FICTION" ] ; 
+var GenreColors = {
+    "COMEDY":"#f5ba13" , 
+    "HORROR":"dark green" , 
+    "ROMANCE":"#E61D42" , 
+    "ACTION":"blue" ,
+    "ADVENTURE":"green",
+    "SCI-FI" :"silver" ,
+    "FAN_FICTION":"purple"
+} ; 
  var propsClass = "form-control " ; 
+ var documentName  = {
+     "Story":"stories", 
+     "Poem": "poems" , 
+     "Blog" : "blogs" , 
+     "Article": "articles",
+     "Audio":"audios"
+ }
 
 
 
@@ -19,4 +36,9 @@ var fontsAvailable = ["'Pacifico', cursive","Arial, Helvetica, sans-serif" ,"'Te
         ); 
 }
 
- export {fontsAvailable , propsClass, CoverPage} ; 
+ export {fontsAvailable , 
+    propsClass, 
+    CoverPage , 
+    GenreAvailable , 
+    GenreColors,
+    documentName} ; 
