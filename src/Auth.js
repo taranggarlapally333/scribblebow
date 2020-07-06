@@ -10,11 +10,18 @@ export const AuthProvider = ({children}) => {
     const history = useHistory();
 
     function Add_to_db(){
-        db.firestore().collection('users').doc(localStorage.getItem("username")).get()
+        db.firestore().collection('myauth').doc(localStorage.getItem("uid")).get()
                .then((docSnapshot) => {
                 if (docSnapshot.exists) {
                 //do nothing
                } else {
+                db.firestore().collection('users').doc(localStorage.getItem("username")).get()
+                .then((docSnapshot) => {
+                 if (docSnapshot.exists) {
+                     const uname=localStorage.getItem("username");
+                     localStorage.setItem("username",uname + Date.now());
+                 }
+                });
                 db.firestore().collection('users').doc(localStorage.getItem("username")).set({
                     bio: "I am a Creator(Default)",
                     email: localStorage.getItem("email"),

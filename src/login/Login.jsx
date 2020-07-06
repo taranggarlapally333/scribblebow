@@ -1,4 +1,4 @@
-import React,{useCallback, useContext} from 'react';
+import React,{useCallback, useContext, useState} from 'react';
 import {withRouter, Redirect} from "react-router";
 import db from "../database/db";
 import {AuthContext} from "../Auth";
@@ -8,6 +8,8 @@ import Header from '../components/Header';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 function Login({history}) {
+    const [acheck,setAcheck] = useState(0);
+    const [bcheck,setBcheck] = useState(0);
 
 
     const handleLogin = useCallback(
@@ -21,7 +23,14 @@ function Login({history}) {
                
                 history.push("/Log0");
             }catch (error){
-                console.log(error);
+                if(error.code==="auth/user-not-found"){
+                    setBcheck(0);
+                    setAcheck(2);
+                }
+                if(error.code === "auth/wrong-password"){
+                    setAcheck(0)
+                    setBcheck(2);
+                }
             }
             },[history]                
     );
@@ -59,9 +68,14 @@ function Login({history}) {
             </div>
                 <div className="form-group" style={{ width: "80%" }}>
                     <input type="password" className="form-control" id="password" placeholder="Enter Your Password" />
-                </div><div className="form-group submit" style={{ width: "80%" }}>
+                </div>
+                {(acheck===2)?<p className="font0" style={{color: "red"}}>It seems you don't have an account</p>: null}
+                {(bcheck===2)?<p className="font0" style={{color: "red"}}>The password you entered is wrong, or you may not have a password</p>: null}
+                <div className="form-group submit" style={{ width: "80%" }}>
                     <input type="submit" className="myshadow mybtn btn btn-default" id="signin" value="Login" />
-                </div></form></div>
+                </div>
+                
+                </form></div>
             <div className="col-md-6 social-login" > 
             <div className="sl-top">
                 

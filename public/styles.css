@@ -47,15 +47,57 @@ a{
     float: left;
     margin: 5px;
 }
+
+.nav-btn{
+    text-decoration: none;
+    transition: 0.4s ease;
+}
+.nav-btn:hover{
+    border-radius: 5px;
+    font-style: italic;
+    
+}
+
+.navbar-nav li .nav-btn{
+    text-decoration: none;
+    transition: 0.4s ease;
+}
+.navbar-nav li .nav-btn:hover{
+    border-radius: 5px;
+    font-style: italic;
+    
+}
+
+
 .myheader{
     background-color: #f5ba13;
     margin: auto -16px;
-
+    text-align: center;
     padding: 0px 20px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
     color: white ;
     margin-bottom: 0px ;
-    text-align: center;
+    
+}
+
+.myh{
+    float: left;
+}
+
+
+.lgsg{
+    float: right;
+    align-self: center;
+    padding:20px;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 0px;
+    transition: 0.4s ease;
+}
+.lgsg:hover{
+    text-decoration: none;
+    background-color: #E6B010;
+    color: white;
 }
 
 
