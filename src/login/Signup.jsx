@@ -5,7 +5,8 @@ import { UserUid } from '../database/funcs';
 import { AuthContext } from '../Auth';
 import Pref0 from './Pref0';
 import Header from '../components/Header';
-
+import { StyledFirebaseAuth } from 'react-firebaseui';
+import firebase,{ app } from 'firebase';
 
 function Signup(props) {
     
@@ -24,6 +25,20 @@ function Signup(props) {
     const [pcheck,setPcheck] = useState(0);
     const history = useHistory();
  
+
+    const uiConfig = {
+        signInFlow: "popup",
+        
+        signInOptions:[
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        ],
+        signInSuccessUrl: "/",
+        callbacks: {
+            signInSuccessWithAuthResult: ()=> true
+        }
+    }
+
 
     function handleChange(event){  
         const {name,value} = event.target;
@@ -51,6 +66,8 @@ function Signup(props) {
             alert(error);
         }   
     }
+
+
 
    
 
@@ -166,7 +183,7 @@ function Signup(props) {
         return <Pref0 newuser={newuser} />
     }else{
     return <div>
-    {/* <Header title="SIGNUP"/>  */}
+    <Header title="SIGNUP"/> 
     <div className="login-bg">
     <div className="login-bar">
         <div className="col-md-6" style={{ paddingLeft: "4%" }}> 
@@ -178,8 +195,10 @@ function Signup(props) {
                 
             </div>
             <div className="sl-bottom float-bottom">
-            <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow" id="google"><i class="fa fa-google" style={{fontSize:"18px",color:"red"}}></i> Signup with Google</button>
-            <button type="submit" className="mybtn sl btn btn-lg myshadow" style={{backgroundColor: "#4267B2",color: "white"}} id="facebook"><i class="fa fa-facebook" style={{fontSize:"18px",color:"white"}}></i> Signup with Facebook</button>
+            <StyledFirebaseAuth
+                uiConfig={uiConfig}
+                firebaseAuth = {firebase.auth()}
+            />
             <hr className="hr"/><p className="f">Do you already have an account?</p>
             <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow"  onClick={()=> history.push('/login')}>Login instead</button>
             </div>

@@ -2,10 +2,10 @@ import React,{useCallback, useContext} from 'react';
 import {withRouter, Redirect} from "react-router";
 import db from "../database/db";
 import {AuthContext} from "../Auth";
-import { app } from 'firebase';
+import firebase,{ app } from 'firebase';
 import { Username } from '../database/funcs';
 import Header from '../components/Header';
-import UserDetails from './UserAtts'; 
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 function Login({history}) {
 
@@ -18,26 +18,36 @@ function Login({history}) {
                 await db
                 .auth()
                 .signInWithEmailAndPassword(email.value, password.value);
-                
-                history.push("/home");
+               
+                history.push("/Log0");
             }catch (error){
-                alert(error);
+                console.log(error);
             }
             },[history]                
     );
 
     const {currentUser} = useContext(AuthContext);
 
-    if(currentUser){
+    if(localStorage.getItem("username")){
+       return <Redirect to="/" />;
+    }
+
+
+    const uiConfig = {
+        signInFlow: "popup",
         
-        UserDetails.UserEmail = currentUser.email ; 
-        UserDetails.Userid = currentUser.uid ; 
-        UserDetails.Username = UserDetails.UserEmail.split("@")[0] ; 
-       return <Redirect to="/home" />;
+        signInOptions:[
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        ],
+        signInSuccessUrl: "/",
+        callbacks: {
+            signInSuccessWithAuthResult: ()=> true
+        }
     }
 
     return (<div>
-    {/* <Header title="Login"/> */}
+    <Header title="Login"/>
     <div className="login-bg">
         <div className="login-bar">
 
@@ -57,8 +67,11 @@ function Login({history}) {
                 
             </div>
             <div className="sl-bottom">
-            <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow" id="google"><i className="fa fa-google" style={{fontSize:"18px",color:"red"}}></i> Login with Google</button>
-            <button type="submit" className="mybtn sl btn btn-lg myshadow" style={{backgroundColor: "#4267B2",color: "white"}} id="facebook"><i className="fa fa-facebook" style={{fontSize:"18px",color:"white"}}></i> Login with Facebook</button>
+            <StyledFirebaseAuth 
+                uiConfig={uiConfig}
+                firebaseAuth = {firebase.auth()}
+            />
+            
             <hr className="hr"/><p className="f">Don't have an account yet?</p>
             <button type="submit" className="mybtn sl btn btn-lg btn-default myshadow"  onClick={()=> history.push('/signup')}>Signup</button>
             </div>

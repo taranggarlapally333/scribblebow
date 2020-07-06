@@ -7,15 +7,20 @@ import Gravatar from 'react-gravatar'
 import Header from '../components/NavHeader' ; 
 import Navbar from '../components/navbar' ; 
 import * as funs from "./homeFuns";
-import UserDetails from '../login/UserAtts' ; 
+
 function Home(){
-    //const {currentUser} = useContext(AuthContext);
+    const {currentUser} = useContext(AuthContext);
     var aboutUs = <funs.default/> ; 
     var currentLocation = window.location.pathname;
-    if(UserDetails.Userid != ""){
+    
+    if(localStorage.getItem("username")){
+        
+            
         return (
                 <div>
+                
                    <Header title="HOME"/> 
+                  
                    {currentLocation == "/home" ? aboutUs : null }
                    <funs.FamousStories title="Story"/> 
                    <funs.FamousStories title="Poem"/> 
@@ -25,7 +30,7 @@ function Home(){
        
     
     }
-    return <Redirect to="/login" />;
+    return <Redirect to="/log0" />;
 }
 
 export default Home;

@@ -8,7 +8,7 @@ function Aboutus()
     return(
         <div className = "container myshadow">
         <div className = "row">
-            <div class = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
+            <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
                 Here You can Create and Discover 
                 <ul>
                     <li>Story</li>
@@ -36,7 +36,7 @@ function Aboutus()
 function Tabs(props)
 {
     return (<div className= "container-inner myshadow rounded" style={{ backgroundColor:"" , padding:"20px", margin:"20px"}}>
-    <div class = "" style = {{width:200 , backgroundColor:""}}>
+    <div className = "" style = {{width:200 , backgroundColor:""}}>
     <img src = {props.imageAddress} alt = "Cover " style = {{height:277 , padding:"10px"}}></img>
     </div>
     <h5>{props.title}</h5>
@@ -55,7 +55,7 @@ function  FamousStories(props)
                 <h1 className={titleClassName} style={{backgroundColor:""}}>{props.title.toUpperCase()}</h1>
                 <hr></hr>
                 <div className = "row container myshadow rounded" style={{marginBottom:"20px"}}>
-                        <div class = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
+                        <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
                         <a href= "ReadStory?title="><StoryDetails.CoverPage 
                 imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 
                 /></a>

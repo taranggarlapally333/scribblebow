@@ -9,11 +9,15 @@ import { AuthProvider } from './Auth';
 import ReadStory from './Read/Story/Story' ;  
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
+import Log0 from './login/Log0';
 import WriteStory from './Write/Story/Story' ;
 import Create from './Write/create' ; 
 
 
+
+
 ReactDOM.render(
+
   <AuthProvider>
   <Router>
     <div>
@@ -25,19 +29,24 @@ ReactDOM.render(
       />
       <Route exact path="/signup" component={Signup}
       />
-       <Route exact path="/ReadStory" component={ReadStory}  />
+       <Route exact path="/ReadStory"  render={(props) => <ReadStory {...props}/>}  />
 
       <Route exact path="/Create" component={Create}/>
       <Route exact path="/WriteStory" ><WriteStory title="Story"/></Route>
       <Route exact path="/WritePoem" ><WriteStory title="Poem"/></Route>
       <Route exact path="/WriteBlog" ><WriteStory title="Blog"/></Route>
       <Route exact path="/WriteArticle" ><WriteStory title="Article"/></Route>
+      <Route exact path="/WriteFanFiction" ><WriteStory title="fanFiction"/></Route>
 
       <Route exact path="/test" component={Test}
       />
       <Route exact path="/Pref0" component={Pref0}
       />
       <Route exact path="/Pref1" component={Pref1}
+      />
+      <Route exact path="/Log0" component={Log0}
+      />
+      <Route exact path="/testnow" component={Test}
       />
 
     </div>

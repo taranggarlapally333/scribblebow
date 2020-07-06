@@ -1,8 +1,16 @@
 import React from 'react' ; 
 import Header from '../../components/NavHeader' ; 
 import * as p from './Details' ; 
-function ReadStory()
+import * as Files from '../../Storage/UploadFile' ; 
+import * as Story from '../../database/StoryFuns';
+import * as Atts from "../../Write/Story/Atts";  
+function ReadStory(props)
 {
+    
+    var allProps = {
+        ...props.location.state
+    } ; 
+    console.log(allProps); 
     return (
     <div>
          
@@ -10,11 +18,13 @@ function ReadStory()
         <div className = "container">
             <div className= "row">
                 <p.CoverPage 
-                imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 
+                imageAddress = {Files.GetCoverPage(props.location.state.id)}
                 />
                 <p.default 
                 title = "THE UNTOLD STORY"
-                rating = "1200" />
+                rating = "1200" 
+                Details = {Story.getStoryDetails(Atts.documentName[props.location.state.title],props.location.state.id)}
+                />
             </div>
             <hr></hr>
             <p.StoryContent/>

@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import db from "../database/db";
 import { AuthContext } from "../Auth";
 import { Redirect, useHistory } from "react-router";
-import { UserUid } from '../database/funcs';
+import { UserUid, Username } from '../database/funcs';
 import Pref1 from "./Pref1";
 import Signup from "./Signup";
 import Header from "../components/Header";
-import UserDetails from './UserAtts' ; 
+import Loading from "../components/Loading";
 
 function Pref0(props){
     const {currentUser} =useContext(AuthContext);
@@ -22,12 +22,7 @@ function Pref0(props){
     const AddUser = function(){
         
         const custom_id = props.newuser.email.split("@")[0];
-        UserDetails = {
-            ...props.newuser,
-            "Username" : custom_id ,
-            "Userid" : currentUser.uid , 
-             
-        }
+        
         
         db.firestore().collection("users").doc(custom_id).set({
             bio: props.newuser.bio,
@@ -92,25 +87,15 @@ function Pref0(props){
         AddUser2();    
         CreateFollows();
         CreateFollowers();
+        const name = props.newuser.email.split("@")[0];
+        const uid=currentUser.uid;
+        localStorage.setItem("username", name);
+        localStorage.setItem("uid", uid );
 
         setTimeout(function(){ setTWait(2); }, 3000);
 
         if(twait === 0){
-            return (<div>
-                <Header title="SIGNUP"/> 
-                <div className="login-bg">
-    <div className="login-bar2">
-    <div className="col-md-6">
-    <img  className= "loading" src={process.env.PUBLIC_URL + '/loading-nobg.gif'}/>
-    </div>
-    <div className="col-md-6">
-    <img className="signuplogo2" src={process.env.PUBLIC_URL + '/myimage.png'}/>
-    {(p===0)?<p className="loading-text font0" id="loading-text">Setting up your Account, do not close this tab.</p>:null}
-    {(p===2)?<p className="loading-text font0" id="loading-text">Saving your details, wait a sec.</p>:null}
-    </div> 
-    </div>
-    </div>
-    </div>);
+            return <Loading message={"Setting up your Account, do not close this tab."} />;
         }else{
             return (<div>
                 <Header title="SIGNUP"/> 
