@@ -26,12 +26,12 @@ export const UserWorks = function()
 {
     return(
         <div>
-            <div className = "container-inner" style={{display:"flex",justifyContent:"space-evenly" , backgroundColor:"red"}} ><a className = "btn btn-danger"  href="WriteStory">Story</a>
-            <button className = "btn btn-warning"  >Poem</a>
-            <button className = "btn btn-primary" >Article</a>
-            <button className = "btn btn-warning"  >Audio</a>
-            <a className = "btn btn-info">Fan-Fiction</a>
-            <a className = "btn btn-warning"  >Quote</a></div>
+            <div className = "container-inner" style={{display:"flex",justifyContent:"space-evenly" , backgroundColor:""}} ><a className = "btn btn-danger"  href="WriteStory">Story</a>
+            <button className = "btn btn-warning"  >Poem</button>
+            <button className = "btn btn-primary" >Article</button>
+            <button className = "btn btn-warning"  >Audio</button>
+            <button className = "btn btn-info">Fan-Fiction</button>
+            <button className = "btn btn-warning"  >Quote</button></div>
         
         
         </div>
