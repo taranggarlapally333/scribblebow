@@ -15,6 +15,10 @@ function WriteStory(props)
         }
     ) ; 
 
+   
+        
+
+
    function handleStoryStatus(event)
    {
         var {name,value} = event.target;

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { Username } from "../database/funcs";
 import { AuthContext } from "../Auth";
+import db from "../database/db";
 
 
 export const Test = function(){
@@ -32,12 +33,27 @@ export const Test = function(){
        
     }
     
+
+    const ForgotPassword = function(Email){
+        
+            db.auth().sendPasswordResetEmail(Email)
+              .then(function (user) {
+                alert('Please check your email...')
+              }).catch(function (e) {
+                console.log(e)
+              })
+              return false;
+          
+    }
+    
   
 
     return (
+       
         <div className="login-bg">
     <div className="login-bar">
     <p>{currentLocation}</p>
+    <a href="" onClick={()=>ForgotPassword("theconscienceofficial@gmail.com")}>Forgot Password</a>
     <p>{Date.now() + Math.random()}</p>
     <form onSubmit ={checkEmail}>
     <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email}/>    

@@ -77,21 +77,33 @@ function Pref0(props){
             bio: newuser.bio,
             title: newuser.title
         });
-        history.push("/home");
+        if(localStorage.getItem("emailverif")=="true"){
+            history.push("/home");
+        }
+        else{
+            history.push("/unverif")
+        }
         
     }
 
     if(currentUser){
-
+        db.auth().currentUser.sendEmailVerification()
+    .then(function() {
+      alert("we've sent you an account to verify your email")
+    })
+    .catch(function(error) {
+       console.log(error);
+    });
         AddUser();
         AddUser2();    
         CreateFollows();
         CreateFollowers();
         const name = props.newuser.email.split("@")[0];
         const uid=currentUser.uid;
+        const emailverif = currentUser.emailVerified;
         localStorage.setItem("username", name);
         localStorage.setItem("uid", uid );
-
+        localStorage.setItem("emailverif",emailverif);
         setTimeout(function(){ setTWait(2); }, 3000);
 
         if(twait === 0){
