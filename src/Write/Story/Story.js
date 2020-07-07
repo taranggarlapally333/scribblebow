@@ -20,7 +20,7 @@ function WriteStory(props)
             "StoryFontSize":"20" , 
             "StoryContent": "", 
             "StoryGenre": "" ,
-            "StoryHastags":"",
+            "StoryHashtags":"",
             "StoryDescription":"",
             "StorySeries":"",
             "part":0,
@@ -184,7 +184,7 @@ function WriteStory(props)
             "content": StoryStatus.StoryContent, 
             "font":StoryStatus.StoryFont ,
             "genre": StoryStatus.StoryGenre , 
-            "hastags": StoryStatus.StoryHastags, 
+            "hashtags": StoryStatus.StoryHashtags, 
             "description":StoryStatus.StoryDescription , 
             "nlikes": 0 , 
             "ncomments":0  , 
@@ -233,7 +233,7 @@ function WriteStory(props)
                                 {fanFiction}
                                 <h4>Description</h4>
                                 <textarea className={Atts.propsClass}  type= "text"  name = "StoryDescription"
-                                style={{height:"100px", resize:"none"}} ></textarea>
+                                style={{height:"100px", resize:"none"}} onChange={handleStoryStatus} ></textarea>
                                 <h4>Genre</h4>
                                 <select className = {Atts.propsClass} type="text" name = "StoryGenre" onChange =  {handleStoryStatus}>
                                     {Atts.GenreAvailable.map(getGenres)}

@@ -8,7 +8,6 @@ export const UploadImage = function (image , imageId)
 {
   const uploadTask  = storage.ref("CoverPages/"+imageId).put(image) ;
   var ImageAddress  = "" ; 
-  console.log("Just Entered into The Upload Image")
   uploadTask.on(
       'state_changed' , 
       function(snapshot){
@@ -31,7 +30,7 @@ export const UploadImage = function (image , imageId)
 export const GetCoverPage  = function(imageId)
 {
   const [imageurl , setImageurl] = useState("") ;  
-  console.log("The Story Id sent is"+ imageId);
+  
   const images = firebase.storage().ref().child('CoverPages');
     const image = images.child(imageId);
     image.getDownloadURL().then((url) => { 
@@ -40,7 +39,7 @@ export const GetCoverPage  = function(imageId)
       
       // setImageurl(url)
     });
-    console.log("Sending the Url :" + imageurl); 
+    
     return imageurl ; 
 }
 

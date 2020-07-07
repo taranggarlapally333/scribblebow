@@ -2,29 +2,18 @@ import React ,{useState}from 'react' ;
 import * as icons from 'react-icons/md';
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
-import {Caption} from '../../components/Loading' ; 
-import * as Atts from '../../Write/Story/Atts'; 
+import {Caption} from '../components/Loading' ; 
+import * as Atts from '../Write/Story/Atts'
 
 function StoryDetails(props)
 {
     var Details = "col-12 col-md-9  Details " ; 
     var shadow = "myshadow" ; 
     var currLoc = window.location.pathname;
-    const myStoryDetails = {
-        ...props.Details , 
-        "id":props.StoryId
-    }
-    console.log(myStoryDetails); 
+  
     const [isExpanded , setExpanded] = useState(false) ; 
     const [CommentButton , setCommentButton] = useState("All Comments");
-    const [LikeComment , setLikeComment] = useState(
-        {
-            "likes": myStoryDetails.nlikes , 
-            "comments":myStoryDetails.ncomments,
-        }
-    );
-    var Hashtags = myStoryDetails.hastags ; 
-    // Hashtags = Hashtags.split("#"); 
+
     function expand() {
         setExpanded(!isExpanded);}
 
@@ -65,40 +54,36 @@ function StoryDetails(props)
     var firstprice = <h1 style={{color:"gold", }}><span className="glyphicon glyphicon-queen "></span></h1> ; 
     var LikeCommentAdd = <div id = "likeComment"className = "row container " style = {{width : 205 , backgroundColor:""}}>
     <div className= "box" style = {{color: "#E61D42"}}>
-    <icons.MdFavorite size="30"/><Caption caption={LikeComment.likes}/></div>
+    <icons.MdFavorite size="30"/><Caption caption="204"/></div>
     <div className= "box "  style = {{color: "blue"}}  onClick={expand}  > 
-    <icons.MdComment  size="30" /><Caption caption={LikeComment.comments}/></div>
+    <icons.MdComment  size="30" /><Caption caption="15"/></div>
     <div className= "box"> 
     <icons.MdAdd  size="30"/><Caption caption="shelf"/>
     </div>
 </div>  ; 
 
-   var Hashtags = myStoryDetails.hashtags+"" ; 
-   var myHashtags = [...Hashtags.split("#")] ; 
-   console.log(myHashtags); 
+
     return (
         <div>
             <div className = {currLoc !="/home" ? Details+shadow : Details} >
                 {currLoc =="/home" ? firstprice : null}
-                <p style = {{fontSize:40}}>{myStoryDetails.title}</p>
+            <p style = {{fontSize:40}}>{props.title}</p>
                 <div className= "row container">
-                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
-                    {/* <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ROMANCE</span></a>
-                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ACTION</span></a> */}
+                   
+                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ROMANCE</span></a>
+                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">ACTION</span></a>
                 </div> 
                 <hr />
-                <p>Description:{myStoryDetails.description}</p>
-                <p>Rating :</p>
+                <p>Description: This is the Description Part</p>
+                <p>Rating :1200</p>
                 <p>Hashtags: </p>
                 <div className = "row container">
-                    {myHashtags.map((eachHashtag )=>{
-                        return(
-                            <a  href={"/Discover?tag="+eachHashtag}><span className ={Atts.getHashClassName(eachHashtag.length)+" box"}>{eachHashtag}</span></a>
-                        ); 
-                    })}
+                    <a  href={"/Discover?tag="}><span className =  {"label label-danger"+" box"}>#Story</span></a>
+                    <a  href={"/Discover?tag="}><span className =  {"label label-warning"+" box"}>#Story</span></a>
+                    <a  href={"/Discover?tag="}><span className =  {"label label-primary"+" box"}>#Story</span></a>
                 </div>
                 {currLoc!="/home"|"/" ?LikeCommentAdd:null}
-                <div className="container">
+                <div className="container-inner" >
                 <form onSubmit={handleSubmit}>
                     {isExpanded && (
                         <textarea
@@ -124,7 +109,7 @@ function StoryDetails(props)
                 </form>
             </div>
             </div>
-            
+           
         </div>
     ); 
 }
@@ -132,7 +117,7 @@ function StoryContent(props)
 {
     return (
         <div className = "StoryContent container" id = "StoryContent"  >
-            <p>{props.Details.content}</p>
+            <p>Hat Boshdeke</p>
         </div>
     ) ; 
 }

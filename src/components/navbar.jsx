@@ -30,10 +30,10 @@ function navbar(props)
                   <ul className="dropdown-menu">
                   <li ><a style={{fontWeight:"bold"}}>{props.Username}</a></li>
                   <hr></hr>
-                    <li><a href="profile.php">Profile</a></li>
-                    <li><a href="profile.php#mylist">My list</a></li>
-                    <li><a href="Settings.php">Settings</a></li>
-                    <li><a href="#">Report</a></li>
+                    <li><a href="/Profile">Profile</a></li>
+                    <li><a href="">My list</a></li>
+                    <li><a href="">Settings</a></li>
+                    <li><a href="">Report</a></li>
                     <li><a href = "/login" type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
