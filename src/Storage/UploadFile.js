@@ -30,14 +30,13 @@ export const UploadImage = function (image , imageId)
 export const GetCoverPage  = function(imageId)
 {
   const [imageurl , setImageurl] = useState("") ;  
-  
+  console.log("Get Cover Page is called"); 
   const images = firebase.storage().ref().child('CoverPages');
     const image = images.child(imageId);
     image.getDownloadURL().then((url) => { 
       
         setImageurl(url) ; 
       
-      // setImageurl(url)
     });
     
     return imageurl ; 

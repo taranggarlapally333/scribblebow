@@ -11,7 +11,7 @@ import Profile from './Read/Profile/Profile';
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
 import Log0 from './login/Log0';
-import WriteStory from './Write/Story/Story' ;
+import WriteTheStory from './Write/Story/Main' ;
 import Create from './Write/create' ; 
 import ReadStory1 from './temp/Story'; 
 
@@ -34,11 +34,11 @@ ReactDOM.render(
        <Route exact path="/ReadStory1"component={ReadStory1}/>
 
       <Route exact path="/Create" component={Create}/>
-      <Route exact path="/WriteStory" ><WriteStory title="Story"/></Route>
-      <Route exact path="/WritePoem" ><WriteStory title="Poem"/></Route>
+      <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
+      {/* <Route exact path="/WritePoem" ><WriteStory title="Poem"/></Route>
       <Route exact path="/WriteBlog" ><WriteStory title="Blog"/></Route>
       <Route exact path="/WriteArticle" ><WriteStory title="Article"/></Route>
-      <Route exact path="/WriteFanFiction" ><WriteStory title="fanFiction"/></Route>
+      <Route exact path="/WriteFanFiction" ><WriteStory title="fanFiction"/></Route> */}
       <Route exact path = "/Profile" ><Profile /> </Route>
       <Route exact path="/test" component={Test}
       />

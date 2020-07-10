@@ -5,11 +5,12 @@ function Profile()
 {
     return (
         <div>
-            <NavHeader  title = "Header"/>
+            <NavHeader  title = "Profile"/>
             <div  className = "container" >
                 <div className= "row"><User.UserDetails /></div>
                 <hr></hr>
-                <User.UserWorks />
+                <div id ="UserWorks"><User.UserWorks /></div>
+                <User.Analytics />
             </div>
            
            
