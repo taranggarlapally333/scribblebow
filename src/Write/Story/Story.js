@@ -7,7 +7,7 @@ function WriteStory(props)
 
     var [StoryStatus , setStoryStatus] = useState(
         {
-            "StoryTitle" : props.title+" Title" , 
+            "StoryTitle" : props.location.state.title+" Title" , 
             "StoryFont":"",
             "StoryFontSize":"20" , 
             "StoryContent": "", 
@@ -15,7 +15,7 @@ function WriteStory(props)
         }
     ) ; 
 
-   
+    
         
 
 
@@ -59,7 +59,7 @@ function WriteStory(props)
                 ...prevValue,
                 "StoryFont" : "" , 
                 "StoryFontSize":"20" ,
-                "StoryTitle" : props.title+" Title" ,  
+                "StoryTitle" : props.location.state.title+" Title" ,  
             };
         });
 
@@ -74,7 +74,7 @@ function WriteStory(props)
     } 
     return (
         <div>
-            <Header title = {props.title.toUpperCase()} />
+            <Header title = {props.location.state.title.toUpperCase()} />
             <form onSubmit = {handleSubmit}>
             <div className= "col-12 col-md-3 myshadow StoryWriteProps" >
                     <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}}> <a class = "btn btn-default" onClick={handleReset}>Reset</a>
@@ -85,11 +85,11 @@ function WriteStory(props)
                     <input className = {Atts.propsClass} type="text" name = "StoryTitle" value={StoryStatus.StoryTitle} 
                         onChange = {handleStoryStatus}
                     />
-                    <h4>{props.title} Font</h4>
+                    <h4>{props.location.state.title} Font</h4>
                     <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}>
                         {Atts.fontsAvailable.map(getFontOptions)}
                     </select>
-                    <h4>{props.title} FontSize</h4>
+                    <h4>{props.location.state.title} FontSize</h4>
                     <input className = {Atts.propsClass} type="text" name = "StoryFontSize" value={StoryStatus.StoryFontSize} 
                         onChange =  {handleStoryStatus}
                     />

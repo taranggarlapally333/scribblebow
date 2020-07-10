@@ -8,6 +8,27 @@ html,body
     padding: 0px;
     overflow-x: hidden; 
 }
+.myimage{
+    background-image:url("./plusIcon.png");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center;
+}
+.overlay:hover{
+    opacity: 0.5;
+    transition: .8s ease;
+    background-color: #008CBA;
+  }
+.myimage:hover 
+{
+    
+    transition: .5s ease;
+    background-image:  linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('./plusIcon.png' );
+    
+    
+}
+
+
 a{
     text-decoration: none;
 }
@@ -94,6 +115,47 @@ a{
 }
 
 
+.draft-cont{
+    position: relative;
+}
+
+
+.draft-image {
+    opacity: 1;
+    
+    transition: .5s ease;
+    backface-visibility: hidden;
+  }
+  
+.draft-title {
+    transition: .5s ease;
+    opacity: 0;    
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 10px;
+
+  transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+
+.nocopy{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.draft-cont:hover .draft-image {
+    opacity: 0.1;
+  }
+  
+.draft-cont:hover .draft-title {
+    opacity: 1;
+  }
+
 textarea::-webkit-scrollbar {
     width: .5em;
   }
@@ -122,18 +184,80 @@ textarea::-webkit-scrollbar-thumb {
   }
 /* end for my scroller part  */
   
+.myshadow
+{
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+    
+}
+
+
+.fixedcomp{
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+.rounded
+{
+    border-radius: 10px;
+}
+
+.search-input {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.search-input:focus{
+    width: 90%;
+}
+.myheader{
+    background-color: #f5ba13;
+    margin: auto -16px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    color: white ;
+  
+    text-align: center;
+}
+.btn-circle.btn-sm { 
+    width: 30px; 
+    height: 30px; 
+    padding: 6px 0px; 
+    border-radius: 15px; 
+    font-size: 8px; 
+    text-align: center; 
+} 
+.btn-circle.btn-md { 
+    width: 50px; 
+    height: 50px; 
+    padding: 7px 10px; 
+    border-radius: 25px; 
+    font-size: 10px; 
+    text-align: center; 
+} 
+.btn-circle.btn-xl { 
+    width: 70px; 
+    height: 70px; 
+    padding: 10px 16px; 
+    border-radius: 35px; 
+    font-size: 12px; 
+    text-align: center; 
+} 
 .mynav{
     margin-top: 10px;
     
 }
 .StoryWriteProps
 {
-    height: 1042px ; 
+    height: 1052px ; 
     font-family: Arial, Helvetica, sans-serif;
     background-color:rgba(0, 0, 0, 0.1);
     padding: 10px;
+    /* animation: mymove 5s infinite; */
+    
    
 }
+
 
 .CenterText{
     text-align: center;
@@ -147,6 +271,10 @@ textarea::-webkit-scrollbar-thumb {
         margin: 2px;
         float: left;
     
+}
+.box:hover{
+    opacity: 0.5;
+    transition: .5s ease;
 }
 .Details{
     text-align: left;
@@ -286,4 +414,15 @@ outline-width: 0;
 .f{
     font-family: 'Josefin Sans', sans-serif;
     margin-bottom: -20px;
+}
+.myshadow{
+    box-shadow: 0px 2px 4px 0px #0f0f0f;
+}
+.Comment
+{
+    margin: auto -16px;
+    padding: 0px 20px;
+    margin-bottom: 20px ;
+    text-align: left;
+    
 }
