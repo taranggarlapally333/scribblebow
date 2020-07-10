@@ -7,6 +7,7 @@ import {Test} from './login/Test';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import { AuthProvider } from './Auth';
 import ReadStory from './Read/Story/Story' ;  
+import Profile from './Read/Profile/Profile';
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
 import Log0 from './login/Log0';
@@ -15,6 +16,7 @@ import Create from './Write/create' ;
 import PrivateRoute from './PrivateRoute';
 import Unverif from './login/Unverif';
 import Discover from './discover/Discover';
+import ReadStory1 from './temp/Story'; 
 
 
 
@@ -33,7 +35,7 @@ ReactDOM.render(
       />
      
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
-
+       <PrivateRoute exact path="/Profile" component={Profile}  />
       <PrivateRoute exact path="/Create" component={Create}/>
       <Route exact path="/WriteStory"  render={(props) => <WriteStory {...props}/>}  />
       

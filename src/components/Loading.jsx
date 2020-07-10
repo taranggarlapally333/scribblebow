@@ -17,5 +17,10 @@ function Loading(props){
     </div>
     </div>
 }
+function Caption(props)
+{
+    return(<span class="caption" style={{display:"block"}}>{props.caption}</span>) ; 
+}
 
 export default Loading;
+export {Caption , Loading} ; 

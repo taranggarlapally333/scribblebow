@@ -1,26 +1,50 @@
-import React from 'react' ; 
+import React, { useState } from 'react' ; 
 import Header from '../../components/NavHeader' ; 
 import * as p from './Details' ; 
-function ReadStory()
+import * as Files from '../../Storage/UploadFile' ; 
+import * as Story from '../../database/StoryFuns';
+import * as Atts from "../../Write/Story/Atts";  
+import Loading from '../../components/Loading';
+function ReadStory(props)
 {
-    return (
-    <div>
-         
-        <Header title ="STORY" />
-        <div className = "container">
-            <div className= "row">
-                <p.CoverPage 
-                imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 
-                />
-                <p.default 
-                title = "THE UNTOLD STORY"
-                rating = "1200" />
+    
+    var allProps = {
+        ...props.location.state
+    } ; 
+    console.log("allProps"+ allProps); 
+    const [stage , setStage] = useState(0) ;
+    var StoryDetails  = Story.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ; 
+    var ImageAddress  = Files.GetCoverPage(allProps.id) ; 
+    if(StoryDetails)
+    {
+        return (
+            <div>
+                 
+                <Header title ="STORY" />
+                <div className = "container">
+                    <div className= "row">
+                        <p.CoverPage 
+                        imageAddress = {ImageAddress}
+        
+                        />
+                        <p.default 
+                        id = {allProps.id} 
+                        Details = {StoryDetails}
+                        />
+                    </div>
+                    <hr></hr>
+                    <p.StoryContent
+                        Details = {StoryDetails}
+                    />
+                </div>
             </div>
-            <hr></hr>
-            <p.StoryContent/>
-        </div>
-    </div>
-    ); 
+            ); 
+    }
+    else 
+    {
+       return( <Loading message="Loading"/>); 
+    }
+    
 }
 
 export default ReadStory ; 

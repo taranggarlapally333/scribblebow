@@ -2,16 +2,32 @@ import React, {useState, useContext } from "react";
 import Header from '../../components/NavHeader' ; 
 import * as Atts from './Atts' ;
 import db from "../../database/db";
+import * as StoryFuns from "../../database/StoryFuns";
+import {AuthContext} from '../../Auth';
+import * as UploadFile from '../../Storage/UploadFile' ; 
+import { Redirect, useHistory } from "react-router";
+import Loading from '../../components/Loading'; 
+
+
 function WriteStory(props)
 {
 
+    console.log(props); 
     var [StoryStatus , setStoryStatus] = useState(
         {
             "StoryTitle" : props.location.state.title+" Title" , 
             "StoryFont":"",
             "StoryFontSize":"20" , 
             "StoryContent": "", 
-            "PublishSave" : true 
+            "StoryGenre": "" ,
+            "StoryHashtags":"",
+            "StoryDescription":"",
+            "StorySeries":"",
+            "part":0,
+            "PublishSave" : true , 
+            "StoryCoverPage":"" , 
+            "ArticleType":"Personal Blog",
+            "FictionBasedOn":"",
         }
     ) ; 
 
@@ -19,14 +35,61 @@ function WriteStory(props)
         
 
 
+    var  [image , setImage] = useState() ; 
+    var [stage , setStage] = useState(0) ;
+    var [StoryId , setStoryId] = useState("") ;  
+    
+    function handleImageChange(event)
+    {
+        var ImageFile =event.target.files[0] ;  
+        if(event.target.files[0])
+        {
+            
+            console.log(ImageFile.size[0]) ; 
+            setImage(ImageFile) ;
+            const reader = new FileReader() ; 
+            reader.addEventListener("load" , function(){
+                var CoverPageElement = document.getElementById("previewImage") ; 
+               
+                CoverPageElement.setAttribute("src" , this.result) ; 
+            }); 
+            reader.readAsDataURL(ImageFile) ; 
+         
+        }
+        
+    }
+    console.log(image); 
+    function handleShowHastags(value)
+    {
+        var ShowHashtagsElement = document.getElementById("ShowHashtags") ; 
+        var myHashTags = value.split("#") ; 
+        console.log(myHashTags)
+        if(myHashTags.length >=10) {alert("no More Hashtags can be Added"); return;}
+        ShowHashtagsElement.innerHTML = null ; 
+        
+        myHashTags.forEach((eachHash)=>{
+            let span  = document.createElement("div"); 
+            let h5 = document.createElement("h3"); 
+            if(eachHash.length > 20) eachHash = eachHash.substr(0,20); 
+            span.innerHTML = eachHash ; 
+            span.className = Atts.getHashClassName(eachHash.length)+" box" ; 
+            span.style = {fontSize:"30px" ,"float":"left"}; 
+            h5.appendChild(span); 
+            ShowHashtagsElement.appendChild(h5); 
+        }); 
+    }
    function handleStoryStatus(event)
    {
         var {name,value} = event.target;
         var PubSave = true  ; 
+        var tempGenre = StoryStatus.StoryGenre; 
+        console.log(name, value); 
         switch (name)
         {
-            case "StoryFontSize" : if(parseInt(value) > 30)  value = "30"  ; 
-            case "StoryContent" : if(value.length > 0 ) PubSave = false ; 
+            case "StoryFontSize" : if(parseInt(value) > 30)  value = "30"  ; break ; 
+            case "StoryContent" : if(value.length > 0 ) PubSave = false ; break ;
+            case "StoryCoverPage": if(value) value=value[0] ; break ;    
+            case "StoryHashtags" : handleShowHastags(value) ; break ; 
         } 
         setStoryStatus(prevValue =>{
             return {
@@ -36,28 +99,64 @@ function WriteStory(props)
             };
         });
    }
+    function getGenres(eachGenre)
+    {
+        return (<option value={eachGenre} 
+>{eachGenre}</option>); 
 
-    var TodayDate  =  new Date().toLocaleString() ; 
+    }
+
+
+    var TodayDate  =  new Date().toLocaleString()+","; 
     var currLoc = window.location.pathname ;
     var UploadImage = null ;  
-    if (currLoc == "/WriteStory"|| currLoc=="/WritePoem")
+    var ArticleType = <div>
+    <h4>Type</h4>
+    <select className ={Atts.propsClass} name="ArticleType" onChange={handleStoryStatus}>
+        <option>Personal Blog</option>
+        <option>new/Science</option>
+    </select></div> ; 
+    var fanFiction = <div>
+        <h4>Based On</h4>
+        <input className = {Atts.propsClass} type="text" onChange={handleStoryStatus} name="FictionBasedOn"></input>
+    </div>; 
+    var PubSaveButton  = false ; 
+    const history = useHistory();
+
+    const {currentUser} = useContext(AuthContext);
+    
+    if (currLoc != "/WriteArticle")
     {
-         UploadImage = <div><h4>Upload Cover Page</h4>
-    <input type="file" />
-    <div className="" style={{backgroundColor:"" , margin:"10px" , marginTop:"30px"}}>
-        <Atts.CoverPage 
-            imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-        />
-    </div></div> ; 
-       TodayDate = "Type Your Content Here" ; 
+            UploadImage = <div>
+            <h4>Select Cover Page</h4>
+            <input type="file" 
+            name = "StoryCoverPage" 
+            onChange={handleImageChange}
+            id = "fileInput" style={{display:"none"}}></input>
+            <div className= "col-md-3">
+                <div className = "myshadow myimage " style = {{width:160,maxWidth:160,height:277, justifyContent:"center"}}
+                onClick={()=>{
+                    document.getElementById("fileInput").click() ; 
+                }} >
+                <img  
+                className="overlay"
+                id = "previewImage" src ="https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+                </div>
+            </div>
+        </div>
+        ; 
+        TodayDate = "" ; 
+        ArticleType=null ; 
+       
     }
+    if(currLoc !="/WriteFanFiction") fanFiction =null ; 
 
     function handleReset()
     {
         setStoryStatus(prevValue =>{
             return {
                 ...prevValue,
-                "StoryFont" : "" , 
+                "StoryFont" : "", 
                 "StoryFontSize":"20" ,
                 "StoryTitle" : props.location.state.title+" Title" ,  
             };
@@ -68,59 +167,122 @@ function WriteStory(props)
     {
         return (<option style={{fontFamily:eachFont}} value ={eachFont} >Story Font</option>) ; 
     }
-    function handleSubmit()
+    function handleSubButton(event)
     {
-       //db.firestore().collection('stories').doc(new Data().get)
+        var element  = event.target.name  ; 
+        if(element == "Publish") PubSaveButton = true  ; else PubSaveButton = false  ; 
+    }
+    function handleSubmit(event)
+    {
+        
+        event.preventDefault() ;
+        var StoryId  = Date.now().toString() ; 
+        console.log(StoryId +"my id0"); 
+        UploadFile.UploadImage(image ,StoryId); 
+        
+        console.log(PubSaveButton) ;  
+        var myStoryData = {
+            "creator": localStorage.getItem("username") , 
+            "title": StoryStatus.StoryTitle, 
+            "content": StoryStatus.StoryContent, 
+            "font":StoryStatus.StoryFont ,
+            "genre": StoryStatus.StoryGenre , 
+            "hashtags": StoryStatus.StoryHashtags, 
+            "description":StoryStatus.StoryDescription , 
+            "nlikes": 0 , 
+            "ncomments":0  , 
+            "publish": PubSaveButton
+        } ; 
+        if(currLoc == "/WriteArticle") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
+        if(currLoc =="/WriteFanFiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
+        if (props.title == "Story"|"Poem"|"fan-Fiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
+        console.log(myStoryData)  ;
+        console.log(StoryId +"my id")
+        db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ; 
+            alert("Your "+ props.title + " is Succesfully Published."); 
+           
+            setStoryId(StoryId); 
+            setStage(5) ;
+            setTimeout(()=>{setStage(4)},6000) ;  
+           
+           
+       
     } 
-    return (
-        <div>
-            <Header title = {props.location.state.title.toUpperCase()} />
-            <form onSubmit = {handleSubmit}>
-            <div className= "col-12 col-md-3 myshadow StoryWriteProps" >
-                    <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}}> <a class = "btn btn-default" onClick={handleReset}>Reset</a>
-                    <a class = "btn btn-warning right"  name = "PublishSave" disabled= {StoryStatus.PublishSave} >Publish</a>
-                    <a class = "btn btn-primary right"  name = "PublishSave"  disabled= {StoryStatus.PublishSave} >Save</a></div>
-                   
-                    <h4>Title</h4>
-                    <input className = {Atts.propsClass} type="text" name = "StoryTitle" value={StoryStatus.StoryTitle} 
-                        onChange = {handleStoryStatus}
-                    />
-                    <h4>{props.location.state.title} Font</h4>
-                    <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}>
-                        {Atts.fontsAvailable.map(getFontOptions)}
-                    </select>
-                    <h4>{props.location.state.title} FontSize</h4>
-                    <input className = {Atts.propsClass} type="text" name = "StoryFontSize" value={StoryStatus.StoryFontSize} 
-                        onChange =  {handleStoryStatus}
-                    />
-                    <h4>Description</h4>
-                    <textarea className={Atts.propsClass}  type= "text"  name = "description"
-                    style={{height:"100px", resize:"none"}} ></textarea>
-                    <h4>Genre</h4>
-                    <input className = {Atts.propsClass} type="text" name = "StoryFontSize" value={StoryStatus.StoryFontSize} 
-                        onChange =  {handleStoryStatus}
-                    />
-                    {UploadImage}
-                    
+    // var StoryTitles = StoryFuns.getStoryDetails(Atts.documentName[props.title]);   
+    if(stage == 0 )
+    {
+            return (
+                    <div>
+                        <Header title = {props.title.toUpperCase()} />
+                        <form onSubmit = {handleSubmit}>
+                        <div className= "col-12 col-md-3 myshadow StoryWriteProps" >
+                                <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}} onClick={handleReset}> <a class = "btn btn-default">Reset</a>
+                                <button class = "btn btn-warning right" type="submit" value ="Publish" name = "Publish" disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Publish</button>
+                                <button class = "btn btn-primary right"  type = "submit" name = "Save"  disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Save</button></div>
+                            
+                                <h4>Title</h4>
+                                <input className = {Atts.propsClass} type="text" name = "StoryTitle" value={StoryStatus.StoryTitle} 
+                                    onChange = {handleStoryStatus}
+                                />
+                                <h4>{props.title} Font</h4>
+                                <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}>
+                                    {Atts.fontsAvailable.map(getFontOptions)}
+                                </select>
+                                <h4>{props.title} FontSize</h4>
+                                <input className = {Atts.propsClass} type="text" name = "StoryFontSize" value={StoryStatus.StoryFontSize} 
+                                    onChange =  {handleStoryStatus}
+                                />
+                                {ArticleType}
+                                {fanFiction}
+                                <h4>Description</h4>
+                                <textarea className={Atts.propsClass}  type= "text"  name = "StoryDescription"
+                                style={{height:"100px", resize:"none"}} onChange={handleStoryStatus} ></textarea>
+                                <h4>Genre</h4>
+                                <select className = {Atts.propsClass} type="text" name = "StoryGenre" onChange =  {handleStoryStatus}>
+                                    {Atts.GenreAvailable.map(getGenres)}
+                                </select>
+                                <h4>HashTags</h4>
+                                <input className={Atts.propsClass} type="text" name="StoryHashtags" onChange={handleStoryStatus}></input>
+                                <div className="myscroller" id="ShowHashtags" style={{width:"300px",maxWidth:"300px",height:"100px",maxHeight:"100px",
+                                justifyContent:"wrap", overflowY:"auto"}}></div>
 
-            </div>
-            <div className= "col-12 col-md-9 " >
-                <div className="myshadow"style={{ alignItem: "center" , padding:"100px" , paddingTop:"30px" , overflowX:"auto"}}>
-                <div className = "alert alert-success" style={{width:"595px" , textAlign:"center"}} name="StoryTitle">{StoryStatus.StoryTitle}</div>
+                                <h4>Part</h4><input className={Atts.propsClass} style={{width:"80px" }} type="number" onChange={handleStoryStatus} name="part"></input>
+                                {UploadImage}
+                                
+                                
             
-                <textarea  className = "myshadow" name="StoryContent"
-                onChange= {handleStoryStatus}
-                style= {{resize:"none" , width:"595px", height:"842px", padding:"10px" ,
-                fontFamily: StoryStatus.StoryFont, 
-                fontSize:StoryStatus.StoryFontSize+"px"}} >
-                 {TodayDate + " ,"}
-                </textarea>
-                </div>
-                
-            </div>
-            </form>
-        </div>
-    ) ; 
+                        </div>
+                        <div className= "col-12 col-md-9 " >
+                            <div className="myshadow"style={{ alignItem: "center" , padding:"100px" , paddingTop:"30px" , overflowX:"auto"}}>
+                            <div className = "alert alert-success" style={{width:"595px" , textAlign:"center"}} name="StoryTitle">{StoryStatus.StoryTitle}</div>
+                        
+                            <textarea  className = "myshadow" name="StoryContent"
+                            onChange= {handleStoryStatus}
+                            style= {{resize:"none" , width:"595px", height:"842px", padding:"10px" ,
+                            fontFamily: StoryStatus.StoryFont, 
+                            fontSize:StoryStatus.StoryFontSize+"px"}} 
+                            placeholder= "Type Your Content Here,">
+                            {TodayDate}
+                            </textarea>
+                            </div>
+                            
+                        </div>
+                        </form>
+                    </div>
+                ) ; 
+    } 
+    else if (stage == 4 ){
+        return (<Redirect to={{
+            pathname: '/ReadStory',
+            state: { id: StoryId , title:props.title }
+        }} />) ;}
+    else if(stage == 5)
+    {
+        return(<Loading message={"Your"+props.title+ "is Getting Uploaded"}/>) ;
+         
+    }
+
+    
 }
 
 export default WriteStory ; 

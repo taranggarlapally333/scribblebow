@@ -16,13 +16,13 @@ class CategoryDrafts extends React.PureComponent{
 
    constructor(props){
        super(props);
-       this.state = {r:0,id:"",exist:0,t:0,tabs:[]};
+       this.state = {r:0,id:"",exist:0,t:0,tabs:[],imgurl:""};
        
        
    }
 
    shouldComponentUpdate(NextProps,NextState){
-    if(this.props===NextProps && this.state.t===NextState.t && this.state.id===NextState.id){
+    if(this.props===NextProps && this.state.t===NextState.t && this.state.id===NextState.id  && this.state.imgurl===NextState.imgurl){
         console.log(this.state.t);
         return false;
     }
@@ -34,12 +34,12 @@ class CategoryDrafts extends React.PureComponent{
 
     Tabs=(myprops)=>
 {
-    
+    this.GetCoverPage(myprops[1]);
     return (<div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
     <div className = ""  style = {{width:200,backgroundColor:""}}>
-    <img  className="draft-image" src = {myprops[0].coverid===""?"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg":myprops[0].coverid} alt = "Cover " style = {{height:277 , padding:"10px"}}></img>
+    <img  className="draft-image" src = {this.state.imgurl===""?"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg":this.state.imgurl} alt = "Cover " style = {{height:277 , padding:"10px"}}></img>
     <div className="draft-title">
     <i className='fas fa-edit' style={{fontSize:"36px"}}></i>
     <br />
@@ -53,6 +53,22 @@ class CategoryDrafts extends React.PureComponent{
     </div>) ; 
 }
 
+
+GetCoverPage  = (imageId)=>
+{
+   
+  
+  const images = db.storage().ref().child('CoverPages');
+    const image = images.child(imageId);
+    image.getDownloadURL().then((url) => { 
+      
+        this.setState({imgurl:url}) ; 
+      
+      // setImageurl(url)
+    });
+    
+    
+}
 
     
     
@@ -74,19 +90,20 @@ class CategoryDrafts extends React.PureComponent{
                 querySnapshot.forEach(function(doc) {
                     const d = [doc.data(),doc.id];
                     ntabs.push(d);
-                    
+                
                 });
                 if(ntabs.length===0){
                     this.setState({r:2});
                 }
                this.setState({tabs:ntabs});
+              
             })
             .catch(function(error) {
                 console.log("Error getting documents: ", error);
             });
         }
-        
 
+        
         setTimeout(()=>{this.setState({t:2})},1000);
 
         if(this.state.t===0){

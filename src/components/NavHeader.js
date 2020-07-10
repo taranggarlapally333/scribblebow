@@ -20,7 +20,6 @@ function Header(props)
             </div>
             {props.logged===0?null:<Navbar  Username = {localStorage.getItem("username")}/>}
            
-            
         </div>
     
         
