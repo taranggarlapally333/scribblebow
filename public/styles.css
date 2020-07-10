@@ -84,6 +84,20 @@ a{
     float: left;
 }
 
+.create-btn{
+    font-weight: bold;
+    color: white;
+    width: 120px;
+    margin: 20px;
+   padding: 20px;
+   transition: 0.4s ease;
+   text-decoration: none;
+}
+.create-btn:hover{
+    color: black;
+}
+
+
 
 .lgsg{
     float: right;
@@ -100,6 +114,47 @@ a{
     color: white;
 }
 
+
+.draft-cont{
+    position: relative;
+}
+
+
+.draft-image {
+    opacity: 1;
+    
+    transition: .5s ease;
+    backface-visibility: hidden;
+  }
+  
+.draft-title {
+    transition: .5s ease;
+    opacity: 0;    
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 10px;
+
+  transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+
+.nocopy{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.draft-cont:hover .draft-image {
+    opacity: 0.1;
+  }
+  
+.draft-cont:hover .draft-title {
+    opacity: 1;
+  }
 
 textarea::-webkit-scrollbar {
     width: .5em;
@@ -134,9 +189,26 @@ textarea::-webkit-scrollbar-thumb {
     box-shadow: 0 1px 5px rgb(138, 137, 137);
     
 }
+
+
+.fixedcomp{
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
 .rounded
 {
     border-radius: 10px;
+}
+
+.search-input {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.search-input:focus{
+    width: 90%;
 }
 .myheader{
     background-color: #f5ba13;
@@ -144,7 +216,7 @@ textarea::-webkit-scrollbar-thumb {
     padding: 10px 20px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
     color: white ;
-    margin-bottom: 10px ;
+  
     text-align: center;
 }
 .btn-circle.btn-sm { 
@@ -301,6 +373,9 @@ position: fixed;
     height: 20vh;
     
     
+}
+.forgot-pass{
+text-decoration: underline;
 }
 
 .sl{

@@ -21,10 +21,11 @@ function Home(){
         
            <Header title="HOME" logged={logged}/> 
           
-           {currentLocation == "/home" ? aboutUs : null }
+          {currentLocation == "/home" ? aboutUs : null }
            <funs.FamousStories title="Story"/> 
            <funs.FamousStories title="Poem"/> 
            <funs.FamousStories title="Article"/> 
+           
         </div>
 ); 
 }

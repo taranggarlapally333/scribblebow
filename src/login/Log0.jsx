@@ -10,13 +10,24 @@ export default function Log0(){
     if(currentUser){
         const name = Username();
         const uid=UserUid();
+        
         if(name===null){
             return <Redirect to="/" />;
         }else{
             localStorage.setItem("username", name);
             localStorage.setItem("uid", uid );
+            localStorage.setItem("emailverif",currentUser.emailVerified);
         }
-        setTimeout(function(){history.push("/")}, 2000);
+        
+        setTimeout(function(){
+            if(localStorage.getItem("emailverif")=="true"){
+                history.push("/");
+            }
+            else{
+                history.push("/unverif");
+            }
+            
+        }, 2000);
         return <div>
         
         <Loading message={"Logging you in..."}/>

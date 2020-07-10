@@ -23,9 +23,13 @@ function Signup(props) {
     });
     const [stage,setStage] = useState(0);
     const [pcheck,setPcheck] = useState(0);
+    const [ucheck,setUcheck] = useState(0);
     const history = useHistory();
  
 
+    if(props.ucheck === 2){
+        setUcheck(2);
+    }
     const uiConfig = {
         signInFlow: "popup",
         
@@ -63,7 +67,10 @@ function Signup(props) {
             .auth()
             .createUserWithEmailAndPassword(newuser.email, newuser.password);
         }catch (error){
-            alert(error);
+            if(error.code==="auth/email-already-in-use")
+            {
+                alert("Account with this email already exists, please refresh the page to sign in or sign up with another email")
+            }
         }   
     }
 
@@ -113,7 +120,7 @@ function Signup(props) {
 
     var signapp;
 
-    if(stage===0){
+    if(stage===0 || ucheck===2){
         signapp =  (
             <form onSubmit={handleNext}>
                 <div className="form-group" style={{ width: "80%", marginTop: "40%" }} >
@@ -128,7 +135,8 @@ function Signup(props) {
                     <label for="email">Your Email</label>
                     <input type="email" className="form-control" name="email" id="email" onChange={handleChange} placeholder="Enter Your Email ID"  value={newuser.email} required/>
                 </div>
-                <div class="form-group">
+                {(ucheck===2)?<p className="font0" style={{color: "red"}}>Email already in use</p>: null}
+                <div className="form-group">
                     <label for="gender">Choose You Gender</label>
                     <select className="form-control" name="gender" id="gender" onChange={handleChange}  value={newuser.gender}>
                         <option>Prefer not to say</option>
@@ -157,6 +165,7 @@ function Signup(props) {
                 </div>
                 {(pcheck===1)?<p className="font0" style={{color: "red"}}>Passwords don't match</p>: null}
                 {(pcheck===2)?<p className="font0" style={{color: "red"}}>Passwords should be atleast 8 characters long</p>: null}
+              
                 <div className="form-group submit" style={{ width: "80%" }}>
                     <input type="submit" className="myshadow mybtn btn btn-default" id="signin" value="Next" />
                 </div>

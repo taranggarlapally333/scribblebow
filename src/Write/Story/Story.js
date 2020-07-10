@@ -140,8 +140,7 @@ function WriteStory(props)
                 ...prevValue,
                 "StoryFont" : "", 
                 "StoryFontSize":"20" ,
-                "StoryTitle" : props.title+" Title" , 
-                "ArticleType":"Personal Blog", 
+                "StoryTitle" : props.location.state.title+" Title" ,  
             };
         });
 

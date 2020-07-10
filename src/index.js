@@ -13,6 +13,9 @@ import Pref1 from './login/Pref1';
 import Log0 from './login/Log0';
 import WriteTheStory from './Write/Story/Main' ;
 import Create from './Write/create' ; 
+import PrivateRoute from './PrivateRoute';
+import Unverif from './login/Unverif';
+import Discover from './discover/Discover';
 import ReadStory1 from './temp/Story'; 
 
 
@@ -30,17 +33,24 @@ ReactDOM.render(
       />
       <Route exact path="/signup" component={Signup}
       />
-       <Route exact path="/ReadStory"  render={(props) => <ReadStory {...props}/>}  />
-       <Route exact path="/ReadStory1"component={ReadStory1}/>
-
-      <Route exact path="/Create" component={Create}/>
+     
+       <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
+       <PrivateRoute exact path="/Profile" component={Profile}  />
+      <PrivateRoute exact path="/Create" component={Create}/>
+      
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
-      {/* <Route exact path="/WritePoem" ><WriteStory title="Poem"/></Route>
-      <Route exact path="/WriteBlog" ><WriteStory title="Blog"/></Route>
-      <Route exact path="/WriteArticle" ><WriteStory title="Article"/></Route>
-      <Route exact path="/WriteFanFiction" ><WriteStory title="fanFiction"/></Route> */}
-      <Route exact path = "/Profile" ><Profile /> </Route>
+
+      {/* <PrivateRoute exact path="/WritePoem" ><WriteStory title="Poem"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteQuote" ><WriteStory title="Quote"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteArticle" ><WriteStory title="Article"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteFanfiction" ><WriteStory title="Fanfiction"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteAudio" ><WriteStory title="Audio"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteScript" ><WriteStory title="Script"/></PrivateRoute> */}
+      <PrivateRoute exact path="/discover" component={Discover}/>
+     
       <Route exact path="/test" component={Test}
+      />
+      <Route exact path="/unverif" component={Unverif}
       />
       <Route exact path="/Pref0" component={Pref0}
       />

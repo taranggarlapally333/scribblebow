@@ -5,7 +5,7 @@ function navbar(props)
     var currentLocation = window.location.pathname;
     var forhome = <ul className="nav navbar-nav ">
     <li><a className="nav-btn" href= "/Create">CREATE</a></li>
-    <li><a className="nav-btn" href = "/ReadStory">DISCOVER</a></li>
+    <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
 </ul> ; 
 
     

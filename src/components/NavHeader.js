@@ -10,7 +10,7 @@ function Header(props)
    
     const history =useHistory();
     return (
-        <div>
+        <div className="nocopy">
             <div className= "header row myheader">
             {props.logged===0?<img className="header-logo" onClick = {()=>history.push("/")} src={process.env.PUBLIC_URL + '/myimage.png'} />:<h1>{props.title}</h1>}
                 
