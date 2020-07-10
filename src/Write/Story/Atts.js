@@ -13,11 +13,16 @@ var GenreColors = {
  var propsClass = "form-control " ; 
  var documentName  = {
      "Story":"stories", 
-     "Poem": "poems" , 
-     "Blog" : "blogs" , 
+     "Poem": "poems" ,  
      "Article": "articles",
-     "Audio":"audios"
+     "Audio":"audios", 
+     "Script":"scripts"
  }
+
+
+
+
+ 
  var defaultImageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" ; 
 
  var tempComments = [

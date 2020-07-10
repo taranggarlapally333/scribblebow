@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import db from "../database/db";
 import { Redirect } from "react-router";
-
+import * as Atts from './Story/Atts' ;
 
     
     
@@ -78,7 +78,7 @@ GetCoverPage  = (imageId)=>
         
             console.log("Hello");
             db.firestore()
-            .collection(this.props.category)
+            .collection( Atts.documentName[this.props.category])
             .where("creator","==",localStorage.getItem("username"))
             .where("published","==",false)
             .get()
@@ -113,7 +113,7 @@ GetCoverPage  = (imageId)=>
                 return <div class="container">
             {this.state.tabs.length===0?
             <div className="container" align="center">
-            {this.state.r===2?<p>You have no unpublished {this.props.category}</p>:null}
+            {this.state.r===2?<p>You have no unpublished {Atts.documentName[this.props.category]}</p>:null}
             </div>
             :
             <div className = "row container" style={{backgroundColor:"" ,display:"flex" ,flexWrap: "wrap", justifyContent: "center"}}>
@@ -124,11 +124,13 @@ GetCoverPage  = (imageId)=>
             }
             else{
                 console.log(this.state.id);
+                console.log(this.props.category);
                 return <Redirect to={{
                      pathname: "/WriteStory",
                      state: {
                          title: this.props.category,
-                         id: this.state.id
+                         id: this.state.id,
+                         new: false, 
                      }
                 }
                 } />

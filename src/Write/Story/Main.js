@@ -91,13 +91,15 @@ class WriteTheStory extends React.PureComponent{
         }
     render()
     {
-        if(!this.props.location.state.new) {this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);}
+        if(!this.props.location.state.new) {this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);
         
         if(this.state.stage ==4 )
             return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;
         if(this.state.stage == 0 )
           return(<div><Loading message="Loading Content" /></div>); 
         }
+        else   return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;
+    }
 }
 
 export default WriteTheStory ; 
