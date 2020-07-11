@@ -16,7 +16,21 @@ var GenreColors = {
      "Poem": "poems" ,  
      "Article": "articles",
      "Audio":"audios", 
-     "Script":"scripts"
+     "Script":"scripts", 
+     "Fanfiction":"fanfiction",
+     "Quote":"quotes"
+ }
+ var categoryColors = 
+ {
+    "Story":"#E61D42", 
+    "Poem": "#FF7F00" , 
+    "Quote":"#FFED07", 
+    "Article": "#74E03E",
+    "Fanfiction":"#0000FF",
+    "Audio":"#2E2B5F", 
+    "Script":"#8B00FF", 
+    
+    
  }
 
 
@@ -74,7 +88,7 @@ function getHashClassName(length)
     propsClass, 
     CoverPage , 
     GenreAvailable , 
-    GenreColors,
+    GenreColors,categoryColors,
     documentName,
     defaultImageAddress, getHashClassName
     ,tempComments,tempStoryContent,tempUser} ; 

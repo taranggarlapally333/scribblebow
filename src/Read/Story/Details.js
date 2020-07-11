@@ -19,8 +19,8 @@ function StoryDetails(props)
     const [CommentButton , setCommentButton] = useState("All Comments");
     const [LikeComment , setLikeComment] = useState(
         {
-            "likes": 214, 
-            "comments":15,
+            "likes": 0 , 
+            "comments":0,
         }
     );
     var Hashtags = myStoryDetails.hastags ; 
@@ -65,9 +65,9 @@ function StoryDetails(props)
     var firstprice = <h1 style={{color:"gold", }}><span className="glyphicon glyphicon-queen "></span></h1> ; 
     var LikeCommentAdd = <div id = "likeComment"className = "row container " style = {{width : 205 , backgroundColor:""}}>
     <div className= "box" style = {{color: "#E61D42"}}>
-    <icons.MdFavorite size="30"/><Caption caption={LikeComment.likes}/></div>
+    <icons.MdFavorite size="30"/><Caption caption={myStoryDetails.nlikes}/></div>
     <div className= "box "  style = {{color: "blue"}}  onClick={expand}  > 
-    <icons.MdComment  size="30" /><Caption caption={LikeComment.comments}/></div>
+    <icons.MdComment  size="30" /><Caption caption={myStoryDetails.ncomments}/></div>
     <div className= "box"> 
     <icons.MdAdd  size="30"/><Caption caption="shelf"/>
     </div>
@@ -77,8 +77,9 @@ function StoryDetails(props)
    var myHashtags = [...Hashtags.split("#")] ; 
    console.log(myHashtags); 
     return (
-        <div>
-            <div className = {currLoc !="/home" ? Details+shadow : Details} >
+        <div >
+            <div className={Details} >
+            <div className = {currLoc !="/home" ? shadow : ""} style={{padding:"15px"}} >
                 {currLoc =="/home" ? firstprice : null}
                 <p style = {{fontSize:40}}>{myStoryDetails.title}</p>
                 <div className= "row container">
@@ -105,25 +106,26 @@ function StoryDetails(props)
                                     }); 
             }}>Edit {props.title}</button></div>
             </div>
-            <div className="container">
+            <div className="container" style={{marginTop:"20px", }}>
                 <form onSubmit={handleSubmit}>
                     {isExpanded && (
                         <textarea
                             name="title"
-                            rows="5"
-                            cols="30"
+                            rows="1"
+                            cols="60"
                             className="myshadow rounded"
-                            style={{resize:"none",border: "none" , outline: "none",padding:"10px"}}
+                            style={{resize:"none" , border: "none" , outline: "none",padding:"10px" }}
                             placeholder="Type Your Comment Here"
                         />
                     )}
                     <Zoom in={isExpanded}>
-                        <button  class="btn btn-primary btn-circle btn-md mybutton" >
-                        <icons.MdSend size="20" amplitude="10" />
+                        <button className="btn btn-primary " style={{margin:"10px", marginTop:"-20px"}} >
+                        {/* <icons.MdSend size="20" /> */}
+                        Comment
                         </button>
                     </Zoom>
                     <Zoom in={isExpanded}>
-                     <a class="btn btn-default" style={{margin:"10px"}} 
+                     <a class="btn btn-default" style={{margin:"10px", marginTop:"-20px"}} 
                      name="StoryAllComment"
                      onClick={handleStoryAllComment}>{CommentButton}</a>
                     </Zoom>
@@ -131,6 +133,8 @@ function StoryDetails(props)
                 </form>
                 
             </div>
+            </div>
+            
             
         </div>
     ); 
@@ -139,7 +143,7 @@ function StoryContent(props)
 {
     return (
         <div className = "StoryContent container" id = "StoryContent"  >
-            <p>{props.Details.content}</p>
+            <p style={{ whiteSpace:"pre-wrap"}}>{props.Details.content}</p>
         </div>
     ) ; 
 }
@@ -147,7 +151,7 @@ function CoverPage(props)
 {
     return (
         
-            <div className= "col-md-3">
+            <div className= "col-md-3" style={{backgroundColor:""}}>
                 <div className = "myshadow" style = {{width:160,maxWidth:160,height:277,justifyContent:"center"}}>
                 <img  src = {props.imageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
                 </div>

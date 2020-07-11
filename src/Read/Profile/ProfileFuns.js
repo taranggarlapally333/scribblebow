@@ -18,13 +18,13 @@ export const UserDetails  = function ()
     return(
         <div  >
             <div > <div className= "col-md-3">
-                <div id  ="" className = "myshadow" style = {{width:160,maxWidth:160,height:277,justifyContent:"center", backgroundImage:"url('"+allprops.imageAddress+"')" , backgroundPosition:"center" , backgroundSize:"cover", backgroundRepeat:"no-repeat"}}></div>
+                <div id  ="" className = "myshadow" style = {{width:160,maxWidth:160,height:277,justifyContent:"center", backgroundImage:"url('https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/CoverPages%2F1594116035361?alt=media&token=3813d4cf-c3d7-4373-89b5-f6139e15948f')" , backgroundPosition:"center" , backgroundSize:"cover", backgroundRepeat:"no-repeat"}}></div>
             </div></div>
             <div className= "col-12 col-md-9 myshadow Details">
             <p style={{fontSize:"40px"}}>{allprops.fname+" "+allprops.lname}</p>
-            <h3><span className= {Atts.getHashClassName(allprops.bio.length)}>{allprops.bio}</span></h3>
+            <h3><span className= {Atts.getHashClassName(allprops.title.length)}>{allprops.title}</span></h3>
             <hr></hr>
-            <p>Title: {allprops.title}</p>
+            <p>Bio: {allprops.bio}</p>
             <p>Gender: {allprops.gender}</p>
             <p>Achievements:</p>
             <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={
@@ -48,9 +48,15 @@ export const UserWorks = function()
         var title = event.target.name  ; 
         setTitle(title) ; 
     }
+    function getcategoryButtons(eachButton)
+    {
+       return (<div>{eachButton}</div>) ; 
+    }
+    
     return(
         <div>
             <div className = "container-inner buttonGroup" style={{display:"flex",justifyContent:"space-evenly" , color:"white" }} >
+            
             <button className = "btn btn-danger"  href="WriteStory" name = "Story" onClick={handleWork}>Story</button>
             <button className = "btn btn-warning"  name = "Poem" onClick={handleWork}>Poem</button>
             <button style={{backgroundColor:"#f5ba13"}}className = "btn btn-default" name = "Article" onClick={handleWork}>Article</button>

@@ -7,6 +7,7 @@ html,body
     margin: 0px;
     padding: 0px;
     overflow-x: hidden; 
+   
 }
 .myimage{
     background-image:url("./plusIcon.png");
@@ -228,12 +229,13 @@ textarea::-webkit-scrollbar-thumb {
     text-align: center; 
 } 
 .btn-circle.btn-md { 
-    width: 50px; 
-    height: 50px; 
+    width: 40px; 
+    height: 40px; 
     padding: 7px 10px; 
     border-radius: 25px; 
     font-size: 10px; 
     text-align: center; 
+    
 } 
 .btn-circle.btn-xl { 
     width: 70px; 
