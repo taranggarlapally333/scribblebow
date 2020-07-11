@@ -16,6 +16,8 @@ var GenreColors = {
      "Poem": "poems" ,  
      "Article": "articles",
      "Audio":"audios", 
+     "Quote":"quotes",
+     "Fanfiction":"fanfiction",
      "Script":"scripts"
  }
 

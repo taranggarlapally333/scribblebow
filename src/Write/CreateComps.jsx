@@ -16,13 +16,13 @@ class CategoryDrafts extends React.PureComponent{
 
    constructor(props){
        super(props);
-       this.state = {r:0,id:"",exist:0,t:0,tabs:[],imgurl:""};
+       this.state = {r:0,id:"",exist:0,t:0,tabs:[]};
        
        
    }
 
    shouldComponentUpdate(NextProps,NextState){
-    if(this.props===NextProps && this.state.t===NextState.t && this.state.id===NextState.id  && this.state.imgurl===NextState.imgurl){
+    if(this.props===NextProps && this.state.t===NextState.t && this.state.id===NextState.id){
         console.log(this.state.t);
         return false;
     }
@@ -34,12 +34,12 @@ class CategoryDrafts extends React.PureComponent{
 
     Tabs=(myprops)=>
 {
-    this.GetCoverPage(myprops[1]);
+    
     return (<div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
     <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
-    <img  className="draft-image" src = {this.state.imgurl===""?process.env.PUBLIC_URL + '/ScribbleBow.png' :this.state.imgurl} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
+    <img  className="draft-image" src = {myprops[2]? myprops[2]:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
     <div className="draft-title">
     <i className='fas fa-edit' style={{fontSize:"36px"}}></i>
     <br />
@@ -62,9 +62,7 @@ GetCoverPage  = (imageId)=>
     const image = images.child(imageId);
     image.getDownloadURL().then((url) => { 
       
-        this.setState({imgurl:url}) ; 
-      
-      // setImageurl(url)
+        return url;
     });
     
     
@@ -89,6 +87,13 @@ GetCoverPage  = (imageId)=>
                 
                 querySnapshot.forEach(function(doc) {
                     const d = [doc.data(),doc.id];
+                    const images = db.storage().ref().child('CoverPages');
+                    const image = images.child(doc.id);
+                    image.getDownloadURL().then((url) => {                   
+                     
+                            d.push(url);
+                    });
+                    
                     ntabs.push(d);
                 
                 });
