@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import db from '../database/db' ;
-function navbar(props)
+function Navbar(props)
 {
+    const [ckd,setCkd] = useState(0);
+
+    function searchClicked(){
+        setCkd(2);
+    }
+
     var currentLocation = window.location.pathname;
     var forhome = <ul className="nav navbar-nav ">
     <li><a className="nav-btn" href= "/Create">CREATE</a></li>
     <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
+    {/* {ckd===0?<li><a className="nav-btn"  onClick={searchClicked} > <i className="fa fa-search"></i></a></li>:null}
+    {ckd===0?null:<li><div className="search-bar"  style={{marginTop:"10px"}}>
+                <i className="fa fa-search"></i>
+                <input type="text" className="search-input" placeholder="Search" />
+            </div></li>} */}
+        
 </ul> ; 
 
     
@@ -15,13 +27,18 @@ function navbar(props)
     <div className="container-fluid ">
 
        <a className="navbar-brand nav-btn" href ="/home" >HOME</a>
+      
+                
+               
 
     <button className="navbar-toggle navbar-toggle-right" type="button" data-toggle="collapse" data-target="#Cnav" aria-controls="Cnav" aria-expanded="false" aria-label="Toggle navigation">
         <i className="fa fa-navicon" ></i>
        </button>
+       
        <div className="collapse navbar-collapse" id="Cnav">
     
         {forhome}
+      
      <ul className="nav navbar-nav navbar-right">
               <li><a className="nav-btn" href="/my-shelf">MY SHELF</a></li>
               <li><a className="nav-btn" href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
@@ -42,4 +59,4 @@ function navbar(props)
    </div>
    </nav>) ; 
 }
-export default navbar ; 
+export default Navbar ; 
