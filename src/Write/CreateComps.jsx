@@ -38,8 +38,8 @@ class CategoryDrafts extends React.PureComponent{
     return (<div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
-    <div className = ""  style = {{width:200,backgroundColor:""}}>
-    <img  className="draft-image" src = {this.state.imgurl===""?"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg":this.state.imgurl} alt = "Cover " style = {{height:277 , padding:"10px"}}></img>
+    <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
+    <img  className="draft-image" src = {this.state.imgurl===""?process.env.PUBLIC_URL + '/ScribbleBow.png' :this.state.imgurl} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
     <div className="draft-title">
     <i className='fas fa-edit' style={{fontSize:"36px"}}></i>
     <br />

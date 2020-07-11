@@ -100,8 +100,8 @@ function StoryDetails(props)
             <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
 
                     history.push({pathname:'/WriteStory', 
-                                    state: { id: "1594116035361" , title:"Story" , new:false }, 
-                                    key:{id: "1594116035361" , title:"Story" , new:false}
+                                    state: { id: myStoryDetails.myid , title:props.title , new:false }, 
+                                    key:{id: myStoryDetails.myid , title: props.title , new:false}
                                     }); 
             }}>Edit {props.title}</button></div>
             </div>

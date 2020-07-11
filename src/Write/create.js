@@ -16,7 +16,7 @@ function Create()
     const [ripple,setRipple] = useState();
     var history = useHistory() ; 
 
-    const categoryWrite={
+    const categoryPathName={
         "stories":"/WriteStory",
         "poems":"/WritePoem",
         "quotes":"/WriteQuote",
@@ -24,16 +24,6 @@ function Create()
         "fanfiction":"/WriteFanfiction",
         "audio":"/WriteAudio",
         "script":"/WriteScript"
-    };
-
-    const categoryWriteProp={
-        "stories":"Story",
-        "poems":"Poem",
-        "quotes":"Quote",
-        "articles":"Article",
-        "fanfiction":"Fanfiction",
-        "audio":"Audio",
-        "script":"Script"
     };
     
 function SelectButtons(){
@@ -63,11 +53,12 @@ function SelectButtons(){
                 <div className="container">
                 <p style={{fontSize:"30px",marginTop: "20px",marginBottom:"-20px",marginLeft: "5%",color: "#C5D9C3",float:"left"}}>Drafts</p>
                 <a onClick={()=>{
-                      history.push({pathname:'/WriteStory', 
+                      console.log("mydsaadsfa"); 
+                      history.push({pathname:categoryPathName[category], 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     }); 
-                }}><i class="material-icons" style={{fontSize:"36px",marginTop: "20px",marginBottom:"-20px",marginRight: "5%",color: "#C5D9C3",float:"right"}}>add_circle</i></a>
+                }} ><i class="material-icons" style={{fontSize:"36px",marginTop: "20px",marginBottom:"-20px",marginRight: "5%",color: "#C5D9C3",float:"right"}}>add_circle</i></a>
                 </div>
                 <div className="container">
                 <hr style={{width:"90%",borderTop: "2px solid #C5D9C3"}}/>
