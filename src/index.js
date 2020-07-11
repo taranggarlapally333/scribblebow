@@ -11,7 +11,7 @@ import Profile from './Read/Profile/Profile';
 import Pref0 from './login/Pref0';
 import Pref1 from './login/Pref1';
 import Log0 from './login/Log0';
-import WriteStory from './Write/Story/Story' ;
+import WriteTheStory from './Write/Story/Main' ;
 import Create from './Write/create' ; 
 import PrivateRoute from './PrivateRoute';
 import Unverif from './login/Unverif';
@@ -37,16 +37,17 @@ ReactDOM.render(
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
        <PrivateRoute exact path="/Profile" component={Profile}  />
       <PrivateRoute exact path="/Create" component={Create}/>
-      <Route exact path="/WriteStory"  render={(props) => <WriteStory {...props}/>}  />
       
-      <PrivateRoute exact path="/WritePoem" ><WriteStory title="Poem"/></PrivateRoute>
+      <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
+
+      {/* <PrivateRoute exact path="/WritePoem" ><WriteStory title="Poem"/></PrivateRoute>
       <PrivateRoute exact path="/WriteQuote" ><WriteStory title="Quote"/></PrivateRoute>
       <PrivateRoute exact path="/WriteArticle" ><WriteStory title="Article"/></PrivateRoute>
       <PrivateRoute exact path="/WriteFanfiction" ><WriteStory title="Fanfiction"/></PrivateRoute>
       <PrivateRoute exact path="/WriteAudio" ><WriteStory title="Audio"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteScript" ><WriteStory title="Script"/></PrivateRoute>
+      <PrivateRoute exact path="/WriteScript" ><WriteStory title="Script"/></PrivateRoute> */}
       <PrivateRoute exact path="/discover" component={Discover}/>
-
+     
       <Route exact path="/test" component={Test}
       />
       <Route exact path="/unverif" component={Unverif}

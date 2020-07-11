@@ -13,6 +13,7 @@ function StoryDetails(props)
   
     const [isExpanded , setExpanded] = useState(false) ; 
     const [CommentButton , setCommentButton] = useState("All Comments");
+    const [Like , setLike] = useState(false) ; 
 
     function expand() {
         setExpanded(!isExpanded);}
@@ -53,7 +54,10 @@ function StoryDetails(props)
     }
     var firstprice = <h1 style={{color:"gold", }}><span className="glyphicon glyphicon-queen "></span></h1> ; 
     var LikeCommentAdd = <div id = "likeComment"className = "row container " style = {{width : 205 , backgroundColor:""}}>
-    <div className= "box" style = {{color: "#E61D42"}}>
+    <div className= "box" 
+    style ={{
+        
+    }} onClick={()=>{setLike(true)}}>
     <icons.MdFavorite size="30"/><Caption caption="204"/></div>
     <div className= "box "  style = {{color: "blue"}}  onClick={expand}  > 
     <icons.MdComment  size="30" /><Caption caption="15"/></div>

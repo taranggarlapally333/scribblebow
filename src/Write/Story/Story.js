@@ -7,35 +7,16 @@ import {AuthContext} from '../../Auth';
 import * as UploadFile from '../../Storage/UploadFile' ; 
 import { Redirect, useHistory } from "react-router";
 import Loading from '../../components/Loading'; 
+import StoryDetails from "../../Read/Story/Details";
 
 
 function WriteStory(props)
 {
 
     console.log(props); 
-    var [StoryStatus , setStoryStatus] = useState(
-        {
-            "StoryTitle" : props.location.state.title+" Title" , 
-            "StoryFont":"",
-            "StoryFontSize":"20" , 
-            "StoryContent": "", 
-            "StoryGenre": "" ,
-            "StoryHashtags":"",
-            "StoryDescription":"",
-            "StorySeries":"",
-            "part":0,
-            "PublishSave" : true , 
-            "StoryCoverPage":"" , 
-            "ArticleType":"Personal Blog",
-            "FictionBasedOn":"",
-        }
-    ) ; 
-
-    
-        
-
-
-    var  [image , setImage] = useState() ; 
+    var [StoryStatus , setStoryStatus] = useState(props.StoryDetails) ; 
+    console.log(StoryStatus); 
+    var  [image , setImage] = useState(null) ; 
     var [stage , setStage] = useState(0) ;
     var [StoryId , setStoryId] = useState("") ;  
     
@@ -84,10 +65,11 @@ function WriteStory(props)
         var PubSave = true  ; 
         var tempGenre = StoryStatus.StoryGenre; 
         console.log(name, value); 
+        if (document.getElementsByName("StoryContent").length > 0 ) PubSave = false ; else PubSave = true ;
         switch (name)
         {
             case "StoryFontSize" : if(parseInt(value) > 30)  value = "30"  ; break ; 
-            case "StoryContent" : if(value.length > 0 ) PubSave = false ; break ;
+            case "StoryContent" : if(value.length > 0 ) PubSave = false ; else PubSave = true ; break ;
             case "StoryCoverPage": if(value) value=value[0] ; break ;    
             case "StoryHashtags" : handleShowHastags(value) ; break ; 
         } 
@@ -140,7 +122,7 @@ function WriteStory(props)
                 }} >
                 <img  
                 className="overlay"
-                id = "previewImage" src ="https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+                id = "previewImage" src ={ !props.new ? StoryStatus.StoryCoverPage:"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
                 </div>
             </div>
         </div>
@@ -170,17 +152,18 @@ function WriteStory(props)
     function handleSubButton(event)
     {
         var element  = event.target.name  ; 
-        if(element == "Publish") PubSaveButton = true  ; else PubSaveButton = false  ; 
+        if(element == "Published") PubSaveButton = true  ; else PubSaveButton = false  ; 
     }
     function handleSubmit(event)
     {
         
         event.preventDefault() ;
-        var StoryId  = Date.now().toString() ; 
+        if(props.new)
+            var StoryId  = Date.now().toString() ; 
+        else var StoryId = props.StoryDetails.id  ; 
         console.log(StoryId +"my id0"); 
-        UploadFile.UploadImage(image ,StoryId); 
-        
-        console.log(PubSaveButton) ;  
+        if(image != null)
+            UploadFile.UploadImage(image ,StoryId); 
         var myStoryData = {
             "creator": localStorage.getItem("username") , 
             "title": StoryStatus.StoryTitle, 
@@ -191,14 +174,15 @@ function WriteStory(props)
             "description":StoryStatus.StoryDescription , 
             "nlikes": 0 , 
             "ncomments":0  , 
-            "publish": PubSaveButton
+            "published": PubSaveButton
         } ; 
         if(currLoc == "/WriteArticle") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
         if(currLoc =="/WriteFanFiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
         if (props.title == "Story"|"Poem"|"fan-Fiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
         console.log(myStoryData)  ;
-        console.log(StoryId +"my id")
-        db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ; 
+        if (props.new)
+            db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ; 
+        else db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; 
             alert("Your "+ props.title + " is Succesfully Published."); 
            
             setStoryId(StoryId); 
@@ -211,13 +195,14 @@ function WriteStory(props)
     // var StoryTitles = StoryFuns.getStoryDetails(Atts.documentName[props.title]);   
     if(stage == 0 )
     {
-            return (
+        
+        return (
                     <div>
                         <Header title = {props.title.toUpperCase()} />
                         <form onSubmit = {handleSubmit}>
                         <div className= "col-12 col-md-3 myshadow StoryWriteProps" >
-                                <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}} onClick={handleReset}> <a class = "btn btn-default">Reset</a>
-                                <button class = "btn btn-warning right" type="submit" value ="Publish" name = "Publish" disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Publish</button>
+                                <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}} > <a class = "btn btn-default" onClick={handleReset} >Reset</a>
+                                <button class = "btn btn-warning right" type="submit" value ="Publish" name = "Published" disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Publish</button>
                                 <button class = "btn btn-primary right"  type = "submit" name = "Save"  disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Save</button></div>
                             
                                 <h4>Title</h4>
@@ -225,28 +210,31 @@ function WriteStory(props)
                                     onChange = {handleStoryStatus}
                                 />
                                 <h4>{props.title} Font</h4>
-                                <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}>
+                                <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}  value={StoryStatus.StoryFont}
+                                > 
                                     {Atts.fontsAvailable.map(getFontOptions)}
                                 </select>
                                 <h4>{props.title} FontSize</h4>
                                 <input className = {Atts.propsClass} type="text" name = "StoryFontSize" value={StoryStatus.StoryFontSize} 
-                                    onChange =  {handleStoryStatus}
+                                    onChange =  {handleStoryStatus}  value={StoryStatus.StoryFontSize}
                                 />
                                 {ArticleType}
                                 {fanFiction}
                                 <h4>Description</h4>
                                 <textarea className={Atts.propsClass}  type= "text"  name = "StoryDescription"
-                                style={{height:"100px", resize:"none"}} onChange={handleStoryStatus} ></textarea>
+                                style={{height:"100px", resize:"none"}} onChange={handleStoryStatus}  value={StoryStatus.StoryDescription} ></textarea>
                                 <h4>Genre</h4>
-                                <select className = {Atts.propsClass} type="text" name = "StoryGenre" onChange =  {handleStoryStatus}>
+                                <select className = {Atts.propsClass} type="text" name = "StoryGenre" onChange =  {handleStoryStatus}  value={StoryStatus.StoryGenre}>
                                     {Atts.GenreAvailable.map(getGenres)}
                                 </select>
                                 <h4>HashTags</h4>
-                                <input className={Atts.propsClass} type="text" name="StoryHashtags" onChange={handleStoryStatus}></input>
+                                <input className={Atts.propsClass} type="text" name="StoryHashtags" onChange={handleStoryStatus}  value={StoryStatus.StoryHashtags}></input>
                                 <div className="myscroller" id="ShowHashtags" style={{width:"300px",maxWidth:"300px",height:"100px",maxHeight:"100px",
-                                justifyContent:"wrap", overflowY:"auto"}}></div>
+                                justifyContent:"wrap", overflowY:"auto"}}
+                                ></div>
 
-                                <h4>Part</h4><input className={Atts.propsClass} style={{width:"80px" }} type="number" onChange={handleStoryStatus} name="part"></input>
+                                <h4>Part</h4><input className={Atts.propsClass} style={{width:"80px" }} type="number" onChange={handleStoryStatus} name="part"
+                                 value={StoryStatus.part}></input>
                                 {UploadImage}
                                 
                                 
@@ -261,7 +249,8 @@ function WriteStory(props)
                             style= {{resize:"none" , width:"595px", height:"842px", padding:"10px" ,
                             fontFamily: StoryStatus.StoryFont, 
                             fontSize:StoryStatus.StoryFontSize+"px"}} 
-                            placeholder= "Type Your Content Here,">
+                            placeholder= "Type Your Content Here,"
+                            value={StoryStatus.StoryContent}>
                             {TodayDate}
                             </textarea>
                             </div>
@@ -274,7 +263,8 @@ function WriteStory(props)
     else if (stage == 4 ){
         return (<Redirect to={{
             pathname: '/ReadStory',
-            state: { id: StoryId , title:props.title }
+            state: { id: StoryId , title:props.title }, 
+            key:{id: StoryId , title:props.title}
         }} />) ;}
     else if(stage == 5)
     {

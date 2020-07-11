@@ -293,7 +293,16 @@ textarea::-webkit-scrollbar-thumb {
     letter-spacing: normal;
     font-size: large ;
     text-align: left;
-    
+}
+.myborder
+{
+    border:1px solid lightgray;  
+}
+.buttonGroup button{
+    width: 13%
+}
+.buttonGroup button:hover{
+    color:"black"
 }
 
 
@@ -438,3 +447,39 @@ outline-width: 0;
     text-align: left;
     
 }
+
+
+/* This Part Below is For the Profile---------------------------------------------------------------- */
+#egg {
+    display: block;
+    width: 126px;
+    height: 180px;
+    background-color: red;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  #talkbubble {
+    width: 120px;
+    height: 80px;
+    position: relative;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+  #talkbubble:before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 26px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-right: 26px solid red;
+    border-bottom: 13px solid transparent;
+  }
+  #triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 100px solid red;
+  }

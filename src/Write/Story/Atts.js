@@ -13,11 +13,16 @@ var GenreColors = {
  var propsClass = "form-control " ; 
  var documentName  = {
      "Story":"stories", 
-     "Poem": "poems" , 
-     "Blog" : "blogs" , 
+     "Poem": "poems" ,  
      "Article": "articles",
-     "Audio":"audios"
+     "Audio":"audios", 
+     "Script":"scripts"
  }
+
+
+
+
+ 
  var defaultImageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" ; 
 
  var tempComments = [
@@ -39,7 +44,7 @@ var tempUser  ={
     "gender":"male",
     "lname":"Pasupulatei",
     "title":"Film Maker",
-    "imageAddress":"https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/CoverPages%2F1594116035361?alt=media&token=b2cf4a30-0b96-4f44-a04d-a2d98723cf93",
+    "imageAddress":"https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/CoverPages%2F1594155805012?alt=media&token=6ae6cc86-6256-46fa-8b4e-0b671384a4ef",
 }
 
  function CoverPage(props)

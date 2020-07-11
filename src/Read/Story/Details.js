@@ -4,6 +4,7 @@ import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
 import {Caption} from '../../components/Loading' ; 
 import * as Atts from '../../Write/Story/Atts'; 
+import { Redirect, useHistory } from "react-router";
 
 function StoryDetails(props)
 {
@@ -12,15 +13,14 @@ function StoryDetails(props)
     var currLoc = window.location.pathname;
     const myStoryDetails = {
         ...props.Details , 
-        "id":props.StoryId
     }
-    console.log(myStoryDetails); 
+    const history = useHistory();
     const [isExpanded , setExpanded] = useState(false) ; 
     const [CommentButton , setCommentButton] = useState("All Comments");
     const [LikeComment , setLikeComment] = useState(
         {
-            "likes": myStoryDetails.nlikes , 
-            "comments":myStoryDetails.ncomments,
+            "likes": 214, 
+            "comments":15,
         }
     );
     var Hashtags = myStoryDetails.hastags ; 
@@ -56,7 +56,7 @@ function StoryDetails(props)
         }
         else{
             let p = document.createElement("p") ; 
-            p.innerHTML = Atts.tempStoryContent ; 
+            p.innerHTML = myStoryDetails.content ; 
             StoryContentElement.appendChild(p); 
             setCommentButton("All Comments")
         }
@@ -88,7 +88,6 @@ function StoryDetails(props)
                 </div> 
                 <hr />
                 <p>Description:{myStoryDetails.description}</p>
-                <p>Rating :</p>
                 <p>Hashtags: </p>
                 <div className = "row container">
                     {myHashtags.map((eachHashtag )=>{
@@ -98,7 +97,15 @@ function StoryDetails(props)
                     })}
                 </div>
                 {currLoc!="/home"|"/" ?LikeCommentAdd:null}
-                <div className="container">
+            <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
+
+                    history.push({pathname:'/WriteStory', 
+                                    state: { id: myStoryDetails.myid , title:props.title , new:false }, 
+                                    key:{id: myStoryDetails.myid , title: props.title , new:false}
+                                    }); 
+            }}>Edit {props.title}</button></div>
+            </div>
+            <div className="container">
                 <form onSubmit={handleSubmit}>
                     {isExpanded && (
                         <textarea
@@ -122,7 +129,7 @@ function StoryDetails(props)
                     </Zoom>
                     
                 </form>
-            </div>
+                
             </div>
             
         </div>
@@ -142,7 +149,7 @@ function CoverPage(props)
         
             <div className= "col-md-3">
                 <div className = "myshadow" style = {{width:160,maxWidth:160,height:277,justifyContent:"center"}}>
-                <img src = {props.imageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+                <img  src = {props.imageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
                 </div>
             </div>
         ); 
