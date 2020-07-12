@@ -52,7 +52,7 @@ function SelectButtons(){
                 <SelectButtons />
                 <div className="container">
                 <p style={{fontSize:"30px",marginTop: "20px",marginBottom:"-20px",marginLeft: "5%",color: "#C5D9C3",float:"left"}}>Drafts</p>
-                <a onClick={()=>{
+                <a className= "handy" onClick={()=>{
                       console.log(categoryPathName[category]); 
                       history.push({pathname:"/WriteStory", 
                                     state: { id: "" , title:category , new:true }, 

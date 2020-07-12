@@ -35,10 +35,11 @@ ReactDOM.render(
       />
      
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
-       <PrivateRoute exact path="/Profile" component={Profile}  />
+       <Route exact path="/Profile"  render={(props) => <Profile {...props}/>}  />
       <PrivateRoute exact path="/Create" component={Create}/>
       
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
+
       <PrivateRoute exact path="/discover" component={Discover}/>
      
       <Route exact path="/test" component={Test}

@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
-import db from "../database/db";
+import db from "../../database/db";
 import { Redirect } from "react-router";
-import * as Atts from './Story/Atts' ;
+import * as Atts from '../../Write/Story/Atts' ;
 
     
     
@@ -10,7 +10,7 @@ import * as Atts from './Story/Atts' ;
 
 
 
-class CategoryDrafts extends React.PureComponent{
+class CategoryAll extends React.PureComponent{
     
     
 
@@ -42,7 +42,7 @@ class CategoryDrafts extends React.PureComponent{
     <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
     <img  className="draft-image" src = {myprops[2]? myprops[2]:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
     <div className="draft-title">
-    <i className='fas fa-edit' style={{fontSize:"36px"}}></i>
+    <i className='fas fa-book' style={{fontSize:"36px"}}></i>
     <br />
     <h5>{myprops[0].title}</h5>
     </div>
@@ -76,10 +76,13 @@ GetCoverPage  = (imageId)=>
         if(this.props.category!=="works"){
         
             console.log("Hello");
-            db.firestore()
+            let snapshot  = db.firestore()
             .collection( Atts.documentName[this.props.category])
-            .where("creator","==",localStorage.getItem("username"))
-            .where("published","==",false)
+            .where("creator","==",this.props.UserId) ;
+            if (this.props.UserId != localStorage.getItem('username'))
+               snapshot = snapshot.where("published","==" ,true) ;
+             
+            snapshot
             .get()
             .then(querySnapshot => {
                 this.setState({tabs:[]});
@@ -142,11 +145,15 @@ GetCoverPage  = (imageId)=>
                 console.log(this.state.id);
                 console.log(this.props.category);
                 return <Redirect to={{
-                     pathname: "/WriteStory",
+                     pathname: "/ReadStory",
                      state: {
                          title: this.props.category,
                          id: this.state.id,
-                         new: false, 
+                          
+                     },
+                     key:{
+                        title: this.props.category,
+                         id: this.state.id,
                      }
                 }
                 } />
@@ -158,7 +165,7 @@ GetCoverPage  = (imageId)=>
     
 }
     
-export default CategoryDrafts;
+export default CategoryAll;
 
 
 
@@ -197,78 +204,3 @@ export default CategoryDrafts;
 
 
 
-
-
-
-// function CategoryDrafts(props){
-
-//     const [r,setR]=useState(0);
-//     const [id,setId] = useState("");
-//     const [exist,setExist]=useState(0);
-//     const [tabs,setTabs] = useState([]);
-
-//     function Tabs(props)
-// {
-    
-//     return (<div className="col-sm-3">
-//     <a onClick={()=>{setId(props[1]);console.log("changed")}}>
-//     <div className= "container-inner myshadow rounded" style={{ backgroundColor:"" , padding:"20px", margin:"20px"}}>
-//     <div className = "" style = {{width:200 , backgroundColor:""}}>
-//     <img src = {props[0].coverid===""?"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg":props[0].coverid} alt = "Cover " style = {{height:277 , padding:"10px"}}></img>
-//     </div>
-//     <h5>{props[0].title}</h5>
-//     </div>
-//     </a>
-//     </div>) ; 
-// }
-
-
-    
-//     if(props.category!=="works"){
-        
-//         console.log("Hello");
-//         db.firestore()
-//         .collection(props.category)
-//         .where("creator","==",localStorage.getItem("username"))
-//         .where("published","==",false)
-//         .get()
-//         .then(querySnapshot => {
-            
-//             setTabs([]);
-//             var ntabs = [];
-            
-//             querySnapshot.forEach(function(doc) {
-//                 const d = [doc.data(),doc.id];
-//                 ntabs.push(d);
-//             });
-//             if(ntabs.length===0){
-//                 setR(2);
-//             }
-//             setTabs(ntabs);
-//         })
-//         .catch(function(error) {
-//             console.log("Error getting documents: ", error);
-//         });
-//     }
-//     if(id===""){
-//         return <div class="container">
-//     {tabs.length===0?
-//     <div className="container" align="center">
-//     {r===2?<p>You have no unpublished {props.category}</p>:null}
-//     </div>
-//     :tabs.map(Tabs)}
-//     </div>
-//     }
-//     else{
-//         return <Redirect to={{
-//              pathname: "/WriteStory",
-//              state: {
-//                 title: props.category,
-//                  id: id
-//              }
-//         }
-//         } />
-//     }
-// }
-    
-// export default memo(CategoryDrafts);

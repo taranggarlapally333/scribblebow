@@ -10,7 +10,7 @@ if the story is new we  retrive the data from the database else we wont */
 class WriteTheStory extends React.PureComponent{
     constructor(props)
     {
-        super(props) ; 
+        super(props) ;
         this.state = { StoryDetails:{
             "id":"",
             "StoryTitle" : this.props.location.state.title+" Title", 
@@ -104,7 +104,11 @@ class WriteTheStory extends React.PureComponent{
 
         }
         else  {
-            return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;} 
+            return (<div><WriteStory StoryDetails ={ this.props.location.state.title ==="Article"?{
+
+                ...this.state.StoryDetails , 
+                "StoryContent": new Date().toLocaleString()+","
+            } :this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;} 
     }
 }
 

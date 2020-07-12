@@ -4,9 +4,11 @@ import "firebase/auth";
 import 'firebase/storage';
 const storage = firebase.storage() ; 
 
-export const UploadImage = function (image , imageId)
+export const UploadImage = function (MainDirectory,image , imageId)
 {
-  const uploadTask  = storage.ref("CoverPages/"+imageId).put(image) ;
+  const uploadTask  = storage.ref( MainDirectory+imageId).put(image) ;
+
+  console.log( MainDirectory , imageId) ; 
   var ImageAddress  = "" ; 
   uploadTask.on(
       'state_changed' , 

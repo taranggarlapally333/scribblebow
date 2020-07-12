@@ -1,8 +1,10 @@
 import React from 'react';
 import db from '../database/db' ;
-function navbar(props)
+import { Redirect, useHistory } from "react-router";
+function Thenavbar(props)
 {
     var currentLocation = window.location.pathname;
+    var history = useHistory() ; 
     var forhome = <ul className="nav navbar-nav ">
     <li><a className="nav-btn" href= "/Create">CREATE</a></li>
     <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
@@ -30,7 +32,12 @@ function navbar(props)
                   <ul className="dropdown-menu">
                   <li ><a style={{fontWeight:"bold"}}>{props.Username}</a></li>
                   <hr></hr>
-                    <li><a href="/Profile">Profile</a></li>
+                    <li><a onClick={()=>{
+                        history.push({
+                            pathname:'/Profile' , 
+                            state:{id: localStorage.getItem('username')}, 
+                        })
+                    }}>Profile</a></li>
                     <li><a href="">My list</a></li>
                     <li><a href="">Settings</a></li>
                     <li><a href="">Report</a></li>
@@ -42,4 +49,4 @@ function navbar(props)
    </div>
    </nav>) ; 
 }
-export default navbar ; 
+export default Thenavbar ; 
