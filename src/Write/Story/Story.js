@@ -122,7 +122,7 @@ function WriteStory(props)
                 }} >
                 <img  
                 className="overlay"
-                id = "previewImage" src ={ !props.new ? StoryStatus.StoryCoverPage:"https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+                id = "previewImage" src ={StoryStatus.StoryCoverPage} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
                 </div>
             </div>
         </div>
@@ -248,7 +248,7 @@ function WriteStory(props)
                             onChange= {handleStoryStatus}
                             style= {{resize:"none" , width:"595px", height:"842px", padding:"10px" ,
                             fontFamily: StoryStatus.StoryFont, 
-                            fontSize:StoryStatus.StoryFontSize+"px"}} 
+                            fontSize:StoryStatus.StoryFontSize+"px", }} 
                             placeholder= "Type Your Content Here,"
                             value={StoryStatus.StoryContent}>
                             {TodayDate}

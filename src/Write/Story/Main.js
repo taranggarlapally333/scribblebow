@@ -23,7 +23,7 @@ class WriteTheStory extends React.PureComponent{
             "StorySeries":"",
             "part":0,
             "PublishSave" : true , 
-            "StoryCoverPage":"" , 
+            "StoryCoverPage" :process.env.PUBLIC_URL+"ScribbleBow.png" , 
             "ArticleType":"Personal Blog",
             "FictionBasedOn":"",
         }, stage:0 }
@@ -54,7 +54,7 @@ class WriteTheStory extends React.PureComponent{
                     "StorySeries":"",
                     "part":querySnapshot.data().part,
                     "PublishSave" : false , 
-                    "StoryCoverPage":"" , 
+                    "StoryCoverPage":process.env.PUBLIC_URL+"ScribbleBow.png" , 
                     "ArticleType": ("type" in  querySnapshot.data())?querySnapshot.data().type:"Personal Blog",
                     "FictionBasedOn":("basedOn" in  querySnapshot.data())?querySnapshot.data().basedOn:"",
                 }   ;
@@ -72,9 +72,12 @@ class WriteTheStory extends React.PureComponent{
         GetCoverPage  = function(imageId)
         {
 
-          console.log("Get Cover Page is called"); 
+          
           const images = db.storage().ref().child('CoverPages');
+
+          
             const image = images.child(imageId);
+            console.log("Get Cover Page is called"); 
             image.getDownloadURL().then((url) => { 
               
                 let tempStory = 
@@ -85,20 +88,23 @@ class WriteTheStory extends React.PureComponent{
                 this.setState({StoryDetails:tempStory, stage:4 }) ;
                 console.log("setting the iamge") ;
               
-            });
+            }, (error)=>{ this.setState({stage:4 }) ; });
             
            
         }
     render()
     {
-        if(!this.props.location.state.new) {this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);
-        
+        if(!this.props.location.state.new) {
+            this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);
         if(this.state.stage ==4 )
             return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;
         if(this.state.stage == 0 )
           return(<div><Loading message="Loading Content" /></div>); 
+
+
         }
-        else   return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;
+        else  {
+            return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;} 
     }
 }
 

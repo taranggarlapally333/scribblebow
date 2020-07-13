@@ -17,13 +17,13 @@ function Create()
     var history = useHistory() ; 
 
     const categoryPathName={
-        "stories":"/WriteStory",
-        "poems":"/WritePoem",
-        "quotes":"/WriteQuote",
-        "articles":"/WriteArticle",
+        "Story":"/WriteStory",
+        "Poem":"/WritePoem",
+        "Quote":"/WriteQuote",
+        "Article":"/WriteArticle",
         "fanfiction":"/WriteFanfiction",
-        "audio":"/WriteAudio",
-        "script":"/WriteScript"
+        "Audio":"/WriteAudio",
+        "Script":"/WriteScript"
     };
     
 function SelectButtons(){
@@ -52,13 +52,15 @@ function SelectButtons(){
                 <SelectButtons />
                 <div className="container">
                 <p style={{fontSize:"30px",marginTop: "20px",marginBottom:"-20px",marginLeft: "5%",color: "#C5D9C3",float:"left"}}>Drafts</p>
-                <a onClick={()=>{
-                      console.log("mydsaadsfa"); 
-                      history.push({pathname:categoryPathName[category], 
+                <a  className="newwork" onClick={()=>{ if(category!=="works"){
+                      console.log(categoryPathName[category]); 
+                      history.push({pathname:"/WriteStory", 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     }); 
-                }} ><i class="material-icons" style={{fontSize:"36px",marginTop: "20px",marginBottom:"-20px",marginRight: "5%",color: "#C5D9C3",float:"right"}}>add_circle</i></a>
+                      console.log("done with the redirecting") ;
+                }
+                }} ><i className="material-icons" style={{fontSize:"36px",marginTop: "20px",marginBottom:"-20px",marginRight: "5%",color: "#C5D9C3",float:"right"}}>add_circle</i></a>
                 </div>
                 <div className="container">
                 <hr style={{width:"90%",borderTop: "2px solid #C5D9C3"}}/>

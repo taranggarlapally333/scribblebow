@@ -39,13 +39,6 @@ ReactDOM.render(
       <PrivateRoute exact path="/Create" component={Create}/>
       
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
-
-      {/* <PrivateRoute exact path="/WritePoem" ><WriteStory title="Poem"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteQuote" ><WriteStory title="Quote"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteArticle" ><WriteStory title="Article"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteFanfiction" ><WriteStory title="Fanfiction"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteAudio" ><WriteStory title="Audio"/></PrivateRoute>
-      <PrivateRoute exact path="/WriteScript" ><WriteStory title="Script"/></PrivateRoute> */}
       <PrivateRoute exact path="/discover" component={Discover}/>
      
       <Route exact path="/test" component={Test}

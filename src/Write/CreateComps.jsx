@@ -34,6 +34,7 @@ class CategoryDrafts extends React.PureComponent{
 
     Tabs=(myprops)=>
 {
+    console.log("imgurl is: " +myprops[2]);
     
     return (<div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
@@ -89,27 +90,37 @@ GetCoverPage  = (imageId)=>
                     const d = [doc.data(),doc.id];
                     const images = db.storage().ref().child('CoverPages');
                     const image = images.child(doc.id);
-                    image.getDownloadURL().then((url) => {                   
-                     
+                    
+                   image.getDownloadURL().then((url) => {    
+                                         
                             d.push(url);
+                            
+                        
                     });
                     
                     ntabs.push(d);
                 
                 });
+                
+                
                 if(ntabs.length===0){
                     this.setState({r:2});
                 }
                this.setState({tabs:ntabs});
-              
+               
             })
             .catch(function(error) {
-                console.log("Error getting documents: ", error);
+                if(error){
+                    console.log("Error getting documents: ", error);
+                }else{
+                    console.log("recieved without errors");
+                }
+               
             });
         }
 
         
-        setTimeout(()=>{this.setState({t:2})},1000);
+        setTimeout(()=>{this.setState({t:2})},2000);
 
         if(this.state.t===0){
             return <div className="container" align="center"><img align="center" alt="loading" src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/></div>

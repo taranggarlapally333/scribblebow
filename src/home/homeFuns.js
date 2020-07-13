@@ -36,7 +36,7 @@ function Aboutus()
 function Tabs(props)
 {
     return (<div className= "container-inner myshadow rounded" style={{ backgroundColor:"" , padding:"20px", margin:"20px"}}>
-    <div className = "" style = {{width:200 , backgroundColor:""}}>
+    <div className = "" style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
     <img src = {props.imageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
     </div>
     <h5>{props.title}</h5>

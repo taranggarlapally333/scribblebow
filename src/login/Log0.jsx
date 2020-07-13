@@ -17,6 +17,7 @@ export default function Log0(){
             localStorage.setItem("username", name);
             localStorage.setItem("uid", uid );
             localStorage.setItem("emailverif",currentUser.emailVerified);
+            localStorage.setItem("email",currentUser.email);
         }
         
         setTimeout(function(){
