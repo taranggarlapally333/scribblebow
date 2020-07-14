@@ -35,12 +35,13 @@ function Thenavbar(props)
                     <li><a onClick={()=>{
                         history.push({
                             pathname:'/Profile' , 
+                            search:"?UserId="+localStorage.getItem('username'),
                             state:{id: localStorage.getItem('username')}, 
                         })
                     }}>Profile</a></li>
-                    <li><a href="">My list</a></li>
+                    <li><a href="/">My list</a></li>
                     <li><a href="">Settings</a></li>
-                    <li><a href="">Report</a></li>
+                    <li><a href="/Report">Report</a></li>
                     <li><a href = "/login" type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>

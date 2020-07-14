@@ -73,14 +73,28 @@ var tempUser  ={
             </div>
         ); 
 }
+// Story:"#E61D42", 
+// Poem: "#FF7F00" , 
+// Quote:"#FFED07", 
+// Article: "#74E03E",
+// Fanfiction:"#0000FF",
+// Audio:"#2E2B5F", 
+// Script:"#8B00FF", 
 function getHashClassName(length)
 {
-    var className = "label label-" ; 
-    if (length>=1 && length <=4) return className+"danger" ; 
-    else if (length <=8) return className+"warning" ; 
-    else if(length <=12) return className+"success" ; 
-    else if(length <=16) return className+"primary" ; 
-    else return className+="info" ; 
+    length = length%7 ; 
+    let color  ; 
+    switch(length)
+    {
+        case 1 : color = categoryColors["Story"] ; break ; 
+        case 2: color = categoryColors["Poem"] ;break ; 
+        case 3 : color = categoryColors["Quote"] ;break ; 
+        case 4 : color = categoryColors["Article"] ;break ; 
+        case 5 : color = categoryColors["Fanfiction"] ;break ; 
+        case 6 : color = categoryColors["Audio"] ;break ; 
+        case 0 : color = categoryColors["Script"] ;break ; 
+    }
+    return color ; 
 }
 
 

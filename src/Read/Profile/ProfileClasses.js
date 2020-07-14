@@ -146,6 +146,7 @@ GetCoverPage  = (imageId)=>
                 console.log(this.props.category);
                 return <Redirect to={{
                      pathname: "/ReadStory",
+                     search: "?title="+ this.props.category+"&StoryId="+this.state.id,
                      state: {
                          title: this.props.category,
                          id: this.state.id,

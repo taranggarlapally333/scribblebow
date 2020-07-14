@@ -409,7 +409,9 @@ text-decoration: underline;
   top: -5px;
   margin-left: -20;
   
+  
 }
+
 
 
 
@@ -452,7 +454,7 @@ outline-width: 0;
     padding: 20px; 
     margin-bottom: 20px ;
     text-align: left;
-
+    white-space: pre-wrap;
     width: fit-content;
     box-shadow: 0px 2px 4px 0px lightgray;
     
@@ -469,7 +471,32 @@ outline-width: 0;
     width: fit-content;
     /* background-color: red; */
 }
-
+form.create-note {
+    position: relative;
+    width: 480px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 7px;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+  }
+form.create-note input,
+form.create-note textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+  
+}
+/* Cool Content */
+.Rainbow 
+{
+    background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+    display: ; 
+}
+/* Cool Content ends */
 
 /* This Part Below is For the Profile---------------------------------------------------------------- */
 #egg {

@@ -10,6 +10,7 @@ export default function Discover() {
             <h3><a href ="" onClick={()=>{
                history.push({
                             pathname:'/Profile' , 
+                            search:'?UserId=karthik.pasupulatei',
                             state:{id: 'karthik.pasupulatei'}, 
                         })
             }}>karthik Pasupulatei</a></h3>
@@ -17,6 +18,7 @@ export default function Discover() {
             <h3><a href ="" onClick={()=>{
                history.push({
                             pathname:'/Profile' , 
+                            search:'?UserId=taranggarlapally',
                             state:{id: 'taranggarlapally'}, 
                         })
             }}>taranggarlapally</a></h3>
@@ -24,6 +26,7 @@ export default function Discover() {
             <h3><a href ="" onClick={()=>{
                history.push({
                             pathname:'/Profile' , 
+                            search:'?UserId=tarangyadav333',
                             state:{id: 'tarangyadav333'}, 
                         })
             }}>tarangyadav333</a></h3>

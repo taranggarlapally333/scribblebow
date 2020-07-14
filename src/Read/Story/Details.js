@@ -64,11 +64,12 @@ function StoryDetails(props)
                 usernames: firebase.firestore.FieldValue.arrayUnion(localStorage.getItem('username'))
             });
         }
-        setLikeState(!LikeState) ;
+        
         setLikeCommentCount({
             ...LikeCommentCount,
             "likes": LikeCommentCount.likes+ val 
         }); 
+        setLikeState(!LikeState) ;
         
     }
     function handleSubmit(event)
@@ -122,8 +123,9 @@ function StoryDetails(props)
                     let div = document.createElement("div") ; 
                     let h4 = document.createElement("h4") ; h4.innerHTML = eachComment.user ; 
                     let p= document.createElement("p") ;  p.innerHTML = eachComment.comment ; 
-                    h4.className  =  "FitToContent "+ Atts.getHashClassName(eachComment.user.length) ; 
+                    h4.className  =  "FitToContent " ; 
                     p.className = "FitToContent"; 
+                    h4.style.color = Atts.getHashClassName(eachComment.user.length); 
                     div.appendChild(h4) ; div.appendChild(p) ; 
                     div.className = "Comment  FitToContent";
                                     
@@ -165,6 +167,11 @@ function StoryDetails(props)
                         }); 
 }}>Edit {props.title}</button></div>  ; 
 
+    var BasedOn = null; 
+    var ArticleType = null;
+    if ( myStoryDetails.type !=null) ArticleType = <p>Type: {myStoryDetails.type}</p> ;
+    if(myStoryDetails.basedOn !=null ) BasedOn= <p>Based On: {myStoryDetails.basedOn}</p>
+    if (myStoryDetails.basedon) BasedOn = <p>Based On: {myStoryDetails.basedon}</p>
    if (currLoc !="/ReadStory" || localStorage.getItem('username') != myStoryDetails.creator) EditStory = null ; 
    if (currLoc !="/ReadStory"){ LikeCommentAdd =shadow= null ; } 
    if (myStoryDetails.published == false) LikeCommentAdd = null ; 
@@ -176,18 +183,20 @@ function StoryDetails(props)
         <div >
             <div className={Details} >
             <div className = {shadow} style={{padding:"15px"}} >
-                {currLoc =="/home" ? firstprice : null}
+                {currLoc =="/home"|"/" ? firstprice : null}
                 <p style = {{fontSize:40}}>{myStoryDetails.title}</p>
                 <div className= "row container">
                     <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
                 </div> 
                 <hr />
                 <p>Description:{myStoryDetails.description}</p>
+                {BasedOn}
+                {ArticleType}
                 <p>Hashtags: </p>
                 <div className = "row container">
                     {myHashtags.map((eachHashtag )=>{
                         return(
-                            <a  href={"/Discover?tag="+eachHashtag} style={{fontSize:20, padding:"10px"}}><span className ={Atts.getHashClassName(eachHashtag.length)+" box"}>{eachHashtag}</span></a>
+                            <a  href={"/Discover?tag="+eachHashtag} style={{fontSize:20, padding:"10px", }}><span className ="label label-default box" style={{ backgroundColor:Atts.getHashClassName(eachHashtag.length)}}>{eachHashtag}</span></a>
                         ); 
                     })}
                 </div>
@@ -232,7 +241,7 @@ function StoryContent(props)
 {
     return (
         <div className = "StoryContent container"   >
-            <p style={{ whiteSpace:"pre-wrap"}} id = "StoryContent" >{props.Details.content}</p>
+            <p className = "nocopy" style={{ whiteSpace:"pre-wrap"}} id = "StoryContent" >{props.Details.content}</p>
         </div>
     ) ; 
 }
