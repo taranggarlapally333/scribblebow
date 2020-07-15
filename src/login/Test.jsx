@@ -88,3 +88,13 @@ export const Test = function(){
 }
 
 
+
+// book tab with wood
+// <div>
+//     <div className = "" style = {{ backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
+//     <img className="sm-cover myshadow scaling" style={{position:"relative"}} src = {props.imageAddress} alt = "Cover "></img>
+//     </div>
+//     <div className= "container-inner myshadow wood" style={{ backgroundColor:"",position: "relative" , padding:"10px", margin:"20px",marginTop: "-10px"}}>
+//     <div align="center" className="myshadow wood" style={{width:"140px", height:"5px", backgroundColor:"white"}}></div>
+//     <h5 align="center" style={{marginTop:"5px",color: "white"}}>{props.title}</h5>
+// </div></div>

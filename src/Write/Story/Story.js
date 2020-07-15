@@ -8,7 +8,7 @@ import * as UploadFile from '../../Storage/UploadFile' ;
 import { Redirect, useHistory } from "react-router";
 import Loading from '../../components/Loading'; 
 import StoryDetails from "../../Read/Story/Details";
-
+import * as firebase from 'firebase';
 
 function WriteStory(props)
 {
@@ -90,6 +90,7 @@ function WriteStory(props)
 
 
     var TodayDate  =  new Date().toLocaleString()+","; 
+    console.log(TodayDate); 
     var currLoc = window.location.pathname ;
     var UploadImage = null ;  
     var ArticleType = <div>
@@ -107,8 +108,9 @@ function WriteStory(props)
 
     const {currentUser} = useContext(AuthContext);
     
-    if (currLoc != "/WriteArticle")
+    if (props.title != "Article")
     {
+            
             UploadImage = <div>
             <h4>Select Cover Page</h4>
             <input type="file" 
@@ -131,7 +133,7 @@ function WriteStory(props)
         ArticleType=null ; 
        
     }
-    if(currLoc !="/WriteFanFiction") fanFiction =null ; 
+    if(props.title !="Fanfiction") fanFiction =null ; 
 
     function handleReset()
     {
@@ -163,7 +165,7 @@ function WriteStory(props)
         else var StoryId = props.StoryDetails.id  ; 
         console.log(StoryId +"my id0"); 
         if(image != null)
-            UploadFile.UploadImage(image ,StoryId); 
+            UploadFile.UploadImage("CoverPages/",  image ,StoryId); 
         var myStoryData = {
             "creator": localStorage.getItem("username") , 
             "title": StoryStatus.StoryTitle, 
@@ -176,18 +178,41 @@ function WriteStory(props)
             "ncomments":0  , 
             "published": PubSaveButton
         } ; 
-        if(currLoc == "/WriteArticle") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
-        if(currLoc =="/WriteFanFiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
-        if (props.title == "Story"|"Poem"|"fan-Fiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
+        if(props.titile == "Article") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
+        if(props.title =="Fanfiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
+        if (props.title == "Story"|"Poem"|"Fanfiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
         console.log(myStoryData)  ;
         if (props.new)
-            db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ; 
-        else db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; 
-            alert("Your "+ props.title + " is Succesfully Published."); 
+            {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ;
+                db.firestore().collection("comments").doc(StoryId).set({
+                    comments: []
+                });
+                db.firestore().collection("likes").doc(StoryId).set({
+                    usernames: []
+                }); } 
+                
+            
+        else {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; 
+            db.firestore().collection("comments").doc(StoryId).set({
+                comments: []
+            });
+            db.firestore().collection("likes").doc(StoryId).set({
+                usernames: []
+            });
+        }   
            
             setStoryId(StoryId); 
-            setStage(5) ;
-            setTimeout(()=>{setStage(4)},6000) ;  
+            if(!PubSaveButton)
+            {
+                alert("Your "+ props.title + " is Succesfully Saved."); 
+            }
+            else 
+            {
+                alert("Your "+ props.title + " is Succesfully Published."); 
+                setStage(5) ;
+                setTimeout(()=>{setStage(4)},6000) ; 
+            }
+             
            
            
        
@@ -251,7 +276,8 @@ function WriteStory(props)
                             fontSize:StoryStatus.StoryFontSize+"px", }} 
                             placeholder= "Type Your Content Here,"
                             value={StoryStatus.StoryContent}>
-                            {TodayDate}
+                            
+
                             </textarea>
                             </div>
                             

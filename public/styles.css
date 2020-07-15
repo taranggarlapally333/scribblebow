@@ -9,24 +9,49 @@ html,body
     overflow-x: hidden; 
    
 }
+
+.scaling{
+    transition: transform .2s;
+}
+.scaling:hover{
+    transform: scale(1.2); 
+}
+.wood{
+    background-color: #1f0006;
+background-image: url(http://www.transparenttextures.com/patterns/wood-pattern.png);
+}
+
+.sm-cover{
+    height: 180px;
+    width: 120px;
+}
+.handy:hover
+{
+    cursor: grab ;  
+}
 .myimage{
-    background-image:url("./plusIcon.png");
     background-repeat: no-repeat;
-    background-size: cover; 
+    background-size: 155px; 
+    background-position: center;
+}
+.ProfileImage{
+    background-repeat: no-repeat;
+    background-size: 200px; 
     background-position: center;
 }
 .overlay:hover{
     opacity: 0.5;
     transition: .8s ease;
-    background-color: #008CBA;
-  }
+}
 .myimage:hover 
 {
     
     transition: .5s ease;
     background-image:  linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('./plusIcon.png' );
-    
-    
+}
+.ProfileImage:hover{
+    transition: .5s ease;
+    background-image:  linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('./cameraIcon.png' );
 }
 
 
@@ -95,6 +120,13 @@ a{
 .newwork:hover{
 color: yellow;
 cursor: pointer;
+}
+
+
+
+
+.pointer:hover{
+    cursor: pointer;
 }
 .myh{
     float: left;
@@ -206,8 +238,8 @@ textarea::-webkit-scrollbar-thumb {
 
 /* for MyScroller-notrack */
 .myscroller-notrack::-webkit-scrollbar {
-    width : .8em ; 
-    height: 1em;
+    width : .6em ; 
+    height: 0.4em;
   }
 
 .myscroller-notrack::-webkit-scrollbar-track {
@@ -222,6 +254,25 @@ textarea::-webkit-scrollbar-thumb {
   }
 /* end for my scroller part  */
   
+
+/* for MyScroller-invisible */
+.myscroller-invisible::-webkit-scrollbar {
+    width : 0em ; 
+    height: 0em;
+  }
+
+.myscroller-invisible::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
+   
+  }
+   
+.myscroller-invisible::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    
+  }
+/* end for my scroller part  */
+
 
 .tcreator-tile-a{
 text-decoration: none;
@@ -482,10 +533,25 @@ outline-width: 0;
 .Comment
 {
     margin: auto -16px;
-    padding: 0px 20px;
+    padding: 20px; 
     margin-bottom: 20px ;
     text-align: left;
+
+    width: fit-content;
+    box-shadow: 0px 2px 4px 0px lightgray;
     
+}
+.Comment h4{
+    font-size: 20px; 
+}
+.Comment p 
+{
+    margin-top: 20px;
+}
+.FitToContent
+{
+    width: fit-content;
+    /* background-color: red; */
 }
 
 

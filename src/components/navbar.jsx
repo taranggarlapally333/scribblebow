@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import db from '../database/db' ;
+import { Redirect, useHistory } from "react-router";
 function Navbar(props)
 {
-    const [ckd,setCkd] = useState(0);
-
-    function searchClicked(){
-        setCkd(2);
-    }
 
     var currentLocation = window.location.pathname;
+    var history = useHistory() ; 
     var forhome = <ul className="nav navbar-nav ">
     <li><a className="nav-btn" href= "/Create">CREATE</a></li>
     <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
@@ -47,11 +44,16 @@ function Navbar(props)
                   <ul className="dropdown-menu">
                   <li ><a style={{fontWeight:"bold"}}>{props.Username}</a></li>
                   <hr></hr>
-                    <li><a href="/Profile">Profile</a></li>
+                    <li><a onClick={()=>{
+                        history.push({
+                            pathname:'/Profile' , 
+                            state:{id: localStorage.getItem('username')}, 
+                        })
+                    }}>Profile</a></li>
                     <li><a href="">My list</a></li>
                     <li><a href="">Settings</a></li>
                     <li><a href="">Report</a></li>
-                    <li><a href = "/login" type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
+                    <li><a href = "/" type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
        </ul>

@@ -16,16 +16,25 @@ class ReadStory extends React.PureComponent{
          this.state = {StoryDetails:{
              "myid":"",
              
-         } , imageAddress:"" } ; 
+         } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
+         AllStoryComments:[],
+         stage:0,
+        Liked:false } ; 
             
     }
            
     shouldComponentUpdate(nextprops , nextState)
     {
         console.log("Update");  
-        console.log(this.state.StoryDetails.myid) ;
-         console.log(nextState.StoryDetails); 
-        if(this.props == nextprops && this.state.StoryDetails.myid === nextState.StoryDetails.myid && this.state.imageAddress === nextState.imageAddress)
+        console.log(this.state.AllStoryComments); 
+        console.log(this.state.StoryDetails.myid === nextState.StoryDetails.myid ); 
+        console.log(this.state.AllStoryComments === nextState.AllStoryComments); 
+        console.log(this.state.stage == nextState.stage);
+        if(this.props == nextprops 
+            && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
+            && this.state.AllStoryComments.length === nextState.AllStoryComments.length
+            && this.state.Liked === nextState.Liked
+            && this.state.stage == nextState.stage)
              return false ; 
         else return true ; 
     }
@@ -33,7 +42,7 @@ class ReadStory extends React.PureComponent{
     GetStoryDetails = function  (collecName, StoryId)
         {
          
-            //console.log("Getting Story Details "+collecName+StoryId); 
+
             const snapshot = db.firestore()
             .collection(collecName).doc(StoryId)
             .get()
@@ -54,6 +63,18 @@ class ReadStory extends React.PureComponent{
             
              
         }
+        GetAllComments = function (StoryId)
+        {
+            db.firestore().collection("comments")
+            .doc(StoryId)
+            .get()
+            .then(querysnapshot =>{
+                if(querysnapshot.exists)
+                    this.setState({AllStoryComments : querysnapshot.data()} ); 
+            }).catch(error =>{
+                console.log(error) ;console.log("NO COmmetns"); 
+            })
+        }
         GetCoverPage  = function(imageId)
         {
 
@@ -62,20 +83,44 @@ class ReadStory extends React.PureComponent{
             const image = images.child(imageId);
             image.getDownloadURL().then((url) => { 
               
-                this.setState({imageAddress:url}) ;
+                
+                setTimeout(()=>{
+                    this.setState({imageAddress:url , stage:4}) ;
+                },2000); 
                 console.log("setting the iamge")
               
-            });
+            }, (error)=>{ console.log(error);  setTimeout(()=>{
+                this.setState({stage:4}) ;
+            },2000) });
             
            
+        }
+        CheckLiked(StoryId)
+        {
+            db.firestore().collection("likes")
+            .doc(StoryId)
+            .get()
+            .then(querysnapshot =>{
+                if(querysnapshot.exists)
+                   {
+                       let likedUsers = querysnapshot.data().usernames; 
+                       console.log(likedUsers) ;
+                       let val = likedUsers.find(e => e === localStorage.getItem('username')); 
+                       this.setState({Liked:val!=null});  
+                   }
+            }).catch(error =>{
+                console.log(error) ;console.log("NO COmmetns"); 
+            }); 
         }
 
     render(){
 
         var allProps = { ...this.props.location.state}  ;
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
-        this.GetCoverPage(allProps.id); 
-        if(this.state.StoryDetails)
+        this.GetAllComments(allProps.id) ; 
+        this.GetCoverPage(allProps.id);
+        this.CheckLiked(allProps.id);  
+        if(this.state.stage === 4)
     {
         return (
             <div>
@@ -91,6 +136,8 @@ class ReadStory extends React.PureComponent{
                         id = {allProps.id} 
                         Details = {this.state.StoryDetails}
                         title = {allProps.title}
+                        Comments = {this.state.AllStoryComments}
+                        Liked = {this.state.Liked}
                         />
                     </div>
                     <hr></hr>

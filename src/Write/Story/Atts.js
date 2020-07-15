@@ -1,6 +1,7 @@
 import React from 'react' ; 
 var fontsAvailable = ["'Pacifico', cursive","Arial, Helvetica, sans-serif" ,"'Teko', sans-serif"]; 
-var GenreAvailable = ["COMEDY" , "HORROR" , "ROMANCE" , "ACTION" ,"ADVENTURE","SCI-FI" ,"FAN_FICTION" ] ; 
+var GenreAvailable = ["COMEDY" , "HORROR" , "ROMANCE" , "ACTION" ,"ADVENTURE","SCI-FI" ,"FAN_FICTION" ] ;
+var categoryAvailable = ["Story","Poem" ,"Quote" , "Article" , "Fanfiction" , "Audio" ,"Script"];  
 var GenreColors = {
     "COMEDY":"#f5ba13" , 
     "HORROR":"dark green" , 
@@ -22,13 +23,13 @@ var GenreColors = {
  }
  var categoryColors = 
  {
-    "Story":"#E61D42", 
-    "Poem": "#FF7F00" , 
-    "Quote":"#FFED07", 
-    "Article": "#74E03E",
-    "Fanfiction":"#0000FF",
-    "Audio":"#2E2B5F", 
-    "Script":"#8B00FF", 
+    Story:"#E61D42", 
+    Poem: "#FF7F00" , 
+    Quote:"#FFED07", 
+    Article: "#74E03E",
+    Fanfiction:"#0000FF",
+    Audio:"#2E2B5F", 
+    Script:"#8B00FF", 
     
     
  }
@@ -84,7 +85,7 @@ function getHashClassName(length)
 
 
 
- export {fontsAvailable , 
+ export {fontsAvailable ,categoryAvailable, 
     propsClass, 
     CoverPage , 
     GenreAvailable , 

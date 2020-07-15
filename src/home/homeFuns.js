@@ -33,13 +33,18 @@ function Aboutus()
        
         
 } 
+
+
 function Tabs(props)
 {
-    return (<div className= "container-inner myshadow rounded" style={{ backgroundColor:"" , padding:"20px", margin:"20px"}}>
-    <div className = "" style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
-    <img src = {props.imageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+    return (
+    <div className= "container-inner myshadow" style={{ width:"160px", backgroundColor:"white",position: "relative" , padding:"20px", margin:"20px"}}>
+    <div className = "" style = {{ backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
+    <img className="sm-cover" style={{position:"relative"}} src = {props.imageAddress} alt = "Cover "></img>
     </div>
-    <h5>{props.title}</h5>
+    
+    <h5 align="center" style={{marginTop:"20px"}}>{props.title}</h5>
+    
 </div>) ; 
 }
 function  FamousStories(props)
@@ -67,12 +72,21 @@ function  FamousStories(props)
                         </div>
                 </div>
                 <h3>Trending</h3>
-                <div className = "row container myscroller" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
+              
+                <div className = "row container myscroller" id="movable" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
                     /></a>
                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
+                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
+                        title="The Untold Story"
+                    /></a>
+                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
+                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
+                        title="The Untold Story"
+                    /></a>
+                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
                         imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
                         title="The Untold Story"
                     /></a>
