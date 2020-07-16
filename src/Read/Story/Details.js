@@ -125,7 +125,7 @@ function StoryDetails(props)
                     let p= document.createElement("p") ;  p.innerHTML = eachComment.comment ; 
                     h4.className  =  "FitToContent " ; 
                     p.className = "FitToContent"; 
-                    h4.style.color = Atts.getHashClassName(eachComment.user.length); 
+                    h4.style.color = Atts.getHashClassName(eachComment.user.length);
                     div.appendChild(h4) ; div.appendChild(p) ; 
                     div.className = "Comment  FitToContent";
                                     

@@ -1,7 +1,7 @@
 import React from 'react' ; 
 import { Nav, Navbar, NavDropdown, Button, Form, FormControl } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-function Header(props)
+function Header2(props)
 {
     
     const history= useHistory();
@@ -14,4 +14,4 @@ function Header(props)
         
     ); 
 }
-export default Header ; 
+export default Header2 ; 

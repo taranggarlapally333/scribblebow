@@ -48,7 +48,8 @@ function Navbar(props)
                         history.push({
                             pathname:'/Profile' , 
                             search:"?UserId="+localStorage.getItem('username'),
-                            state:{id: localStorage.getItem('username')}, 
+                            state:{id: localStorage.getItem('username') ,  key:localStorage.getItem('username')}, 
+                           
                         })
                     }}>Profile</a></li>
                     <li><a href="/">My list</a></li>

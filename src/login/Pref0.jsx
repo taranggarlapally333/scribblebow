@@ -31,6 +31,8 @@ function Pref0(props){
             gender: props.newuser.gender,
             lname: props.newuser.lname,
             title: props.newuser.title,
+            nfollows:0,
+            nfollowers: 0,
             uid: currentUser.uid
         })
     }

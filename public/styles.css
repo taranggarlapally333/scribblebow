@@ -201,7 +201,13 @@ cursor: pointer;
   transform: translate(-50%, -50%);
     text-align: center;
   }
-  
+
+.center{
+    height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
 
 .nocopy{
     -webkit-touch-callout: none;

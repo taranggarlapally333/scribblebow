@@ -29,6 +29,8 @@ export const AuthProvider = ({children}) => {
                     gender: "",
                     lname: localStorage.getItem("lname"),
                     title: "Creator(Default)",
+                    nfollows:0,
+                    nfollowers: 0,
                     uid: localStorage.getItem("uid")
               }); // create the user
               db.firestore().collection("myauth").doc(localStorage.getItem("uid")).set({

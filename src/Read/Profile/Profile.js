@@ -2,9 +2,19 @@ import React from 'react' ;
 import * as User from './ProfileFuns' ; 
 import NavHeader from '../../components/NavHeader';
 import db from '../../database/db' ; 
-import Loading from '../../components/Loading';
+import Loading, { LoadingPage } from '../../components/Loading';
 
-class Profile  extends React.Component
+
+function Profile(props)
+{
+    
+    let UserId ; 
+    UserId =  new URLSearchParams(props.location.search).get("UserId") ;
+    if (UserId == null) UserId = localStorage.getItem('username') ; 
+    return <ProfilePage id = {UserId} key  =  {UserId} /> ; 
+}
+
+class ProfilePage  extends React.Component
 {
     
     
@@ -14,12 +24,20 @@ class Profile  extends React.Component
             id:"", 
             title:""
         }, ProfileImageAddress:process.env.PUBLIC_URL+"ScribbleBow.png", 
-        Userfollows:[] , Usersfollowers:[] ,DoesUserFollow:false , IsUserFollowed:false}
+        Userfollows:{ id:"" , array:[]} , Usersfollowers:{id:" " , array:[]} ,DoesUserFollow:false , IsUserFollowed:false}
+
+        console.log(this.state); 
     }
     shouldComponentUpdate(nextProps, nextState)
     {
-        if(this.props === nextProps && 
+        
+        console.log(this.state.Userfollows.length === nextState.Userfollows.length
+            && this.state.Usersfollowers.length === nextState.Usersfollowers.length , "adfasdfdsa")
+        if(this.props.id === nextProps.id && 
             this.state.UserDetails.id === nextState.UserDetails.id 
+            && this.state.ProfileImageAddress === nextState.ProfileImageAddress
+            && this.state.Userfollows.id === nextState.Userfollows.id
+            && this.state.Usersfollowers.id === nextState.Usersfollowers.id
             && this.state.stage === nextState.stage) return false ; else return true ; 
     }
 
@@ -34,17 +52,7 @@ class Profile  extends React.Component
             }
         ).catch(error => console.log(error)) ; 
     }
-    GetProfileImage = (ProfileImageId)=>{
-        console.log("Started Retrieving the Profile Image"); 
-          const images = db.storage().ref().child('ProfileImages');
-            const image = images.child(ProfileImageId);
-            image.getDownloadURL().then((url) => { 
-              
-                this.setState({ProfileImageAddress:url, stage:4}) ;
-                console.log("setting the Profile Image")
-              
-            }, (error)=>{ this.setState({stage:4})});
-    }
+ 
     GetFollows = function(UserId)
     {
         
@@ -54,7 +62,7 @@ class Profile  extends React.Component
         .then(querysnapshot =>{
                  let follows = querysnapshot.data().follows  ; 
                  let val = follows.find(e => e === localStorage.getItem('username')); 
-                this.setState({UserFollows: querysnapshot.data().follows , DoesUserFollow: val!=null} ); 
+                this.setState({Userfollows: { id: UserId, array:follows} , DoesUserFollow: val!=null , stage:4} ); 
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })
@@ -66,47 +74,48 @@ class Profile  extends React.Component
         .doc(UserId)
         .get()
         .then(querysnapshot =>{
-                let followers = querysnapshot.data().followers  ; 
+                let followers = querysnapshot.data().followers  ;
+                console.log("followers in main page") ; 
+                console.log(followers) ;  
                 let val = followers.find(e => e === localStorage.getItem('username')); 
-                this.setState({UsersFollowers : querysnapshot.data().followers , IsUserFollowed: val!=null} ); 
+                this.setState({Usersfollowers :{ id: UserId, array:followers} , IsUserFollowed: val!=null} ); 
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })
     }
     render()
     {
-        let UserId ; 
-        UserId =  new URLSearchParams(this.props.location.search).get("UserId") ;
-        if (UserId == null) UserId = localStorage.getItem('username') ; 
+        let UserId = this.props.id  ; 
+       
+
        
         this.GetUserDetails(UserId) ;
         this.GetFollowers(UserId); 
         this.GetFollows(UserId); 
-        this.GetProfileImage(UserId) ; 
         if(this.state.stage == 4 )
             return (
                 <div>
                     <NavHeader  title = "Profile"/>
                     <div  className = "container" >
                         <div className= "row"><User.UserDetails 
+                            UserId = {UserId}
                             Details  = {this.state.UserDetails}
-                            ProfileImageAddress={this.state.ProfileImageAddress}
+                            ProfileImageAddress={this.state.UserDetails.profileimg !="" ?this.state.UserDetails.profileimg : this.state.ProfileImageAddress}
                             DoesUserFollow = {this.state.DoesUserFollow}
                             IsUserFollowed = {this.state.IsUserFollowed}
-                            follows = {this.state.Userfollows}
-                            followers={this.state.Usersfollowers}
+                            follows = {this.state.Userfollows.array}
+                            followers={this.state.Usersfollowers.array}
                         /></div>
                         <hr></hr>
-                        <div id ="UserWorks"><User.UserWorks UserId = {UserId} 
-                            
-                        /></div>
+                        <div id ="UserWorks"><User.UserWorks UserId = {UserId} /></div>
+                        <div id="UserAnalytics" style={{display:"none"}}><User.Analytics /></div>
                     
                     </div>
                 
                 
                 </div>
             );
-        if(this.state.stage == 0) return(<Loading message="Loading Profile"/>); 
+        if(this.state.stage == 0) return(<LoadingPage message="Loading Profile"/>); 
     }
     
 }

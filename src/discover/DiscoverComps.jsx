@@ -1,12 +1,69 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import db from "../database/db";
+import * as firebase from 'firebase';
+
+const categoryPathName={
+    "stories":"Story",
+    "poems":"Poem",
+    "quotes":"Quote",
+    "articles":"Article",
+    "fanfiction":"Fanfiction",
+    "audio":"Audio",
+    "scripts":"Script"
+};
 
 export function TopUserTile(myprops) {
     const history = useHistory();
-    return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0.5px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
-        <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "grey" }}>
-            <img alt="profile pic small" style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg?myprops.uobj[0].profileimg:"https://i0.wp.com/chipandco.com/wp-content/uploads/2020/01/2019-disneylegend-rdj-780x440-1-1.jpg?fit=600%2C338&ssl=1"} />
+    console.log("hey dude")
+    const [fstatus, setFstatus]=useState(myprops.follows.includes(myprops.uobj[1]));
+    
+    function SetFollows(){
+        if(fstatus){
+            db.firestore().collection("users").doc(localStorage.getItem("username")).get().then((snapshot)=>{
+                console.log(snapshot.data())
+                db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+                    {
+                      "nfollows": snapshot.data().nfollows - 1
+                    }
+                  ); 
+                  db.firestore().collection("users").doc(myprops.uobj[1]).update({
+                    "nfollowers": firebase.firestore.FieldValue.increment(-1)
+                  })
+            });
+            db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
+                follows: firebase.firestore.FieldValue.arrayRemove(myprops.uobj[1])
+            });
+            db.firestore().collection("followers").doc(myprops.uobj[1]).update({
+              followers: firebase.firestore.FieldValue.arrayRemove(localStorage.getItem('username'))
+          });
+
+        }else{
+
+            db.firestore().collection("users").doc(localStorage.getItem("username")).get().then((snapshot)=>{
+                
+                db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+                    {
+                      "nfollows": snapshot.data().nfollows + 1
+                    }
+                  ); 
+                  db.firestore().collection("users").doc(myprops.uobj[1]).update({
+                    "nfollowers": firebase.firestore.FieldValue.increment(1)
+                  })
+            });
+            db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
+                follows: firebase.firestore.FieldValue.arrayUnion(myprops.uobj[1])
+            });
+            db.firestore().collection("followers").doc(myprops.uobj[1]).update({
+              followers: firebase.firestore.FieldValue.arrayUnion(localStorage.getItem('username'))
+          });
+        }
+        setFstatus(!fstatus);
+    }
+
+    return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
+        <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "white" }}>
+            <img alt="profile-pic small" style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg?myprops.uobj[0].profileimg:process.env.PUBLIC_URL + '/usericon.png'} />
         </div>
         <a href="" className="tcreator-tile-a" onClick={() => history.push({
                             pathname:'/Profile' , 
@@ -15,7 +72,7 @@ export function TopUserTile(myprops) {
                         })}>
             <p style={{ marginTop: "10px", marginLeft: "5px" }}>{myprops.uobj[1]}</p>
         </a>
-        <a className="pointer" onClick={() => { console.log("followed user") }} ><i style={{ marginTop: "10px", marginLeft: "5px", color: "blue" }} class="fa fa-user-plus"></i></a>
+        {myprops.uobj[1]===localStorage.getItem("username")?<i></i>:<a className="pointer" onClick={() => { SetFollows() }} ><i style={{ marginTop: "10px", marginLeft: "5px", color: fstatus?"green":"blue" }} className={fstatus?"fas fa-user-check":"fa fa-user-plus"}></i></a>}
     </div>
 }
 
@@ -26,26 +83,34 @@ export class TopCreators extends React.Component {
     
     constructor(props){
         super(props);
-        this.state={topusers:[],ids:""}
+        this.state={topusers:[],ids:"",follows:[],fcheck:0}
     }
 
     shouldComponentUpdate(NextProps, NextState){
-        if(this.props===NextProps && NextState.ids===this.state.ids){
+        if(this.props===NextProps && NextState.ids===this.state.ids && NextState.fcheck===this.state.fcheck){
             return false;
         }
         return true;
     }
     
     render(){
+        
     var tusers=[];
     var ids="";
+    var follows=[];
+    db.firestore().collection("follows").doc(localStorage.getItem("username")).get().then((snapshot)=>{
+        follows = snapshot.data().follows;
+       
+        this.setState({follows:follows,fcheck:2});
+    });
+
     db.firestore().collection("users").orderBy("nfollowers","desc").limit(7).get().then((snapshot)=>{
         
         snapshot.forEach((doc)=>{
             ids+=doc.id;
             tusers.push([doc.data(),doc.id]);
         });
-        console.log(tusers);
+        
         this.setState({topusers:tusers,ids:ids});
     })
   
@@ -55,10 +120,12 @@ export class TopCreators extends React.Component {
         <div style={{ marginLeft: "-9%", width: "140%" }}>
         {this.state.topusers.length===0
         ?
-        <img align="center" alt="loading" src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/>
+        <div className="container">
+        <img align="center" alt="loading" style={{marginLeft: "70px",marginTop: "40px",height:"40px",width:"auto"}} src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/>
+        </div>
         :
         
-        this.state.topusers.map((data)=>{return <TopUserTile uobj={data}/>})
+        this.state.topusers.map((data)=>{return <TopUserTile uobj={data} key={data[1]} follows={this.state.follows}/>})
         
         }
             
@@ -74,9 +141,9 @@ function ResultTab(myprops) {
   const history = useHistory();
     return <div className="container search-result-tab pointer" style={{ padding: "20px" ,height:"auto"}} onClick={()=> {history.push({
         pathname:'/ReadStory' , 
-        search: "?title="+ myprops.category+"&StoryId="+myprops.cobj[1],
+        search: "?title="+ categoryPathName[myprops.category]+"&StoryId="+myprops.cobj[1],
                      state: {
-                         title: myprops.category,
+                         title: categoryPathName[myprops.category],
                          id: myprops.cobj[1],}
     })}}>
         <div className="col-sm-3">
@@ -151,8 +218,8 @@ class RetrieveSearch extends React.Component {
                 });
             if (this.state.retrieved.length === 0) {
                 if (this.state.k === 0) {
-                    return <div>
-                        <p>loading</p>
+                    return <div className="container" style={{width:"100%"}} >
+                                <img align="center" alt="loading" style={{height:"80px",width:"auto"}} src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/>
                     </div>
                 } else {
                     return <div>

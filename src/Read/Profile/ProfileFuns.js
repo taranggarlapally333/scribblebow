@@ -18,57 +18,94 @@ export const UserDetails  = function (props)
     
     var allprops = {
         ...props.Details 
+        
     }; 
 
     var currentUser = localStorage.getItem('username') ; 
     const [image , setImage] = useState(null) ; 
     var [UploadImageButton ,setUploadImageButton ] = useState("none"); 
     const [FollowButton , setFollowButton] = useState(props.IsUserFollowed); 
+    console.log(allprops.id)
+    console.log(props.follows , "Follow Button")
     const [followCount , setFollowCount] = useState({
-      "follows": props.follows.length,
-      "followers": props.followers.length
+      "follows": allprops.nfollows,
+      "followers": allprops.nfollowers
     }); 
+    const [FinalUploadImage , setFinalUpload] = useState(null) ;  
+    console.log(followCount)
+    const [AnalyticsButton , setAnalytics] = useState(false) ; 
     //Here Comes the Follow Message Buttons 
-    const FollowMessage = <div><button className={!FollowButton?"btn btn-primary":"btn btn-default"} style={{width:"45%" , margin:"10px",outline:"none"  }} onClick={handleFollowButton}>{FollowButton?"UnFollow":"Follow"}</button>
+    const FollowMessage = <div><button className={!FollowButton?"btn btn-primary":"btn btn-default"} style={{width:"45%" , margin:"10px",outline:"none"  }} onClick={handleFollowButton}>{FollowButton?"Unfollow":"Follow"}</button>
     <button className= "btn btn-default" style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Message</button></div> ;
     
     //Here Comes the Edit Profile Button
-    const EditProfile =  <button className= "btn btn-default" style={{ margin:"10px", position:"end"}}>Edit Profile</button>; 
+    const EditProfile =  <div><button className={ !AnalyticsButton?"btn btn-default": "btn btn-success" } style={{width:"45%" , margin:"10px",outline:"none" ,}}  onClick={handleAnalytics}>Analytics Mode</button>
+    <button className= "btn btn-default" style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Edit Profile</button></div> ;
     function handleUploadImageButton()
     {
-      //upload the Image using the Upload file Fuction in storage 
-      UploadImage("ProfileImages/" , image , allprops.id) ; 
+      //upload the Image using the Upload file Fuction in storage
+      UploadImage("ProfileImages/" , image , allprops.id , "users") ;
+      setFinalUpload(image) ;  
       setUploadImageButton("none");
     }
     function handleFollowButton()
     {
-      
+       
+      let val  ; 
       if(FollowButton)
       {
         //reove the user 
-              db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
+              
+            val = - 1 ; 
+            db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
                 follows: firebase.firestore.FieldValue.arrayRemove(allprops.id)
             });
             db.firestore().collection("followers").doc(allprops.id).update({
               followers: firebase.firestore.FieldValue.arrayRemove(localStorage.getItem('username'))
           });
+
+          db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+            {
+              "nfollows": localStorage.getItem("nfollows") + val 
+            }
+          ); 
+          db.firestore().collection("users").doc(allprops.id).update({
+            "nfollowers": followCount.followers + val
+          })
       }
       else 
       {
         //add 
+
+                val = 1 ; 
                 db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
                   follows: firebase.firestore.FieldValue.arrayUnion(allprops.id)
               });
               db.firestore().collection("followers").doc(allprops.id).update({
                 followers: firebase.firestore.FieldValue.arrayUnion(localStorage.getItem('username'))
             });
+
+            db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+              {
+                "nfollows": localStorage.getItem("nfollows") + val 
+              }
+            ); 
+            db.firestore().collection("users").doc(allprops.id).update({
+              "nfollowers": followCount.followers + val
+            })
         
       }
       setFollowButton(!FollowButton) ; 
+      setFollowCount({
+        ...followCount, 
+        "followers": followCount.followers + val
+      })
     }
     function handleImageChange(event)
     {
-        let ImageFile =event.target.files[0] ;  
+        let ImageFile =event.target.files[0] ;
+        console.log("heyyyyy"); 
+        console.log(ImageFile) ;   
         if(event.target.files[0])
         {
             
@@ -86,9 +123,54 @@ export const UserDetails  = function (props)
         }
         
     }
+    function handleFinalUpload()
+    {
+       
+      console.log(FinalUploadImage) ;  
+      if(FinalUploadImage !=null)
+        {
+            
+            
+            setImage(FinalUploadImage) ;
+            const reader = new FileReader() ; 
+            reader.addEventListener("load" , function(){
+                var CoverPageElement = document.getElementById("previewImage") ; 
+               
+                CoverPageElement.setAttribute("src" , this.result) ; 
+            }); 
+            reader.readAsDataURL(FinalUploadImage) ; 
+            setUploadImageButton("none"); 
+         
+        }
+        else{
+
+          var CoverPageElement = document.getElementById("previewImage") ; 
+          CoverPageElement.setAttribute("src" , props.ProfileImageAddress) ; 
+          let ImageFileInput  = document.getElementById("fileInput") ;
+          ImageFileInput.value = null ; 
+         
+          console.log(ImageFileInput); 
+          setUploadImageButton("none"); 
+
+        }
+        
+    }
     function  handleAnalytics(event)
     {
-        console.log(event.target.name); 
+      let UserWorks = document.getElementById("UserWorks") ; 
+      let UserAnalytics =   document.getElementById("UserAnalytics") ; 
+      if(AnalyticsButton)
+        {
+          UserWorks.style.display = "block" ; 
+          UserAnalytics.style.display= "none" ;
+        }
+        else 
+        {
+           UserWorks.style.display = "none" ; 
+           UserAnalytics.style.display= "block" ;
+        }
+
+        setAnalytics(!AnalyticsButton) ; 
     }
 
  
@@ -102,7 +184,7 @@ export const UserDetails  = function (props)
 
     var ChangeableProfileImage  = <div>
     <input type="file" 
-    name = "StoryCoverPage" 
+    name = "StoryCoverPage"
     onChange={handleImageChange}
     id = "fileInput" style={{display:"none"}}></input>
     <div className= "col-md-3">
@@ -114,7 +196,9 @@ export const UserDetails  = function (props)
         className="overlay"
         id = "previewImage" src ={props.ProfileImageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
         </div>
-        <div><button onClick={handleUploadImageButton} className="btn btn-info" style={{display:UploadImageButton}}>Upload</button></div>
+        <div><button onClick={handleUploadImageButton} className="btn btn-info" style={{display:UploadImageButton , marginRight:"20px"}}>Upload</button>
+        <button onClick={handleFinalUpload} className="btn btn-info" style={{display:UploadImageButton}}>Cancel</button>
+        </div>
     </div>
 </div>;
 
@@ -127,31 +211,33 @@ export const UserDetails  = function (props)
             <hr></hr>
             <div className= "col-md-6" style={{ wordWrap:"pre-wrap"}} >
                 <p>Bio: {allprops.bio}</p>
-                <p>Gender: {allprops.gender ? allprops.gender: "No Gender Idiot" }</p>
-                <p>Achievements: No Fcukin Achievements adsfadsfa sdfsadfa dsfdsafasdfasdfadsfas</p>
+                <p>Website: <a href= "https://youtu.be/XipZ2n8AcAc"  target="_blank">https://youtu.be/XipZ2n8AcAc</a> </p>
+                <br></br>
+                <audio controls style={{outline:"none"}} loop controlsList="nodownload">
+                      <source  src= {process.env.PUBLIC_URL + "mysong.mp3"} type="audio/mp3" ></source>
+                  </audio>
             </div>
             
             <div className="col-md-6" >
 
-                <div  className="container-inner" style={{display:"flex",  backgroundColor:""  , width:"350px" , justifyContent:"space-evenly"}}>
-                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px"}}>
+                <div  className="container-inner" style={{display:"flex",  backgroundColor:""  , justifyContent:"space-evenly"}}>
+                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginRight:"30px"}}>
                       <h4>Follows</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.follows} /></div>
                     </a>
-                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px"}}>
+                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginLeft:"30px",backgroundColor:""}}>
                       <h4>Followers</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.followers} /></div>
                     </a>
                 </div>
                 <div className = "" style={{backgroundColor:""  ,  justifyContent:"flex-end" ,  display:"flexbox" , paddingRight:0}}>
-                  {currentUser == allprops.id ?null:FollowMessage}
+                  {currentUser == allprops.id ?EditProfile:FollowMessage}
                 </div>
+               
+
+                    
 
             </div>
            
-            <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}>
-            { currentUser === allprops.id  ?<button className="btn btn-default" onClick={handleAnalytics}
-            style={{ margin:"10px" }} name="Analytics Mode">Analytics Mode</button>:null}
-            { currentUser === allprops.id  ?EditProfile:null}
-            </div>
+            
             </div>
         </div>
     ) ; 
@@ -240,7 +326,11 @@ export const Analytics = function()
       },
     };
     
-        return <ReactFC {...chartConfigs} />
+        return (
+        <div className = "container center"  >
+             <h1>Here You Can See the Analytics</h1> 
+        </div>
+        ) ; 
     
 }
 

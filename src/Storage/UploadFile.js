@@ -2,14 +2,15 @@ import React, {useState, useContext } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
+import db from "../database/db";
+import * as Atts from "../Write/Story/Atts"
 const storage = firebase.storage() ; 
 
-export const UploadImage = function (MainDirectory,image , imageId)
+export const UploadImage = function (MainDirectory,image , imageId , collectionName)
 {
   const uploadTask  = storage.ref( MainDirectory+imageId).put(image) ;
 
   console.log( MainDirectory , imageId) ; 
-  var ImageAddress  = "" ; 
   uploadTask.on(
       'state_changed' , 
       function(snapshot){
@@ -20,13 +21,15 @@ export const UploadImage = function (MainDirectory,image , imageId)
       {
         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
             console.log('File available at', downloadURL);
-            ImageAddress= downloadURL ;
+            db.firestore().collection(collectionName).doc(imageId).update(
+              {
+                [collectionName==="users"?"profileimg" :"coverid"]: downloadURL
+              }
+            ); 
           }); 
       }  
-      ); 
-      
-      
-      return ImageAddress ; 
+      );
+   
 }
 
 export const GetCoverPage  = function(imageId)
