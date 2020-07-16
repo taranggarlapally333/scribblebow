@@ -5,10 +5,10 @@ import { AuthContext } from "../Auth";
 import db from "../database/db";
 
 
-export const Test = function(){
-    
+export const Test = function () {
+
     var currentLocation = window.location.pathname;
-    const [email,setEmail]=useState("")
+    const [email, setEmail] = useState("")
     // // f12fd4d5-1e50-45a2-a021-abcbe8ce8af5
 
     //     Email.send({
@@ -20,71 +20,147 @@ export const Test = function(){
     //     }).then(
     //       message => alert(message)
     //     );
-   
-    function handleChange(event){
+
+    function handleChange(event) {
         const newemail = event.target.value;
         setEmail(newemail);
     }
-    function checkEmail(event){
+    function checkEmail(event) {
         event.preventDefault();
-       
-        console.log(email);
-        
-       
-    }
-    
 
-    const ForgotPassword = function(Email){
-        
-            db.auth().sendPasswordResetEmail(Email)
-              .then(function (user) {
-                alert('Please check your email...')
-              }).catch(function (e) {
-                console.log(e)
-              })
-              return false;
-          
+        console.log(email);
+
+
     }
-    
-  
+
+    function Subs(ctitle) {
+        var title = ctitle;
+        title = title.split("");
+        var l = title.length;
+        var ss = [];
+        for (var i = 0; i < l; i++) {
+            var x = title[i];
+            ss.push(x);
+            for (var j = i + 1; j < l; j++) {
+
+                x += title[j];
+                ss.push(x);
+            }
+
+        }
+        return ss;
+    }
+
+
+    const EditProfileimg = function () {
+        
+        
+            db.firestore().collection("users").get()
+                .then(querySnapshot => {
+
+                    querySnapshot.forEach(doc => {
+                      
+                            const images = db.storage().ref().child('ProfileImages');
+                            const image = images.child(doc.id);
+
+
+
+                            image.getDownloadURL().then((url) => {
+
+
+                                console.log(url);
+                                db.firestore().collection("users").doc(doc.id).update({
+                                    profileimg: url
+                                });
+
+
+                            });
+                            
+                        
+
+                        //     if (typeof doc.data().hashtags == "string") { 
+                        //     
+                        // }
+                    });
+                });
+        
+
+    }
+
+    const EditDB = function () {
+        var l = ["poems", "quotes", "audio", "scripts", "articles", "fanfiction", "stories"]
+        l.forEach(element => {
+            db.firestore().collection(element).get()
+                .then(querySnapshot => {
+
+                    querySnapshot.forEach(doc => {
+                        if (doc.data().title) {
+                            const images = db.storage().ref().child('CoverPages');
+                            const image = images.child(doc.id);
+
+
+
+                            image.getDownloadURL().then((url) => {
+
+
+                                console.log(url);
+                                db.firestore().collection(element).doc(doc.id).update({
+                                    coverid: url
+                                });
+
+
+                            });
+                            
+                        }
+
+                        //     if (typeof doc.data().hashtags == "string") { 
+                        //     
+                        // }
+                    });
+                });
+        });
+
+    }
+
+
 
     return (
-       
+
         <div className="login-bg">
-    <div className="login-bar">
-    <p>{currentLocation}</p>
-    <a href="" onClick={()=>ForgotPassword("theconscienceofficial@gmail.com")}>Forgot Password</a>
-    <p>{Date.now() + Math.random()}</p>
-    <form onSubmit ={checkEmail}>
-    <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email}/>    
-    <input type="submit" name="submit" value="Check" />
-    </form>
-    
-        <form >
-        <img className="signuplogo2" src={process.env.PUBLIC_URL + '/myimage.png'}/>
-                <div className="form-group" style={{ width: "80%", margin: "20px" }}>
-                    <label for="bio">Say something about yourself {}</label>
-                    <input type="text" className="form-control" name="bio" id="bio"  placeholder="Your Bio (Optional)"  />
-                </div>
-                <div className="form-group" style={{ width: "80%", margin: "20px"  }}>
-                
-                <label for="title">Which role describles you the most?</label>
-                           <select className="form-control" name="title" id="title"   >
-                                <option>Creator (Default)</option>
-                                <option>Writer</option>
-                                <option>Poet</option>
-                                <option>Speaker</option>
-                                <option>Singer</option>
-                                <option>Content Creator</option>
-                                <option>Film Maker</option>
-                           </select>
-                </div>
-                <div className="form-group submit" style={{ width: "80%", margin: "20px"  }}>
-                    <input type="submit" className="myshadow mybtn btn btn-default" id="signin" value="Save" />
-                </div>
-            </form>
+            <div className="login-bar">
+                <p>{currentLocation}</p>
+                <a onClick={() => { EditProfileimg() }}>click for subs</a>
+                <p>{Date.now() + Math.random()}</p>
+                <form onSubmit={checkEmail}>
+                    <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email} />
+                    <input type="submit" name="submit" value="Check" />
+                </form>
+
+                <form >
+                    <img className="signuplogo2" src={process.env.PUBLIC_URL + '/myimage.png'} />
+                    <div className="form-group" style={{ width: "80%", margin: "20px" }}>
+                        <label for="bio">Say something about yourself {}</label>
+                        <input type="text" className="form-control" name="bio" id="bio" placeholder="Your Bio (Optional)" />
+                    </div>
+                    <div className="form-group" style={{ width: "80%", margin: "20px" }}>
+
+                        <label for="title">Which role describles you the most?</label>
+                        <select className="form-control" name="title" id="title"   >
+                            <option>Creator (Default)</option>
+                            <option>Writer</option>
+                            <option>Poet</option>
+                            <option>Speaker</option>
+                            <option>Singer</option>
+                            <option>Content Creator</option>
+                            <option>Film Maker</option>
+                        </select>
+                    </div>
+                    <div className="form-group submit" style={{ width: "80%", margin: "20px" }}>
+                        <input type="submit" className="myshadow mybtn btn btn-default" id="signin" value="Save" />
+                    </div>
+                </form>
             </div>
-            </div>);
+        </div>);
 }
 
 

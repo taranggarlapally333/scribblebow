@@ -50,13 +50,14 @@ function WriteStory(props)
         
         myHashTags.forEach((eachHash)=>{
             let span  = document.createElement("div"); 
-            let h5 = document.createElement("h3"); 
+            let h3 = document.createElement("h3"); 
             if(eachHash.length > 20) eachHash = eachHash.substr(0,20); 
             span.innerHTML = eachHash ; 
-            span.className = Atts.getHashClassName(eachHash.length)+" box" ; 
-            span.style = {fontSize:"30px" ,"float":"left"}; 
-            h5.appendChild(span); 
-            ShowHashtagsElement.appendChild(h5); 
+            span.className = "label label-default box" ; 
+            
+            span.style.backgroundColor = Atts.getHashClassName(eachHash.length) ; 
+            h3.appendChild(span); 
+            ShowHashtagsElement.appendChild(h3); 
         }); 
     }
    function handleStoryStatus(event)
@@ -118,7 +119,7 @@ function WriteStory(props)
             onChange={handleImageChange}
             id = "fileInput" style={{display:"none"}}></input>
             <div className= "col-md-3">
-                <div className = "myshadow myimage " style = {{width:160,maxWidth:160,height:277, justifyContent:"center"}}
+                <div className = "myshadow myimage " style = {{width:160,maxWidth:160,height:277, justifyContent:"center" }}
                 onClick={()=>{
                     document.getElementById("fileInput").click() ; 
                 }} >
@@ -172,13 +173,13 @@ function WriteStory(props)
             "content": StoryStatus.StoryContent, 
             "font":StoryStatus.StoryFont ,
             "genre": StoryStatus.StoryGenre , 
-            "hashtags": StoryStatus.StoryHashtags, 
+            "hashtags": StoryStatus.StoryHashtags.split("#"), 
             "description":StoryStatus.StoryDescription , 
             "nlikes": 0 , 
             "ncomments":0  , 
             "published": PubSaveButton
         } ; 
-        if(props.titile == "Article") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
+        if(props.title == "Article") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
         if(props.title =="Fanfiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
         if (props.title == "Story"|"Poem"|"Fanfiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
         console.log(myStoryData)  ;
@@ -192,14 +193,7 @@ function WriteStory(props)
                 }); } 
                 
             
-        else {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; 
-            db.firestore().collection("comments").doc(StoryId).set({
-                comments: []
-            });
-            db.firestore().collection("likes").doc(StoryId).set({
-                usernames: []
-            });
-        }   
+        else {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; }   
            
             setStoryId(StoryId); 
             if(!PubSaveButton)
@@ -221,6 +215,7 @@ function WriteStory(props)
     if(stage == 0 )
     {
         
+        let SaveButton = (props.new || !StoryStatus.published); 
         return (
                     <div>
                         <Header title = {props.title.toUpperCase()} />
@@ -228,7 +223,7 @@ function WriteStory(props)
                         <div className= "col-12 col-md-3 myshadow StoryWriteProps" >
                                 <div className = "container-inner" style={{display:"flex", justifyContent: "space-evenly"}} > <a class = "btn btn-default" onClick={handleReset} >Reset</a>
                                 <button class = "btn btn-warning right" type="submit" value ="Publish" name = "Published" disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Publish</button>
-                                <button class = "btn btn-primary right"  type = "submit" name = "Save"  disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Save</button></div>
+                                {SaveButton?<button class = "btn btn-primary right"  type = "submit" name = "Save"  disabled= {StoryStatus.PublishSave} onClick = {handleSubButton}>Save</button>:null}</div>
                             
                                 <h4>Title</h4>
                                 <input className = {Atts.propsClass} type="text" name = "StoryTitle" value={StoryStatus.StoryTitle} 
@@ -290,6 +285,7 @@ function WriteStory(props)
         return (<Redirect to={{
             pathname: '/ReadStory',
             state: { id: StoryId , title:props.title }, 
+            search:"?StoryId="+StoryId+"&title="+props.title,
             key:{id: StoryId , title:props.title}
         }} />) ;}
     else if(stage == 5)

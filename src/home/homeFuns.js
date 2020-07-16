@@ -59,7 +59,7 @@ function  FamousStories(props)
             <div className="container">
                 <h1 className={titleClassName} style={{backgroundColor:""}}>{props.title.toUpperCase()}</h1>
                 <hr></hr>
-                <div className = "row container myshadow rounded" style={{marginBottom:"20px"}}>
+                <div className = "row container myshadow " style={{margin:"20px",  width:"95%" , backgroundColor:""}}>
                         <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
                         <a href= "ReadStory?title="><StoryDetails.CoverPage 
                 imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 

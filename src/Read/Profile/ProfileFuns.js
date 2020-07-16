@@ -9,6 +9,9 @@ import Charts from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import CategoryAll from './ProfileClasses';
 import { UploadImage } from '../../Storage/UploadFile';
+import db from '../../database/db';
+import * as firebase from 'firebase';
+import { Caption } from '../../components/Loading';
 //end Charts 
 export const UserDetails  = function (props)
 {   
@@ -20,11 +23,48 @@ export const UserDetails  = function (props)
     var currentUser = localStorage.getItem('username') ; 
     const [image , setImage] = useState(null) ; 
     var [UploadImageButton ,setUploadImageButton ] = useState("none"); 
+    const [FollowButton , setFollowButton] = useState(props.IsUserFollowed); 
+    const [followCount , setFollowCount] = useState({
+      "follows": props.follows.length,
+      "followers": props.followers.length
+    }); 
+    //Here Comes the Follow Message Buttons 
+    const FollowMessage = <div><button className={!FollowButton?"btn btn-primary":"btn btn-default"} style={{width:"45%" , margin:"10px",outline:"none"  }} onClick={handleFollowButton}>{FollowButton?"UnFollow":"Follow"}</button>
+    <button className= "btn btn-default" style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Message</button></div> ;
+    
+    //Here Comes the Edit Profile Button
+    const EditProfile =  <button className= "btn btn-default" style={{ margin:"10px", position:"end"}}>Edit Profile</button>; 
     function handleUploadImageButton()
     {
       //upload the Image using the Upload file Fuction in storage 
       UploadImage("ProfileImages/" , image , allprops.id) ; 
       setUploadImageButton("none");
+    }
+    function handleFollowButton()
+    {
+      
+      if(FollowButton)
+      {
+        //reove the user 
+              db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
+                follows: firebase.firestore.FieldValue.arrayRemove(allprops.id)
+            });
+            db.firestore().collection("followers").doc(allprops.id).update({
+              followers: firebase.firestore.FieldValue.arrayRemove(localStorage.getItem('username'))
+          });
+      }
+      else 
+      {
+        //add 
+                db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
+                  follows: firebase.firestore.FieldValue.arrayUnion(allprops.id)
+              });
+              db.firestore().collection("followers").doc(allprops.id).update({
+                followers: firebase.firestore.FieldValue.arrayUnion(localStorage.getItem('username'))
+            });
+        
+      }
+      setFollowButton(!FollowButton) ; 
     }
     function handleImageChange(event)
     {
@@ -45,6 +85,10 @@ export const UserDetails  = function (props)
          
         }
         
+    }
+    function  handleAnalytics(event)
+    {
+        console.log(event.target.name); 
     }
 
  
@@ -79,19 +123,35 @@ export const UserDetails  = function (props)
             {currentUser == allprops.id ? ChangeableProfileImage : ProfileImage}
             <div className= "col-12 col-md-9 myshadow Details">
             <p style={{fontSize:"40px"}}>{allprops.fname+" "+allprops.lname}</p>
-            <h3><span className= {Atts.getHashClassName(allprops.title.length)}>{allprops.title}</span></h3>
+            <h3><span className="label label-default" style={{backgroundColor: Atts.getHashClassName(allprops.title.length)}}>{allprops.title}</span></h3>
             <hr></hr>
-            <p>Bio: {allprops.bio}</p>
-            <p>Gender: {allprops.gender ? allprops.gender: "No Gender Idiot" }</p>
-            <p>Achievements: No Fcukin Achievements</p>
-            <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={
-                ()=>
-              {
-                  var UserrWorks  = document.getElementById("UserWorks") ;
-                    
-                  
-              }
-            }>Analytics</button></div>
+            <div className= "col-md-6" style={{ wordWrap:"pre-wrap"}} >
+                <p>Bio: {allprops.bio}</p>
+                <p>Gender: {allprops.gender ? allprops.gender: "No Gender Idiot" }</p>
+                <p>Achievements: No Fcukin Achievements adsfadsfa sdfsadfa dsfdsafasdfasdfadsfas</p>
+            </div>
+            
+            <div className="col-md-6" >
+
+                <div  className="container-inner" style={{display:"flex",  backgroundColor:""  , width:"350px" , justifyContent:"space-evenly"}}>
+                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px"}}>
+                      <h4>Follows</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.follows} /></div>
+                    </a>
+                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px"}}>
+                      <h4>Followers</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.followers} /></div>
+                    </a>
+                </div>
+                <div className = "" style={{backgroundColor:""  ,  justifyContent:"flex-end" ,  display:"flexbox" , paddingRight:0}}>
+                  {currentUser == allprops.id ?null:FollowMessage}
+                </div>
+
+            </div>
+           
+            <div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}>
+            { currentUser === allprops.id  ?<button className="btn btn-default" onClick={handleAnalytics}
+            style={{ margin:"10px" }} name="Analytics Mode">Analytics Mode</button>:null}
+            { currentUser === allprops.id  ?EditProfile:null}
+            </div>
             </div>
         </div>
     ) ; 
@@ -113,7 +173,7 @@ export const UserWorks = function(props)
         minWidth: eachButton==="Fanfiction" ? "80px" : "auto"
        } 
       
-      return ( <button key={index} className = "btn " style={mystyle}  href="WriteStory" name = {eachButton} onClick={handleWork}>{eachButton ==="Article"?"Blog/Article" :eachButton}</button>) ; 
+      return ( <button key={index} className = "btn " style={mystyle} name = {eachButton} onClick={handleWork}>{eachButton ==="Article"?"Blog/Article" :eachButton}</button>) ; 
     }
     return(
         <div>

@@ -80,14 +80,18 @@ export default class Discover extends React.PureComponent {
             </div>
         </div>
         else{
+            
             return <SearchResults searchkey={this.state.searchkey} />
         }
         }
         else{
             if(this.state.searchkey==="")
-            return <p>default {this.state.category}</p>
+            return <div className="container" style={{width:"90%"}}>
+            <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
+               <p>default {this.state.category}</p>
+               </div></div>
             else
-            return <SearchResults searchkey={this.state.searchkey} category={this.state.category}/>
+            return <SearchResults searchkey={this.state.searchkey} category={this.state.category} key={this.state.category}/>
         }
     }
 

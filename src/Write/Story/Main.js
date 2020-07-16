@@ -26,6 +26,7 @@ class WriteTheStory extends React.PureComponent{
             "StoryCoverPage" :process.env.PUBLIC_URL+"ScribbleBow.png" , 
             "ArticleType":"Personal Blog",
             "FictionBasedOn":"",
+            "published":false
         }, stage:0 }
     }
     shouldComponentUpdate(nextProps , nextState)
@@ -57,6 +58,7 @@ class WriteTheStory extends React.PureComponent{
                     "StoryCoverPage":process.env.PUBLIC_URL+"ScribbleBow.png" , 
                     "ArticleType": ("type" in  querySnapshot.data())?querySnapshot.data().type:"Personal Blog",
                     "FictionBasedOn":("basedOn" in  querySnapshot.data())?querySnapshot.data().basedOn:"",
+                    "published":querySnapshot.data().published,
                 }   ;
                      this.setState({StoryDetails: sep }) ; 
                     

@@ -1,55 +1,193 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import db from "../database/db";
 
-export function TopUserTile(){
+export function TopUserTile(myprops) {
     const history = useHistory();
-    return <div style={{display: "flex",justifyContent: "space-between",borderColor:"grey", borderStyle:"solid",borderWidth:"0.5px",borderTop: "0px",borderLeft: "0px",borderRight: "0px"}}>
-    <div style={{height:"30px",width:"30px" ,borderRadius: "50%", margin:"5px", backgroundColor:"grey"}}>
-        <img alt="profile pic small" style={{height:"30px",width:"30px",borderRadius: "50%"}} src="https://i0.wp.com/chipandco.com/wp-content/uploads/2020/01/2019-disneylegend-rdj-780x440-1-1.jpg?fit=600%2C338&ssl=1"/>
-    </div>
-    <a href="" className="tcreator-tile-a" onClick={()=>history.push({
+    return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0.5px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
+        <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "grey" }}>
+            <img alt="profile pic small" style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg?myprops.uobj[0].profileimg:"https://i0.wp.com/chipandco.com/wp-content/uploads/2020/01/2019-disneylegend-rdj-780x440-1-1.jpg?fit=600%2C338&ssl=1"} />
+        </div>
+        <a href="" className="tcreator-tile-a" onClick={() => history.push({
                             pathname:'/Profile' , 
-                            state:{id: 'taranggarlapally'}, 
+                            search:'?UserId='+myprops.uobj[1],
+                            state:{id: myprops.uobj[1]}, 
                         })}>
-    <p  style={{marginTop:"10px",marginLeft:"5px"}}>hello</p>
-    </a>
-    <a className="pointer" onClick={()=>{console.log("followed user")}} ><i  style={{marginTop:"10px",marginLeft:"5px",color:"blue"}} class="fa fa-user-plus"></i></a>
+            <p style={{ marginTop: "10px", marginLeft: "5px" }}>{myprops.uobj[1]}</p>
+        </a>
+        <a className="pointer" onClick={() => { console.log("followed user") }} ><i style={{ marginTop: "10px", marginLeft: "5px", color: "blue" }} class="fa fa-user-plus"></i></a>
     </div>
 }
 
 
 
 
-export function TopCreators(){
-    return <div><div className="topcreators-title" style={{marginLeft: "-9%", height: "40px",width:"140%", backgroundColor: "#f5ba13"}}>
-    <p className="tcreators-head" align="center">CREATORS ON THE RISE</p>
+export class TopCreators extends React.Component {
+    
+    constructor(props){
+        super(props);
+        this.state={topusers:[],ids:""}
+    }
+
+    shouldComponentUpdate(NextProps, NextState){
+        if(this.props===NextProps && NextState.ids===this.state.ids){
+            return false;
+        }
+        return true;
+    }
+    
+    render(){
+    var tusers=[];
+    var ids="";
+    db.firestore().collection("users").orderBy("nfollowers","desc").limit(7).get().then((snapshot)=>{
+        
+        snapshot.forEach((doc)=>{
+            ids+=doc.id;
+            tusers.push([doc.data(),doc.id]);
+        });
+        console.log(tusers);
+        this.setState({topusers:tusers,ids:ids});
+    })
+  
+    return <div><div className="topcreators-title" style={{ marginLeft: "-9%", height: "40px", width: "140%", backgroundColor: "#f5ba13" }}>
+        <p className="tcreators-head" align="center">CREATORS ON THE RISE</p>
     </div>
-    <div style={{marginLeft: "-9%",width:"140%"}}>
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
-    <TopUserTile />
+        <div style={{ marginLeft: "-9%", width: "140%" }}>
+        {this.state.topusers.length===0
+        ?
+        <img align="center" alt="loading" src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/>
+        :
+        
+        this.state.topusers.map((data)=>{return <TopUserTile uobj={data}/>})
+        
+        }
+            
+        </div>
     </div>
+}
+}
+
+
+
+
+function ResultTab(myprops) {
+  const history = useHistory();
+    return <div className="container search-result-tab pointer" style={{ padding: "20px" ,height:"auto"}} onClick={()=> {history.push({
+        pathname:'/ReadStory' , 
+        search: "?title="+ myprops.category+"&StoryId="+myprops.cobj[1],
+                     state: {
+                         title: myprops.category,
+                         id: myprops.cobj[1],}
+    })}}>
+        <div className="col-sm-3">
+            <img className="sm-cover" style={{ backgroundColor: "white" }} alt="search result cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid!==""?myprops.cobj[0].coverid:process.env.PUBLIC_URL + '/ScribbleBow.png'} />
+        </div>
+        <div className="col-sm-9" >
+            <div style={{ height: "180px", width: "90%" }}>
+                {myprops.cobj[0].title ? <h2>{myprops.cobj[0].title}</h2> : null}
+                <p>{myprops.cobj[0].creator}</p>
+                <p><i className="fa fa-heart" style={{ color: "red" }}></i> {myprops.cobj[0].nlikes} <i className='fas fa-comment-alt' style={{ color: "blue" }}></i> {myprops.cobj[0].ncomments} </p>
+                <hr />
+                {myprops.cobj[0].type ? <p>{myprops.cobj[0].type}</p> : null}
+                {myprops.cobj[0].basedOn ? <p>Based on: {myprops.cobj[0].basedOn}</p> : null}
+                {myprops.cobj[0].genre ? <p className="btn btn-sm" style={{ backgroundColor: "purple", color: "white", marginBottom: "2px", marginTop: "-20px", padding: "2px" }}>{myprops.cobj[0].genre}</p> : null}
+                {myprops.cobj[0].description ? <p>{myprops.cobj[0].description.length > 40 ? myprops.cobj[0].description.substring(0, 40) + "..." : myprops.cobj[0].description}</p> : null}
+            </div>
+        </div>
     </div>
 }
 
 
-function RetrieveSearch(myprops){
- 
+
+
+
+class RetrieveSearch extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { retrieved: [], ids: "", k: 0};
+    }
+
+    shouldComponentUpdate(NextProps, NextState) {
+       
+        if (this.props === NextProps && this.state.ids === NextState.ids && this.state.k === NextState.k ) {
+            return false;
+        }
+        return true;
+    }
+
+    render() {
+
+        
+        var res = [];
+        var ids = "";
+       
+        if (this.props.searchkey.length === 0) {
+            return <div style={{ padding: "20px" }}>
+                <p>You might have entered insufficient input</p>
+            </div>
+        }
+        else {
+            db.firestore().collection(this.props.category).where('titlekeys', 'array-contains-any',
+                this.props.searchkey).limit(20).get().then(snapshot => {
+
+                    if (!snapshot.length)
+                        this.setState({ k: 2 });
+                    snapshot.forEach((doc) => {
+                        const d = [doc.data(), doc.id];
+                        const id = doc.id;
+                        
+                        ids = ids + id;
+                        
+                       
+                        res.push(d);
+
+
+                    })
+                    
+
+
+                    this.setState({ retrieved: res, ids: ids });
+
+                });
+            if (this.state.retrieved.length === 0) {
+                if (this.state.k === 0) {
+                    return <div>
+                        <p>loading</p>
+                    </div>
+                } else {
+                    return <div>
+                        <p>No results found</p>
+                    </div>
+                }
+
+            }
+            else {
+                return <div>
+                    <h2>Search results</h2>
+                    {this.state.retrieved.length === 0 ? <p>Empty</p> : this.state.retrieved.map((data) => { return <ResultTab cobj={data} key={data[1]} category={this.props.category} /> })}
+                </div>
+            }
+        }
+    }
+
 }
 
 
 
-export function SearchResults(props){
-    if(props.category){
-        return <RetrieveSearch category={props.category} searchkey={props.searchkey}/>
-    }else{
-        return <p>{props.searchkey}</p>
+export function SearchResults(props) {
+    var searchkey = props.searchkey.split(" ");
+    searchkey = searchkey.filter(i => i !== "the");
+    if (props.category) {
+
+        return <div className="container" style={{width:"90%"}}>
+            <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
+                <RetrieveSearch category={props.category} searchkey={searchkey} key={props.category + searchkey} />
+            </div></div>
+    } else {
+        return <div className="container" style={{width:"90%"}}>
+            <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
+                <p>{props.searchkey}</p>
+            </div></div>
     }
 
 

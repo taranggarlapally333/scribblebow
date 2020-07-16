@@ -115,7 +115,11 @@ class ReadStory extends React.PureComponent{
 
     render(){
 
-        var allProps = { ...this.props.location.state}  ;
+        var allProps = {
+            "title": new URLSearchParams(this.props.location.search).get("title"), 
+            "id": new URLSearchParams(this.props.location.search).get("StoryId")
+        }  ;
+        console.log(allProps); 
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
         this.GetAllComments(allProps.id) ; 
         this.GetCoverPage(allProps.id);
