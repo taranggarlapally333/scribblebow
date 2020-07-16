@@ -34,13 +34,13 @@ class CategoryDrafts extends React.PureComponent{
 
     Tabs=(myprops)=>
 {
-    console.log("imgurl is: " +myprops[2]);
+    
     
     return (<div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
     <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
-    <img  className="draft-image" src = {myprops[2]? myprops[2]:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
+    <img  className="draft-image" src = {myprops[0].coverid && myprops[0].coverid!==""? myprops[0].coverid:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>
     <div className="draft-title">
     <i className='fas fa-edit' style={{fontSize:"36px"}}></i>
     <br />
@@ -91,12 +91,7 @@ GetCoverPage  = (imageId)=>
                     const images = db.storage().ref().child('CoverPages');
                     const image = images.child(doc.id);
                     
-                   image.getDownloadURL().then((url) => {    
-                                         
-                            d.push(url);
-                            
-                        
-                    });
+                   
                     
                     ntabs.push(d);
                 

@@ -20,17 +20,17 @@ export function TopUserTile(myprops) {
     
     function SetFollows(){
         if(fstatus){
-            db.firestore().collection("users").doc(localStorage.getItem("username")).get().then((snapshot)=>{
-                console.log(snapshot.data())
+           
+              
                 db.firestore().collection("users").doc(localStorage.getItem('username')).update(
                     {
-                      "nfollows": snapshot.data().nfollows - 1
+                      "nfollows": firebase.firestore.FieldValue.increment(-1)
                     }
                   ); 
                   db.firestore().collection("users").doc(myprops.uobj[1]).update({
                     "nfollowers": firebase.firestore.FieldValue.increment(-1)
                   })
-            });
+          
             db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
                 follows: firebase.firestore.FieldValue.arrayRemove(myprops.uobj[1])
             });
@@ -40,17 +40,17 @@ export function TopUserTile(myprops) {
 
         }else{
 
-            db.firestore().collection("users").doc(localStorage.getItem("username")).get().then((snapshot)=>{
+            
                 
                 db.firestore().collection("users").doc(localStorage.getItem('username')).update(
                     {
-                      "nfollows": snapshot.data().nfollows + 1
+                      "nfollows": firebase.firestore.FieldValue.increment(1)
                     }
                   ); 
                   db.firestore().collection("users").doc(myprops.uobj[1]).update({
                     "nfollowers": firebase.firestore.FieldValue.increment(1)
                   })
-            });
+           
             db.firestore().collection("follows").doc(localStorage.getItem('username')).update({
                 follows: firebase.firestore.FieldValue.arrayUnion(myprops.uobj[1])
             });
