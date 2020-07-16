@@ -263,10 +263,10 @@ function WriteStory(props)
                                 <h4>Description</h4>
                                 <textarea className={Atts.propsClass}  type= "text"  name = "StoryDescription"
                                 style={{height:"100px", resize:"none"}} onChange={handleStoryStatus}  value={StoryStatus.StoryDescription} ></textarea>
-                                <h4>Genre</h4>
+                                { props.title=="Story" ?<div> <h4>Genre</h4>
                                 <select className = {Atts.propsClass} type="text" name = "StoryGenre" onChange =  {handleStoryStatus}  value={StoryStatus.StoryGenre}>
                                     {Atts.GenreAvailable.map(getGenres)}
-                                </select>
+                                </select></div> : null}
                                 <h4>HashTags</h4>
                                 <input className={Atts.propsClass} type="text" name="StoryHashtags" onChange={handleStoryStatus}  value={StoryStatus.StoryHashtags}></input>
                                 <div className="myscroller" id="ShowHashtags" style={{width:"300px",maxWidth:"300px",height:"100px",maxHeight:"100px",

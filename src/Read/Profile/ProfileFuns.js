@@ -2,6 +2,7 @@ import React, { useState } from 'react' ;
 import {CoverPage} from '../Story/Details' ;
 import * as Atts from '../../Write/Story/Atts'; 
 import * as Canvas from 'react-canvas-js' ; 
+import { Redirect, useHistory } from "react-router";
 // Charts 
 import ReactFC from 'react-fusioncharts';
 import FusionCharts from 'fusioncharts';
@@ -20,7 +21,7 @@ export const UserDetails  = function (props)
         ...props.Details 
         
     }; 
-
+    const history = useHistory() ; 
     var currentUser = localStorage.getItem('username') ; 
     const [image , setImage] = useState(null) ; 
     var [UploadImageButton ,setUploadImageButton ] = useState("none"); 
@@ -204,6 +205,38 @@ export const UserDetails  = function (props)
 
     return(
         <div  >
+
+
+            <div>
+              <div id="followsModel" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" style={{outline:"none" ,color:"red" }}>&times;</button>
+                            <h4 class="modal-title">Follows</h4>
+                          </div>
+                          <div class="modal-body">
+                            {props.follows.map(eachUser =>{
+                              return (<div style={{backgroundColor:""}}>
+                                <p><a className= "handy " type="button"  onClick={()=>{ history.push({
+                            pathname:'/Profile' , 
+                            search:'?UserId='+ eachUser,
+                            state:{id: 'karthik.pasupulatei' , key:'karthik.pasupulatei'}, 
+                             
+                        });}} data-dismiss="modal" ><img  src={process.env.PUBLIC_URL + "ScribbleBow.png"}
+                        style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
+                        ></img> {eachUser}</a></p>
+                              </div>)
+                            })}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+            </div>
             {currentUser == allprops.id ? ChangeableProfileImage : ProfileImage}
             <div className= "col-12 col-md-9 myshadow Details">
             <p style={{fontSize:"40px"}}>{allprops.fname+" "+allprops.lname}</p>
@@ -221,7 +254,7 @@ export const UserDetails  = function (props)
             <div className="col-md-6" >
 
                 <div  className="container-inner" style={{display:"flex",  backgroundColor:""  , justifyContent:"space-evenly"}}>
-                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginRight:"30px"}}>
+                    <a type="button" style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginRight:"30px"}}  data-toggle="modal" data-target="#followsModel" className="handy">
                       <h4>Follows</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.follows} /></div>
                     </a>
                     <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginLeft:"30px",backgroundColor:""}}>
