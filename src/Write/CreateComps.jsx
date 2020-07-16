@@ -147,6 +147,11 @@ GetCoverPage  = (imageId)=>
                          title: this.props.category,
                          id: this.state.id,
                          new: false, 
+                     },
+                     key:{
+                        title: this.props.category,
+                         id: this.state.id,
+                         new: false, 
                      }
                 }
                 } />

@@ -125,7 +125,7 @@ function WriteStory(props)
                 }} >
                 <img  
                 className="overlay"
-                id = "previewImage" src ={StoryStatus.StoryCoverPage} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
+                id = "previewImage" src ={props.StoryCoverPage} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
                 </div>
             </div>
         </div>
@@ -165,6 +165,7 @@ function WriteStory(props)
             var StoryId  = Date.now().toString() ; 
         else var StoryId = props.StoryDetails.id  ; 
         console.log(StoryId +"my id0"); 
+        let CoverId = process.env.PUBLIC_URL +"ScribbleBow.png" ; 
         if(image != null)
             UploadFile.UploadImage("CoverPages/",  image ,StoryId); 
         var myStoryData = {
@@ -177,7 +178,9 @@ function WriteStory(props)
             "description":StoryStatus.StoryDescription , 
             "nlikes": 0 , 
             "ncomments":0  , 
-            "published": PubSaveButton
+            "published": PubSaveButton,
+            "titlekeys": Atts.Subs(StoryStatus.StoryTitle),
+            "coverid": CoverId
         } ; 
         if(props.title == "Article") myStoryData = {...myStoryData  , "type":StoryStatus.ArticleType} ; 
         if(props.title =="Fanfiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
@@ -185,12 +188,29 @@ function WriteStory(props)
         console.log(myStoryData)  ;
         if (props.new)
             {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ;
-                db.firestore().collection("comments").doc(StoryId).set({
-                    comments: []
-                });
-                db.firestore().collection("likes").doc(StoryId).set({
-                    usernames: []
-                }); } 
+
+                if(PubSaveButton)
+                {
+                    db.firestore().collection("comments").doc(StoryId).set({
+                        comments: []
+                    });
+                    db.firestore().collection("likes").doc(StoryId).set({
+                        usernames: []
+                    }); } 
+                else{
+                    history.push(
+                        {
+                            pathname:'/WriteStory', 
+                            state:{
+                                id: StoryId, 
+                                title: props.title, 
+                                new: false , 
+                            }
+                        }
+                    )
+                }
+            }
+                
                 
             
         else {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).update(myStoryData) ; }   

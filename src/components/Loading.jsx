@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./Header";
+import Header from "./NavHeader";
 
 function Loading(props){
     return <div>
@@ -17,10 +17,30 @@ function Loading(props){
     </div>
     </div>
 }
+  
+function LoadingPage(props)
+{
+    return(
+        <div>
+            <Header title="Please Wait"/>
+            <div className="container " style={{display:'flex', justifyContent:"center"}}>
+            <ul style={{listStyle:"none" , textAlign:"center" }}>
+                <li><img src = {process.env.PUBLIC_URL + "ripple-nobg.gif"} ></img></li>
+                <li><h1>{props.message}</h1></li>
+            </ul>
+            
+            
+            </div>
+           
+        </div>
+    )
+}
+
+
 function Caption(props)
 {
     return(<span class="caption" style={{display:"block"}}>{props.caption}</span>) ; 
 }
 
 export default Loading;
-export {Caption , Loading} ; 
+export {Caption , Loading , LoadingPage} ; 

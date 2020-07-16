@@ -2,7 +2,7 @@ import WriteStory from './Story' ;
 import React from 'react' ;  
 import * as Atts from "./Atts" ; 
 import db from '../../database/db'; 
-import Loading from '../../components/Loading';
+import {LoadingPage} from '../../components/Loading';
 /* This is the main page for the Write Story 
 the Other pages redirect to this page with three properties
 1. StoryId , title , new/notNew
@@ -23,15 +23,16 @@ class WriteTheStory extends React.PureComponent{
             "StorySeries":"",
             "part":0,
             "PublishSave" : true , 
-            "StoryCoverPage" :process.env.PUBLIC_URL+"ScribbleBow.png" , 
             "ArticleType":"Personal Blog",
             "FictionBasedOn":"",
             "published":false
-        }, stage:0 }
+        }, stage:0 ,  "StoryCoverPage" :process.env.PUBLIC_URL+"ScribbleBow.png" ,  }
     }
     shouldComponentUpdate(nextProps , nextState)
     {
         if(this.props === nextProps &&this.state.StoryDetails.id === nextState.StoryDetails.id && this.state.stage === nextState.stage) return false ; else return true ; 
+        
+        
     }
     GetStoryDetails = function  (collecName, StoryId)
         {
@@ -55,11 +56,12 @@ class WriteTheStory extends React.PureComponent{
                     "StorySeries":"",
                     "part":querySnapshot.data().part,
                     "PublishSave" : false , 
-                    "StoryCoverPage":process.env.PUBLIC_URL+"ScribbleBow.png" , 
                     "ArticleType": ("type" in  querySnapshot.data())?querySnapshot.data().type:"Personal Blog",
                     "FictionBasedOn":("basedOn" in  querySnapshot.data())?querySnapshot.data().basedOn:"",
                     "published":querySnapshot.data().published,
                 }   ;
+
+                console.log("setting the Story data")
                      this.setState({StoryDetails: sep }) ; 
                     
                 }
@@ -82,12 +84,15 @@ class WriteTheStory extends React.PureComponent{
             console.log("Get Cover Page is called"); 
             image.getDownloadURL().then((url) => { 
               
-                let tempStory = 
-                {
-                    ...this.state.StoryDetails, 
-                    "StoryCoverPage": url  
-                }
-                this.setState({StoryDetails:tempStory, stage:4 }) ;
+                
+
+                
+                setTimeout(() => {
+                    this.setState({StoryCoverPage:url, stage:4}) ; 
+                }, 1000);    
+                
+               
+               
                 console.log("setting the iamge") ;
               
             }, (error)=>{ this.setState({stage:4 }) ; });
@@ -99,9 +104,13 @@ class WriteTheStory extends React.PureComponent{
         if(!this.props.location.state.new) {
             this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);
         if(this.state.stage ==4 )
-            return (<div><WriteStory StoryDetails ={this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;
+            return (<div><WriteStory 
+            StoryDetails ={this.state.StoryDetails} 
+            new = {this.props.location.state.new} 
+            title={this.props.location.state.title}
+            StoryCoverPage={this.state.StoryCoverPage} /></div>) ;
         if(this.state.stage == 0 )
-          return(<div><Loading message="Loading Content" /></div>); 
+          return(<div><LoadingPage message="Loading Content" /></div>); 
 
 
         }
@@ -110,7 +119,9 @@ class WriteTheStory extends React.PureComponent{
 
                 ...this.state.StoryDetails , 
                 "StoryContent": new Date().toLocaleString()+","
-            } :this.state.StoryDetails} new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;} 
+            } :this.state.StoryDetails} 
+            StoryCoverPage = {this.state.StoryCoverPage}
+            new = {this.props.location.state.new} title={this.props.location.state.title} /></div>) ;} 
     }
 }
 

@@ -53,7 +53,7 @@ class ReadStory extends React.PureComponent{
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
                    }     ; 
-                     this.setState({StoryDetails: sep }) ; 
+                     this.setState({StoryDetails: sep , stage: 4} ) ; 
                 }
                 )
             .catch(function(error) {
@@ -74,26 +74,6 @@ class ReadStory extends React.PureComponent{
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
             })
-        }
-        GetCoverPage  = function(imageId)
-        {
-
-          console.log("Get Cover Page is called"); 
-          const images = db.storage().ref().child('CoverPages');
-            const image = images.child(imageId);
-            image.getDownloadURL().then((url) => { 
-              
-                
-                setTimeout(()=>{
-                    this.setState({imageAddress:url , stage:4}) ;
-                },2000); 
-                console.log("setting the iamge")
-              
-            }, (error)=>{ console.log(error);  setTimeout(()=>{
-                this.setState({stage:4}) ;
-            },2000) });
-            
-           
         }
         CheckLiked(StoryId)
         {
@@ -119,10 +99,9 @@ class ReadStory extends React.PureComponent{
             "title": new URLSearchParams(this.props.location.search).get("title"), 
             "id": new URLSearchParams(this.props.location.search).get("StoryId")
         }  ;
-        console.log(allProps); 
+        console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
         this.GetAllComments(allProps.id) ; 
-        this.GetCoverPage(allProps.id);
         this.CheckLiked(allProps.id);  
         if(this.state.stage === 4)
     {
@@ -133,7 +112,7 @@ class ReadStory extends React.PureComponent{
                 <div className = "container">
                     <div className= "row">
                         <p.CoverPage 
-                        imageAddress = {this.state.imageAddress}
+                        imageAddress = {this.state.StoryDetails.coverid !="" ? this.state.StoryDetails.coverid : this.state.imageAddress}
         
                         />
                         <p.default 

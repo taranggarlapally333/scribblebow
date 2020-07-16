@@ -97,13 +97,29 @@ function getHashClassName(length)
     return color ; 
 }
 
+function Subs(ctitle) {
+    var title = ctitle;
+    title = title.split("");
+    var l = title.length;
+    var ss = [];
+    for (var i = 0; i < l; i++) {
+        var x = title[i];
+        ss.push(x);
+        for (var j = i + 1; j < l; j++) {
 
+            x += title[j];
+            ss.push(x);
+        }
+
+    }
+    return ss;
+}
 
  export {fontsAvailable ,categoryAvailable, 
     propsClass, 
     CoverPage , 
     GenreAvailable , 
     GenreColors,categoryColors,
-    documentName,
+    documentName,Subs,
     defaultImageAddress, getHashClassName
     ,tempComments,tempStoryContent,tempUser} ; 
