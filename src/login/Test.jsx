@@ -129,7 +129,7 @@ export const Test = function () {
         <div className="login-bg">
             <div className="login-bar">
                 <p>{currentLocation}</p>
-                <a onClick={() => { EditProfileimg() }}>click for subs</a>
+                <a onClick={() => { EditDB() }}>click for subs</a>
                 <p>{Date.now() + Math.random()}</p>
                 <form onSubmit={checkEmail}>
                     <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email} />
