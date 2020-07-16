@@ -23,7 +23,7 @@ export const UploadImage = function (MainDirectory,image , imageId , collectionN
             console.log('File available at', downloadURL);
             db.firestore().collection(collectionName).doc(imageId).update(
               {
-                "coverid": downloadURL
+                [collectionName==="users"?"profileimg" :"coverid"]: downloadURL
               }
             ); 
           }); 

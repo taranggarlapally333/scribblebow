@@ -52,21 +52,7 @@ class ProfilePage  extends React.Component
             }
         ).catch(error => console.log(error)) ; 
     }
-    GetProfileImage = (ProfileImageId)=>{
-        console.log("Started Retrieving the Profile Image"); 
-          const images = db.storage().ref().child('ProfileImages');
-            const image = images.child(ProfileImageId);
-            image.getDownloadURL().then((url) => { 
-              
-                 setTimeout(() => {
-                    this.setState({ProfileImageAddress:url, stage:4}) ;
-                 }, 1000); 
-                console.log("setting the Profile Image")
-              
-            }, (error)=>{ setTimeout(() => {
-                this.setState({stage:4})
-            }, 1000); });
-    }
+ 
     GetFollows = function(UserId)
     {
         
@@ -76,7 +62,7 @@ class ProfilePage  extends React.Component
         .then(querysnapshot =>{
                  let follows = querysnapshot.data().follows  ; 
                  let val = follows.find(e => e === localStorage.getItem('username')); 
-                this.setState({Userfollows: { id: UserId, array:follows} , DoesUserFollow: val!=null} ); 
+                this.setState({Userfollows: { id: UserId, array:follows} , DoesUserFollow: val!=null , stage:4} ); 
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })
@@ -106,15 +92,15 @@ class ProfilePage  extends React.Component
         this.GetUserDetails(UserId) ;
         this.GetFollowers(UserId); 
         this.GetFollows(UserId); 
-        this.GetProfileImage(UserId) ; 
         if(this.state.stage == 4 )
             return (
                 <div>
                     <NavHeader  title = "Profile"/>
                     <div  className = "container" >
                         <div className= "row"><User.UserDetails 
+                            UserId = {UserId}
                             Details  = {this.state.UserDetails}
-                            ProfileImageAddress={this.state.ProfileImageAddress}
+                            ProfileImageAddress={this.state.UserDetails.profileimg !="" ?this.state.UserDetails.profileimg : this.state.ProfileImageAddress}
                             DoesUserFollow = {this.state.DoesUserFollow}
                             IsUserFollowed = {this.state.IsUserFollowed}
                             follows = {this.state.Userfollows.array}

@@ -28,9 +28,10 @@ export const UserDetails  = function (props)
     console.log(allprops.id)
     console.log(props.follows , "Follow Button")
     const [followCount , setFollowCount] = useState({
-      "follows": props.follows.length,
-      "followers": props.followers.length
+      "follows": allprops.nfollows,
+      "followers": allprops.nfollowers
     }); 
+    const [FinalUploadImage , setFinalUpload] = useState(null) ;  
     console.log(followCount)
     const [AnalyticsButton , setAnalytics] = useState(false) ; 
     //Here Comes the Follow Message Buttons 
@@ -42,8 +43,9 @@ export const UserDetails  = function (props)
     <button className= "btn btn-default" style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Edit Profile</button></div> ;
     function handleUploadImageButton()
     {
-      //upload the Image using the Upload file Fuction in storage 
-      UploadImage("ProfileImages/" , image , allprops.id) ; 
+      //upload the Image using the Upload file Fuction in storage
+      UploadImage("ProfileImages/" , image , allprops.id , "users") ;
+      setFinalUpload(image) ;  
       setUploadImageButton("none");
     }
     function handleFollowButton()
@@ -61,6 +63,15 @@ export const UserDetails  = function (props)
             db.firestore().collection("followers").doc(allprops.id).update({
               followers: firebase.firestore.FieldValue.arrayRemove(localStorage.getItem('username'))
           });
+
+          // db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+          //   {
+          //     "nfollows": localStorage.getItem("nfollows") + val 
+          //   }
+          // ); 
+          // db.firestore().collection("users").doc(allprops.id).update({
+          //   "nfollowers": followCount.followers + val
+          // })
       }
       else 
       {
@@ -73,6 +84,15 @@ export const UserDetails  = function (props)
               db.firestore().collection("followers").doc(allprops.id).update({
                 followers: firebase.firestore.FieldValue.arrayUnion(localStorage.getItem('username'))
             });
+
+            // db.firestore().collection("users").doc(localStorage.getItem('username')).update(
+            //   {
+            //     "nfollows": localStorage.getItem("nfollows") + val 
+            //   }
+            // ); 
+            // db.firestore().collection("users").doc(allprops.id).update({
+            //   "nfollowers": followCount.followers + val
+            // })
         
       }
       setFollowButton(!FollowButton) ; 
@@ -83,7 +103,9 @@ export const UserDetails  = function (props)
     }
     function handleImageChange(event)
     {
-        let ImageFile =event.target.files[0] ;  
+        let ImageFile =event.target.files[0] ;
+        console.log("heyyyyy"); 
+        console.log(ImageFile) ;   
         if(event.target.files[0])
         {
             
@@ -98,6 +120,38 @@ export const UserDetails  = function (props)
             reader.readAsDataURL(ImageFile) ; 
             setUploadImageButton(""); 
          
+        }
+        
+    }
+    function handleFinalUpload()
+    {
+       
+      console.log(FinalUploadImage) ;  
+      if(FinalUploadImage !=null)
+        {
+            
+            
+            setImage(FinalUploadImage) ;
+            const reader = new FileReader() ; 
+            reader.addEventListener("load" , function(){
+                var CoverPageElement = document.getElementById("previewImage") ; 
+               
+                CoverPageElement.setAttribute("src" , this.result) ; 
+            }); 
+            reader.readAsDataURL(FinalUploadImage) ; 
+            setUploadImageButton("none"); 
+         
+        }
+        else{
+
+          var CoverPageElement = document.getElementById("previewImage") ; 
+          CoverPageElement.setAttribute("src" , props.ProfileImageAddress) ; 
+          let ImageFileInput  = document.getElementById("fileInput") ;
+          ImageFileInput.value = null ; 
+         
+          console.log(ImageFileInput); 
+          setUploadImageButton("none"); 
+
         }
         
     }
@@ -130,7 +184,7 @@ export const UserDetails  = function (props)
 
     var ChangeableProfileImage  = <div>
     <input type="file" 
-    name = "StoryCoverPage" 
+    name = "StoryCoverPage"
     onChange={handleImageChange}
     id = "fileInput" style={{display:"none"}}></input>
     <div className= "col-md-3">
@@ -142,7 +196,9 @@ export const UserDetails  = function (props)
         className="overlay"
         id = "previewImage" src ={props.ProfileImageAddress} alt = "Cover " style = {{maxWidth:160,height:277, maxHeight:"277"}}></img>
         </div>
-        <div><button onClick={handleUploadImageButton} className="btn btn-info" style={{display:UploadImageButton}}>Upload</button></div>
+        <div><button onClick={handleUploadImageButton} className="btn btn-info" style={{display:UploadImageButton , marginRight:"20px"}}>Upload</button>
+        <button onClick={handleFinalUpload} className="btn btn-info" style={{display:UploadImageButton}}>Cancel</button>
+        </div>
     </div>
 </div>;
 
@@ -173,7 +229,7 @@ export const UserDetails  = function (props)
                     </a>
                 </div>
                 <div className = "" style={{backgroundColor:""  ,  justifyContent:"flex-end" ,  display:"flexbox" , paddingRight:0}}>
-                  {currentUser = allprops.id ?EditProfile:FollowMessage}
+                  {currentUser == allprops.id ?EditProfile:FollowMessage}
                 </div>
                
 

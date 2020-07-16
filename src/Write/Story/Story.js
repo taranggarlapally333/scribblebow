@@ -167,7 +167,7 @@ function WriteStory(props)
         console.log(StoryId +"my id0"); 
         let CoverId = process.env.PUBLIC_URL +"ScribbleBow.png" ; 
         if(image != null)
-            UploadFile.UploadImage("CoverPages/",  image ,StoryId); 
+            UploadFile.UploadImage("CoverPages/",  image ,StoryId , Atts.documentName[props.title]); 
         var myStoryData = {
             "creator": localStorage.getItem("username") , 
             "title": StoryStatus.StoryTitle, 
