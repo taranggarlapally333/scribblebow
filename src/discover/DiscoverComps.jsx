@@ -194,7 +194,7 @@ class RetrieveSearch extends React.Component {
             </div>
         }
         else {
-            db.firestore().collection(this.props.category).where('titlekeys', 'array-contains-any',
+            db.firestore().collection(this.props.category).where("published",'==',true).where('titlekeys', 'array-contains-any',
                 this.props.searchkey).limit(20).get().then(snapshot => {
 
                     if (!snapshot.length)
@@ -218,12 +218,10 @@ class RetrieveSearch extends React.Component {
                 });
             if (this.state.retrieved.length === 0) {
                 if (this.state.k === 0) {
-                    return <div className="container" style={{width:"100%"}} >
-                                <img align="center" alt="loading" style={{height:"80px",width:"auto"}} src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/>
-                    </div>
+                    return <div className="container" align="center"><img align="center" alt="loading" src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/></div>
                 } else {
-                    return <div>
-                        <p>No results found</p>
+                    return <div className="container" align="center">
+                        <p align="center">No results found</p>
                     </div>
                 }
 
