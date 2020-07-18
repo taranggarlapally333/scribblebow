@@ -2,7 +2,7 @@ import React, { useState, memo } from "react";
 import db from "../database/db";
 import { Redirect } from "react-router";
 import * as Atts from './Story/Atts' ;
-
+import Zoom from "@material-ui/core/Zoom";
     
     
     
@@ -36,7 +36,9 @@ class CategoryDrafts extends React.PureComponent{
 {
     
     
-    return (<div className="draft-cont">
+    return (
+    <Zoom in={true}>
+    <div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
     <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
@@ -51,7 +53,7 @@ class CategoryDrafts extends React.PureComponent{
    
     </div>
     </a>
-    </div>) ; 
+    </div></Zoom>) ; 
 }
 
 
@@ -101,7 +103,7 @@ GetCoverPage  = (imageId)=>
                 if(ntabs.length===0){
                     this.setState({r:2});
                 }
-               this.setState({tabs:ntabs});
+               this.setState({tabs:ntabs,t:2});
                
             })
             .catch(function(error) {
@@ -115,9 +117,13 @@ GetCoverPage  = (imageId)=>
         }
 
         
-        setTimeout(()=>{this.setState({t:2})},2000);
+        
 
         if(this.state.t===0){
+            if(this.props.category==="works"){
+                return <div className="container" align="center"><p>Choose any of the above categories to view your drafts.</p></div>
+            }
+            else
             return <div className="container" align="center"><img align="center" alt="loading" src={process.env.PUBLIC_URL + '/ripple-nobg.gif'}/></div>
         }else{
             if(this.state.id===""){

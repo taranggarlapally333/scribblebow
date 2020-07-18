@@ -162,11 +162,12 @@ a{
 
 
 .newwork{
+    
     transition: 0.4s ease;
 }
 
 .newwork:hover{
-color: yellow;
+background-color: grey;
 cursor: pointer;
 }
 
