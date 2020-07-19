@@ -55,7 +55,7 @@ function Navbar(props)
                     <li><a href="/">My list</a></li>
                     <li><a href="">Settings</a></li>
                     <li><a href="">Report</a></li>
-                    <li><a href = "/" type= "button" onClick={()=> {localStorage.removeItem("username");db.auth().signOut()}}>Logout</a></li>
+                    <li><a href = "/" type= "button" onClick={()=> {localStorage.clear();db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
        </ul>

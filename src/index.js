@@ -49,7 +49,7 @@ ReactDOM.render(
      
       <Route exact path="/test" component={Test}
       />
-      <Route exact path="/unverif" component={Unverif}
+      <PrivateRoute exact path="/unverif" component={Unverif}
       />
       <Route exact path="/Pref0" component={Pref0}
       />

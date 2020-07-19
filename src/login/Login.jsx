@@ -20,7 +20,7 @@ function Login({history}) {
             try{
                 await db
                 .auth()
-                .signInWithEmailAndPassword(email.value, password.value);
+                .signInWithEmailAndPassword(email.value.toLowerCase(), password.value);
                
                 history.push("/Log0");
             }catch (error){
@@ -46,7 +46,7 @@ function Login({history}) {
     const handleFpass = function(event){
         setTMreq(0);
        const Email = event.target.email.value;
-       db.auth().sendPasswordResetEmail(Email)
+       db.auth().sendPasswordResetEmail(Email.toLowerCase())
               .then(function (user) {
                 setFpass(4);
               }).catch(function (e) {
