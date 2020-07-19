@@ -62,7 +62,7 @@ class WriteTheStory extends React.PureComponent{
                 }   ;
 
                 console.log("setting the Story data")
-                     this.setState({StoryDetails: sep }) ; 
+                     this.setState({StoryDetails: sep, StoryCoverPage: querySnapshot.data().coverid , stage:4 }) ; 
                     
                 }
                 )
@@ -73,36 +73,10 @@ class WriteTheStory extends React.PureComponent{
             
              
         }
-        GetCoverPage  = function(imageId)
-        {
-
-          
-          const images = db.storage().ref().child('CoverPages');
-
-          
-            const image = images.child(imageId);
-            console.log("Get Cover Page is called"); 
-            image.getDownloadURL().then((url) => { 
-              
-                
-
-                
-                setTimeout(() => {
-                    this.setState({StoryCoverPage:url, stage:4}) ; 
-                }, 1000);    
-                
-               
-               
-                console.log("setting the iamge") ;
-              
-            }, (error)=>{ this.setState({stage:4 }) ; });
-            
-           
-        }
     render()
     {
         if(!this.props.location.state.new) {
-            this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ; this.GetCoverPage(this.props.location.state.id);
+            this.GetStoryDetails(Atts.documentName[this.props.location.state.title], this.props.location.state.id) ;
         if(this.state.stage ==4 )
             return (<div><WriteStory 
             StoryDetails ={this.state.StoryDetails} 

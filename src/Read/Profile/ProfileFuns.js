@@ -21,6 +21,9 @@ export const UserDetails  = function (props)
         ...props.Details 
         
     }; 
+    console.log("follows at the begining");
+    props.follows.map( (eachUser , index) => { console.log(index)}) ; 
+  
     const history = useHistory() ; 
     var currentUser = localStorage.getItem('username') ; 
     const [image , setImage] = useState(null) ; 
@@ -67,11 +70,11 @@ export const UserDetails  = function (props)
 
           db.firestore().collection("users").doc(localStorage.getItem('username')).update(
             {
-              "nfollows": localStorage.getItem("nfollows") + val 
+              "nfollows": firebase.firestore.FieldValue.increment(val)
             }
           ); 
           db.firestore().collection("users").doc(allprops.id).update({
-            "nfollowers": followCount.followers + val
+            "nfollowers": firebase.firestore.FieldValue.increment(val)
           })
       }
       else 
@@ -88,11 +91,11 @@ export const UserDetails  = function (props)
 
             db.firestore().collection("users").doc(localStorage.getItem('username')).update(
               {
-                "nfollows": localStorage.getItem("nfollows") + val 
+                "nfollows": firebase.firestore.FieldValue.increment(val)
               }
             ); 
             db.firestore().collection("users").doc(allprops.id).update({
-              "nfollowers": followCount.followers + val
+              "nfollowers": firebase.firestore.FieldValue.increment(val)
             })
         
       }
@@ -208,29 +211,59 @@ export const UserDetails  = function (props)
 
 
             <div>
-              <div id="followsModel" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" style={{outline:"none" ,color:"red" }}>&times;</button>
-                            <h4 class="modal-title">Follows</h4>
+              <div id="followsModel" className="modal fade" role="dialog">
+                      <div className="modal-dialog" >
+                        <div className="modal-content" >
+                          <div className="">
+                            {/* <button type="button" class="close" data-dismiss="modal" style={{outline:"none" ,color:"red" }}>&times;</button> */}
+                            
+                            <div className = "">
+                              <ul className="nav nav-tabs nav-justified" style={{marginTop:"10px"}}>
+                                <li className="active" ><a data-toggle="tab" href="#followsList" >Follows</a></li>
+                                <li><a data-toggle="tab" href="#followersList">Followers</a></li>
+                              </ul>
+                            </div>
                           </div>
-                          <div class="modal-body">
-                            {props.follows.map(eachUser =>{
-                              return (<div style={{backgroundColor:""}}>
-                                <p><a className= "handy " type="button"  onClick={()=>{ history.push({
-                            pathname:'/Profile' , 
-                            search:'?UserId='+ eachUser,
-                            state:{id: 'karthik.pasupulatei' , key:'karthik.pasupulatei'}, 
-                             
-                        });}} data-dismiss="modal" ><img  src={process.env.PUBLIC_URL + "ScribbleBow.png"}
-                        style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
-                        ></img> {eachUser}</a></p>
-                              </div>)
-                            })}
+                          <div className="modal-body" style={{height:400 , maxHeight:400, overflowY:"auto"}}>
+
+                            <div className="tab-content">
+                                <div id = "followsList" className="tab-pane fade in active" >
+                                              
+                                              {props.follows.map(eachUser =>{
+                                                console.log(eachUser)
+                                            return (<div className="ProfileFollowsList">
+                                              <p><a className= "handy" type="button"  onClick={()=>{ history.push({
+                                          pathname:'/Profile' , 
+                                          search:'?UserId='+ eachUser[0],
+                                          state:{id: eachUser[0] , key:eachUser[0]}, 
+                                          
+                                      });}}  style={{ textDecoration:"none"}} data-dismiss="modal" ><img  src={eachUser[1]=="" ?process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[0]}
+                                      style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
+                                      ></img> {eachUser[0]}</a></p>
+                                            </div>)
+                                          })}
+                                </div>
+                                <div id = "followersList" className="tab-pane fade in " >
+                                            {props.followers.map(eachUser =>{
+                                              console.log(eachUser)
+                                          return (<div className="ProfileFollowsList">
+                                            <p><a className= "handy " type="button"  onClick={()=>{ history.push({
+                                        pathname:'/Profile' , 
+                                        search:'?UserId='+ eachUser[0],
+                                        state:{id: eachUser[0] , key:eachUser[0]}, 
+                                        
+                                    });}} data-dismiss="modal" ><img  src={eachUser[1]===""? process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[1]}
+                                    style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
+                                    ></img> {eachUser[0]}</a></p>
+                                          </div>)
+                                        })}
+                                </div>
+                            </div>
+                            
+
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                           </div>
                         </div>
 

@@ -165,9 +165,10 @@ function WriteStory(props)
             var StoryId  = Date.now().toString() ; 
         else var StoryId = props.StoryDetails.id  ; 
         console.log(StoryId +"my id0"); 
-        let CoverId = process.env.PUBLIC_URL +"ScribbleBow.png" ; 
+        let CoverId =props.StoryCoverPage ;  
         if(image != null)
-            UploadFile.UploadImage("CoverPages/",  image ,StoryId , Atts.documentName[props.title]); 
+            UploadFile.UploadImage("CoverPages/",  image ,StoryId , Atts.documentName[props.title]);
+        else if (CoverId === "ScribbleBow.png")CoverId="" ;
         var myStoryData = {
             "creator": localStorage.getItem("username") , 
             "title": StoryStatus.StoryTitle, 
@@ -189,15 +190,8 @@ function WriteStory(props)
         if (props.new)
             {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ;
 
-                if(PubSaveButton)
-                {
-                    db.firestore().collection("comments").doc(StoryId).set({
-                        comments: []
-                    });
-                    db.firestore().collection("likes").doc(StoryId).set({
-                        usernames: []
-                    }); } 
-                else{
+               
+                if(!PubSaveButton){
                     history.push(
                         {
                             pathname:'/WriteStory', 
@@ -225,6 +219,12 @@ function WriteStory(props)
                 alert("Your "+ props.title + " is Succesfully Published."); 
                 setStage(5) ;
                 setTimeout(()=>{setStage(4)},6000) ; 
+                db.firestore().collection("comments").doc(StoryId).set({
+                    comments: []
+                });
+                db.firestore().collection("likes").doc(StoryId).set({
+                    usernames: []
+                });  
             }
              
            

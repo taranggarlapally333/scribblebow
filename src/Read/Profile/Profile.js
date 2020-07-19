@@ -60,9 +60,21 @@ class ProfilePage  extends React.Component
         .doc(UserId)
         .get()
         .then(querysnapshot =>{
-                 let follows = querysnapshot.data().follows  ; 
-                 let val = follows.find(e => e === localStorage.getItem('username')); 
-                this.setState({Userfollows: { id: UserId, array:follows} , DoesUserFollow: val!=null , stage:4} ); 
+                 let tempfollows = querysnapshot.data().follows  ; 
+                 let val = false  ; 
+                 var follows  = [];
+                 tempfollows.forEach( eachFollows=>{
+                     if (eachFollows === localStorage.getItem('username')) val = true  ; 
+                    db.firestore().collection("users").doc(eachFollows).get().then(snapshot=>{
+                            follows.push([eachFollows , snapshot.data().profileimg?snapshot.data().profileimg : ""])
+                    })
+                 })
+                console.log("all follows") ;
+                console.log(follows); 
+                console.log("follows[0]") ;
+                console.log(follows[0]) ; 
+                this.setState({Userfollows: { id: UserId, array:follows} , DoesUserFollow: val , stage:4} ); 
+                
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })
@@ -74,11 +86,18 @@ class ProfilePage  extends React.Component
         .doc(UserId)
         .get()
         .then(querysnapshot =>{
-                let followers = querysnapshot.data().followers  ;
-                console.log("followers in main page") ; 
-                console.log(followers) ;  
-                let val = followers.find(e => e === localStorage.getItem('username')); 
-                this.setState({Usersfollowers :{ id: UserId, array:followers} , IsUserFollowed: val!=null} ); 
+                let tempfollowers = querysnapshot.data().followers  ;
+                let followers=[] ; 
+                let val = false ; 
+                tempfollowers.forEach(eachFollower =>{
+                    if (eachFollower === localStorage.getItem('username')) val = true ; 
+                    db.firestore().collection("users").doc(eachFollower).get().then( snapshot=>{
+                        followers.push([eachFollower , snapshot.data().profileimg])
+                    })
+                })
+
+                
+                this.setState({Usersfollowers :{ id: UserId, array:followers} , IsUserFollowed: val} ); 
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })

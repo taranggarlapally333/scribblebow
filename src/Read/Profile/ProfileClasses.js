@@ -79,8 +79,8 @@ GetCoverPage  = (imageId)=>
             let snapshot  = db.firestore()
             .collection( Atts.documentName[this.props.category])
             .where("creator","==",this.props.UserId) ;
-            if (this.props.UserId != localStorage.getItem('username'))
-               snapshot = snapshot.where("published","==" ,true) ;
+            
+            snapshot = snapshot.where("published","==" ,true) ;
              
             snapshot
             .get()

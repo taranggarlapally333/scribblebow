@@ -17,7 +17,7 @@ class ReadStory extends React.PureComponent{
              "myid":"",
              
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
-         AllStoryComments:[],
+         AllStoryComments:{ comments:null},
          stage:0,
         Liked:false } ; 
             
@@ -28,7 +28,7 @@ class ReadStory extends React.PureComponent{
         console.log("Update");  
         console.log(this.state.AllStoryComments); 
         console.log(this.state.StoryDetails.myid === nextState.StoryDetails.myid ); 
-        console.log(this.state.AllStoryComments === nextState.AllStoryComments); 
+        console.log(this.state.AllStoryComments.length === nextState.AllStoryComments.length); 
         console.log(this.state.stage == nextState.stage);
         if(this.props == nextprops 
             && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
@@ -53,7 +53,7 @@ class ReadStory extends React.PureComponent{
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
                    }     ; 
-                     this.setState({StoryDetails: sep , stage: 4} ) ; 
+                     this.setState({StoryDetails: sep } ) ; 
                 }
                 )
             .catch(function(error) {
@@ -77,6 +77,7 @@ class ReadStory extends React.PureComponent{
         }
         CheckLiked(StoryId)
         {
+            console.log("checked Liked")
             db.firestore().collection("likes")
             .doc(StoryId)
             .get()
@@ -86,10 +87,12 @@ class ReadStory extends React.PureComponent{
                        let likedUsers = querysnapshot.data().usernames; 
                        console.log(likedUsers) ;
                        let val = likedUsers.find(e => e === localStorage.getItem('username')); 
-                       this.setState({Liked:val!=null});  
+                       this.setState({Liked:val!=null , stage:4 });  
+                       console.log("setting to 4 ")
                    }
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
+                this.setState({stage:4})
             }); 
         }
 
@@ -101,6 +104,7 @@ class ReadStory extends React.PureComponent{
         }  ;
         console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
+        
         this.GetAllComments(allProps.id) ; 
         this.CheckLiked(allProps.id);  
         if(this.state.stage === 4)
@@ -119,7 +123,7 @@ class ReadStory extends React.PureComponent{
                         id = {allProps.id} 
                         Details = {this.state.StoryDetails}
                         title = {allProps.title}
-                        Comments = {this.state.AllStoryComments}
+                        Comments = {this.state.AllStoryComments.comments}
                         Liked = {this.state.Liked}
                         />
                     </div>

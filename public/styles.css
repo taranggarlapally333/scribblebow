@@ -557,7 +557,9 @@ text-decoration: underline;
   
   
 }
-
+.ProfileFollowsList:hover 
+{
+    background-color:rgb(232,232,232);
 
 
 

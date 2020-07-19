@@ -2,7 +2,7 @@ import React ,{useState}from 'react' ;
 import * as icons from 'react-icons/md';
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
-import {Caption} from '../../components/Loading' ; 
+import {Caption, LoadingPage} from '../../components/Loading' ; 
 import * as Atts from '../../Write/Story/Atts'; 
 import { Redirect, useHistory } from "react-router";
 import db from '../../database/db';
@@ -31,9 +31,7 @@ function StoryDetails(props)
 
     const [LikeState ,setLikeState] = useState(props.Liked) ; 
     console.log(LikeCommentCount); 
-    let storeComment = null ; 
-    if(props.Comments !=null) storeComment = props.Comments.comments ;  
-    const [AllStoryComments , setAllComments] = useState(storeComment) ;
+    const [AllStoryComments , setAllComments] = useState(props.Comments) ;
     console.log("Storuy commets0"); 
     console.log(AllStoryComments); 
     var Hashtags = myStoryDetails.hastags ; 
@@ -86,7 +84,7 @@ function StoryDetails(props)
                 comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
             });
             
-            setAllComments([...AllStoryComments , thePushComment]) ;
+            setAllComments([ thePushComment ,...AllStoryComments ]) ;
         }
         else 
         {
@@ -175,8 +173,7 @@ function StoryDetails(props)
    if (currLoc !="/ReadStory" || localStorage.getItem('username') != myStoryDetails.creator) EditStory = null ; 
    if (currLoc !="/ReadStory"){ LikeCommentAdd =shadow= null ; } 
    if (myStoryDetails.published == false) LikeCommentAdd = null ; 
-   var Hashtags = myStoryDetails.hashtags+"" ; 
-   var myHashtags = [...Hashtags.split("#")] ; 
+   var myHashtags = myStoryDetails.hashtags 
    console.log(myHashtags); 
 
     return (
@@ -255,6 +252,50 @@ function CoverPage(props)
                 </div>
             </div>
         ); 
+}
+
+class Comments extends React.Component
+{
+    constructor(props)
+    {
+        super(props) ;
+        this.state = { AllStoryComments:{ comments:null} , stage : 0 }
+    }
+    GetAllComments = function (StoryId)
+    {
+        db.firestore().collection("comments")
+        .doc(StoryId)
+        .get()
+        .then(querysnapshot =>{
+            if(querysnapshot.exists)
+                this.setState({AllStoryComments : querysnapshot.data()} ); 
+        }).catch(error =>{
+            console.log(error) ;console.log("NO COmmetns"); 
+        })
+    }
+   
+        render()
+        {
+            this.GetAllComments(this.props.id); 
+            if(this.state.stage == 4 )
+            {
+                return(
+
+                    <div>
+                        {this.state.AllStoryComments.map((eachComment , index)=>{
+
+                            return ( <div className="FitToContent" key= {index}>
+                                        <h4 className="FitToContent">{eachComment.user}</h4>
+                                        <p className = "FitToContent" >{eachComment.comment}</p>
+                                    </div>); 
+                        })}
+                    </div>
+                   
+                ); 
+            }
+            else return (<LoadingPage message= "Loading all Comments"/>)
+           
+        }
 }
 
 export default StoryDetails; 
