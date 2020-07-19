@@ -3,6 +3,7 @@ import { Redirect } from "react-router";
 import { Username } from "../database/funcs";
 import { AuthContext } from "../Auth";
 import db from "../database/db";
+import { MdLinkedCamera } from "react-icons/md";
 
 
 export const Test = function () {
@@ -51,6 +52,62 @@ export const Test = function () {
         return ss;
     }
 
+
+
+    const UserKey = function(){
+        db.firestore().collection("users").get()
+        .then(querySnapshot => {
+
+            querySnapshot.forEach(doc => {
+              
+                  var name = doc.data().fname+" "+doc.data().lname;
+                  name = name.toLowerCase();
+                  const userkeys = Subs(name);
+                  console.log(userkeys);
+                                db.firestore().collection("users").doc(doc.id).update({
+                                    userkeys: userkeys
+                                });
+            });
+        });
+
+    }
+
+
+    const ContentNum = function(){
+        db.firestore().collection("users").get().then((snapshot)=>{
+            snapshot.forEach((snap)=>{
+
+           
+            var l = ["poems", "quotes", "audio", "scripts", "articles", "fanfiction", "stories"]
+        l.forEach(element => {
+            db.firestore().collection(element).where("creator","==",snap.id).where("published","==",true).get()
+                .then(querySnapshot => {
+                    var lst=0;
+                    querySnapshot.forEach(doc=>{
+                        lst+=1;
+                    });
+                    console.log(lst)
+                    db.firestore().collection("users").doc(snap.id).update({
+                        [element]: lst
+                    });
+                });
+        });
+    });
+        });
+    }
+
+    const test=function(){
+        db.firestore().collection("users").doc('taranggarlapally').get().then((doc)=>{
+            if(doc.data().lname){
+                console.log(doc.data().lname);
+            }
+            if(doc.data().ctitle){
+                console.log(doc.data().ctitle);
+            }else{
+                console.log("doesn't exist");
+            }
+        })
+    }
 
     const EditProfileimg = function () {
         
@@ -123,14 +180,15 @@ export const Test = function () {
     }
 
 
+    const tname = "TargEj@jR.Com"
 
     return (
 
         <div className="login-bg">
             <div className="login-bar">
                 <p>{currentLocation}</p>
-                <a onClick={() => { EditDB() }}>click for subs</a>
-                <p>{Date.now() + Math.random()}</p>
+                <a onClick={() => { ContentNum() }}>click for subs</a>
+                <p>{tname.toLowerCase()}</p>
                 <form onSubmit={checkEmail}>
                     <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email} />
                     <input type="submit" name="submit" value="Check" />

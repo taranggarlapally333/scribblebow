@@ -65,7 +65,7 @@ function Signup(props) {
         try{
             await db
             .auth()
-            .createUserWithEmailAndPassword(newuser.email, newuser.password);
+            .createUserWithEmailAndPassword(newuser.email.toLowerCase(), newuser.password);
         }catch (error){
             if(error.code==="auth/email-already-in-use")
             {

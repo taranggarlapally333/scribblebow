@@ -33,6 +33,13 @@ function Pref0(props){
             title: props.newuser.title,
             nfollows:0,
             nfollowers: 0,
+            stories:0,
+            poems:0,
+            quotes:0,
+            scripts:0,
+            fanfiction:0,
+            audio:0,
+            articles:0,
             uid: currentUser.uid
         })
     }
@@ -52,6 +59,28 @@ function Pref0(props){
             follows: []
         })
     }
+
+    function Subs(ctitle) {
+        var title = ctitle;
+        title = title.split("");
+        var l = title.length;
+        var ss = [];
+        for (var i = 0; i < l; i++) {
+            var x = title[i];
+            ss.push(x);
+            for (var j = i + 1; j < l; j++) {
+
+                x += title[j];
+                ss.push(x);
+            }
+
+        }
+        return ss;
+    }
+
+
+
+
 
     const CreateFollowers = function(){
         const custom_id = props.newuser.email.split("@")[0];
@@ -91,7 +120,7 @@ function Pref0(props){
     if(currentUser){
         db.auth().currentUser.sendEmailVerification()
     .then(function() {
-      alert("we've sent you an account to verify your email")
+      alert("we've sent you an email to verify your account")
     })
     .catch(function(error) {
        console.log(error);
@@ -100,7 +129,16 @@ function Pref0(props){
         AddUser2();    
         CreateFollows();
         CreateFollowers();
+        var tname = props.newuser.fname+" "+props.newuser.lname;
+        tname = tname.toLowerCase();
+        const userkeys = Subs(tname);
+        
+                    
         const name = props.newuser.email.split("@")[0];
+
+        db.firestore().collection("users").doc(name).update({
+            userkeys: userkeys
+        });
         const uid=currentUser.uid;
         const emailverif = currentUser.emailVerified;
         localStorage.setItem("username", name);

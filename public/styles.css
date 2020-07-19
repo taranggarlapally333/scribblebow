@@ -172,7 +172,36 @@ cursor: pointer;
 }
 
 
+.fbtn{
+    transition: 0.4s ease;
+    background-color: blue;
+    color:white;
+    
+}
 
+.fbtn:hover{
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    background-color: white;
+    color: black;
+}
+
+
+.fbtn2{
+    transition: 0.4s ease;
+    background-color: green;
+    color:white;
+    
+}
+
+.fbtn2:hover{
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    background-color: white;
+    color: black;
+}
 
 .pointer:hover{
     cursor: pointer;
