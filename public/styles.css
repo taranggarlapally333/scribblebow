@@ -176,15 +176,17 @@ cursor: pointer;
     transition: 0.4s ease;
     background-color: blue;
     color:white;
+    outline: none;
     
 }
 
 .fbtn:hover{
     border-style: solid;
     border-color: black;
-    border-width: 2px;
+    border-width: 1px;
     background-color: white;
     color: black;
+    outline: none ; 
 }
 
 
@@ -192,15 +194,17 @@ cursor: pointer;
     transition: 0.4s ease;
     background-color: green;
     color:white;
+    outline: none;
     
 }
 
 .fbtn2:hover{
     border-style: solid;
     border-color: black;
-    border-width: 2px;
+    border-width: 1px;
     background-color: white;
     color: black;
+    outline :none;
 }
 
 .pointer:hover{
@@ -590,7 +594,7 @@ text-decoration: underline;
 .ProfileFollowsList:hover 
 {
     background-color:rgb(232,232,232);
-
+}
 
 
 .mybtn{
@@ -647,7 +651,6 @@ outline-width: 0;
 .FitToContent
 {
     width: fit-content;
-    /* background-color: red; */
 }
 form.create-note {
     position: relative;

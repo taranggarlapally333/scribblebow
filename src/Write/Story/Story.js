@@ -217,14 +217,15 @@ function WriteStory(props)
             else 
             {
                 alert("Your "+ props.title + " is Succesfully Published."); 
-                setStage(5) ;
-                setTimeout(()=>{setStage(4)},6000) ; 
                 db.firestore().collection("comments").doc(StoryId).set({
                     comments: []
                 });
                 db.firestore().collection("likes").doc(StoryId).set({
                     usernames: []
                 });  
+                setStage(5) ;
+                setTimeout(()=>{setStage(4)},6000) ; 
+                
             }
              
            

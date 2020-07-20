@@ -21,9 +21,8 @@ export const UserDetails  = function (props)
         ...props.Details 
         
     }; 
-    console.log("follows at the begining");
-    props.follows.map( (eachUser , index) => { console.log(index)}) ; 
   
+    console.log(props.IsUserFollowed, "Is UserFollowed") ; 
     const history = useHistory() ; 
     var currentUser = localStorage.getItem('username') ; 
     const [image , setImage] = useState(null) ; 
@@ -33,7 +32,7 @@ export const UserDetails  = function (props)
     console.log(props.follows , "Follow Button")
     const [followCount , setFollowCount] = useState({
       "follows": allprops.nfollows,
-      "followers": allprops.nfollowers
+      "followers": allprops.nfollowers, 
     }); 
     const [FinalUploadImage , setFinalUpload] = useState(null) ;  
     console.log(followCount)
@@ -206,6 +205,7 @@ export const UserDetails  = function (props)
     </div>
 </div>;
 
+   
     return(
         <div  >
 
@@ -218,7 +218,7 @@ export const UserDetails  = function (props)
                             {/* <button type="button" class="close" data-dismiss="modal" style={{outline:"none" ,color:"red" }}>&times;</button> */}
                             
                             <div className = "">
-                              <ul className="nav nav-tabs nav-justified" style={{marginTop:"10px"}}>
+                              <ul className="nav nav-tabs nav-justified" style={{marginTop:"3px"}}>
                                 <li className="active" ><a data-toggle="tab" href="#followsList" >Follows</a></li>
                                 <li><a data-toggle="tab" href="#followersList">Followers</a></li>
                               </ul>
@@ -237,11 +237,15 @@ export const UserDetails  = function (props)
                                           search:'?UserId='+ eachUser[0],
                                           state:{id: eachUser[0] , key:eachUser[0]}, 
                                           
-                                      });}}  style={{ textDecoration:"none"}} data-dismiss="modal" ><img  src={eachUser[1]=="" ?process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[0]}
-                                      style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
-                                      ></img> {eachUser[0]}</a></p>
+                                      });}}  style={{ textDecoration:"none"}} data-dismiss="modal" >
+                                      <img  src={eachUser[1]=="" ?process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[1]}
+                                      style={{ borderRadius:"50%" , width:"50px" , height:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
+                                      ></img> 
+                                      {eachUser[0]}
+                                      </a></p>
                                             </div>)
                                           })}
+                                          {props.follows.length==0 ? "No Follows Yet":null}
                                 </div>
                                 <div id = "followersList" className="tab-pane fade in " >
                                             {props.followers.map(eachUser =>{
@@ -252,11 +256,16 @@ export const UserDetails  = function (props)
                                         search:'?UserId='+ eachUser[0],
                                         state:{id: eachUser[0] , key:eachUser[0]}, 
                                         
-                                    });}} data-dismiss="modal" ><img  src={eachUser[1]===""? process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[1]}
-                                    style={{ borderRadius:"50%" , width:"50px" , border:"1px solid lightgray" , marginRight:"10px"}}
-                                    ></img> {eachUser[0]}</a></p>
+                                    });}} style={{ textDecoration:"none"}}  data-dismiss="modal" >
+                                    <img  src={eachUser[1]===""? process.env.PUBLIC_URL + "ScribbleBow.png": eachUser[1]}
+                                    style={{ borderRadius:"50%" , width:"50px" , height:"50px" ,border:"1px solid lightgray" , marginRight:"10px"}}
+                                    ></img> 
+                                    {eachUser[0]}
+                                    </a></p>
                                           </div>)
-                                        })}
+                                      })}
+
+                                      {props.followers.length==0 ? "No Followers Yet":null}
                                 </div>
                             </div>
                             
@@ -290,7 +299,7 @@ export const UserDetails  = function (props)
                     <a type="button" style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginRight:"30px"}}  data-toggle="modal" data-target="#followsModel" className="handy">
                       <h4>Follows</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.follows} /></div>
                     </a>
-                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginLeft:"30px",backgroundColor:""}}>
+                    <a style={{textDecoration:"none" , textAlign:"center", margin:"10px" , marginLeft:"30px",backgroundColor:""}} data-toggle="modal" data-target="#followsModel" className="handy">
                       <h4>Followers</h4><div style={{fontSize:"35px"}}><Caption caption={followCount.followers} /></div>
                     </a>
                 </div>

@@ -31,6 +31,7 @@ function StoryDetails(props)
 
     const [LikeState ,setLikeState] = useState(props.Liked) ; 
     console.log(LikeCommentCount); 
+    
     const [AllStoryComments , setAllComments] = useState(props.Comments) ;
     console.log("Storuy commets0"); 
     console.log(AllStoryComments); 
@@ -75,35 +76,40 @@ function StoryDetails(props)
         event.preventDefault(); 
         console.log("THe event triggerd "); 
         let theComment = event.target.StoryComment.value ; 
-        let thePushComment = {"user": localStorage.getItem('username'), "comment" : theComment} ;
-        console.log(thePushComment);
-             
-        if(AllStoryComments != null)
+        if(theComment != "")
         {
-            db.firestore().collection("comments").doc(myStoryDetails.myid).update({
-                comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
-            });
-            
-            setAllComments([ thePushComment ,...AllStoryComments ]) ;
+                    let thePushComment = {"user": localStorage.getItem('username'), "comment" : theComment} ;
+                console.log(thePushComment);
+                    
+                if(AllStoryComments != null)
+                {
+                    db.firestore().collection("comments").doc(myStoryDetails.myid).update({
+                        comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
+                    });
+                    
+                    setAllComments([ thePushComment ,...AllStoryComments ]) ;
+                }
+                else 
+                {
+                    db.firestore().collection("comments").doc(myStoryDetails.myid).set({
+                        comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
+                    });
+                    setAllComments([thePushComment]) ;
+                }
+                db.firestore().collection(Atts.documentName[props.title]).doc(myStoryDetails.myid).update(
+                    {
+                        "ncomments": myStoryDetails.ncomments+1 
+                    }
+                );
+                setLikeCommentCount({
+                    ...LikeCommentCount,
+                    "comments": LikeCommentCount.comments+ 1 
+                });
         }
-        else 
-        {
-            db.firestore().collection("comments").doc(myStoryDetails.myid).set({
-                comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
-            });
-            setAllComments([thePushComment]) ;
-        }
-        db.firestore().collection(Atts.documentName[props.title]).doc(myStoryDetails.myid).update(
-            {
-                "ncomments": myStoryDetails.ncomments+1 
-            }
-        );
-        setLikeCommentCount({
-            ...LikeCommentCount,
-            "comments": LikeCommentCount.comments+ 1 
-        }); 
+         
         if(CommentButton == "Back to Read "+ props.title)
             handleStoryAllComment(); 
+            
         setExpanded(!isExpanded);
     }
     function handleStoryAllComment()
@@ -191,11 +197,11 @@ function StoryDetails(props)
                 {ArticleType}
                 <p>Hashtags: </p>
                 <div className = "row container">
-                    {myHashtags.map((eachHashtag )=>{
+                    { myHashtags ? myHashtags.map((eachHashtag )=>{
                         return(
                             <a  href={"/Discover?tag="+eachHashtag} style={{fontSize:20, padding:"10px", }}><span className ="label label-default box" style={{ backgroundColor:Atts.getHashClassName(eachHashtag.length)}}>{eachHashtag}</span></a>
                         ); 
-                    })}
+                    }): null}
                 </div>
                 {LikeCommentAdd}
                 {EditStory}
@@ -215,7 +221,7 @@ function StoryDetails(props)
                     )}
                     <Zoom in={isExpanded}>
                         <button className="btn btn-primary col" style={{margin:"10px", marginTop:"-20px"}} >
-                        {/* <icons.MdSend size="20" /> */}
+                        
                         Comment
                         </button>
                     </Zoom>
@@ -268,7 +274,7 @@ class Comments extends React.Component
         .get()
         .then(querysnapshot =>{
             if(querysnapshot.exists)
-                this.setState({AllStoryComments : querysnapshot.data()} ); 
+                this.setState({AllStoryComments : querysnapshot.data().comments , stage: 4 } ); 
         }).catch(error =>{
             console.log(error) ;console.log("NO COmmetns"); 
         })
@@ -282,10 +288,10 @@ class Comments extends React.Component
                 return(
 
                     <div>
-                        {this.state.AllStoryComments.map((eachComment , index)=>{
+                        {this.state.AllStoryComments.reverse().map((eachComment , index)=>{
 
                             return ( <div className="FitToContent" key= {index}>
-                                        <h4 className="FitToContent">{eachComment.user}</h4>
+                                        <h4 className="FitToContent" style={{color: Atts.getHashClassName(eachComment.user.length)}}>{eachComment.user}</h4>
                                         <p className = "FitToContent" >{eachComment.comment}</p>
                                     </div>); 
                         })}
@@ -293,10 +299,10 @@ class Comments extends React.Component
                    
                 ); 
             }
-            else return (<LoadingPage message= "Loading all Comments"/>)
+            else return (<img src= {process.env.PUBLIC_URL +"ripple-nobg.gif"}></img>)
            
         }
 }
 
 export default StoryDetails; 
-export {StoryContent , StoryDetails , CoverPage}; 
+export {StoryContent , StoryDetails , CoverPage , Comments}; 

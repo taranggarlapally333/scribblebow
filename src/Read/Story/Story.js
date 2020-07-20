@@ -123,7 +123,7 @@ class ReadStory extends React.PureComponent{
                         id = {allProps.id} 
                         Details = {this.state.StoryDetails}
                         title = {allProps.title}
-                        Comments = {this.state.AllStoryComments.comments}
+                        Comments = {this.state.AllStoryComments.comments.reverse()}
                         Liked = {this.state.Liked}
                         />
                     </div>
@@ -131,6 +131,7 @@ class ReadStory extends React.PureComponent{
                     <p.StoryContent
                         Details = {this.state.StoryDetails}
                     />
+                    
                 </div>
             </div>
             ); 
