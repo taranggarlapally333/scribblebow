@@ -15,9 +15,10 @@ class ReadStory extends React.PureComponent{
          super(props) ;
          this.state = {StoryDetails:{
              "myid":"",
+             "published": false ,
              
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
-         AllStoryComments:[],
+         AllStoryComments:{ comments:[]},
          stage:0,
         Liked:false } ; 
             
@@ -28,12 +29,13 @@ class ReadStory extends React.PureComponent{
         console.log("Update");  
         console.log(this.state.AllStoryComments); 
         console.log(this.state.StoryDetails.myid === nextState.StoryDetails.myid ); 
-        console.log(this.state.AllStoryComments === nextState.AllStoryComments); 
+        console.log(this.state.AllStoryComments.length === nextState.AllStoryComments.length); 
         console.log(this.state.stage == nextState.stage);
         if(this.props == nextprops 
             && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
             && this.state.AllStoryComments.length === nextState.AllStoryComments.length
             && this.state.Liked === nextState.Liked
+            && this.state.StoryDetails.published === nextState.published
             && this.state.stage == nextState.stage)
              return false ; 
         else return true ; 
@@ -53,7 +55,15 @@ class ReadStory extends React.PureComponent{
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
                    }     ; 
-                     this.setState({StoryDetails: sep , stage: 4} ) ; 
+                   if (sep.published)
+                   {
+                    this.setState({StoryDetails: sep } ) ; 
+                   }
+                   else 
+                   {
+                    this.setState({StoryDetails: sep , stage:4 } ) ; 
+                   }
+                     
                 }
                 )
             .catch(function(error) {
@@ -77,6 +87,7 @@ class ReadStory extends React.PureComponent{
         }
         CheckLiked(StoryId)
         {
+            console.log("checked Liked")
             db.firestore().collection("likes")
             .doc(StoryId)
             .get()
@@ -86,10 +97,12 @@ class ReadStory extends React.PureComponent{
                        let likedUsers = querysnapshot.data().usernames; 
                        console.log(likedUsers) ;
                        let val = likedUsers.find(e => e === localStorage.getItem('username')); 
-                       this.setState({Liked:val!=null});  
+                       this.setState({Liked:val!=null , stage:4 });  
+                       console.log("setting to 4 ")
                    }
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
+                this.setState({stage:4})
             }); 
         }
 
@@ -101,8 +114,12 @@ class ReadStory extends React.PureComponent{
         }  ;
         console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
-        this.GetAllComments(allProps.id) ; 
-        this.CheckLiked(allProps.id);  
+        if( this.state.StoryDetails.published)
+        {
+            this.GetAllComments(allProps.id) ; 
+            this.CheckLiked(allProps.id);
+        }
+         
         if(this.state.stage === 4)
     {
         return (
@@ -119,7 +136,7 @@ class ReadStory extends React.PureComponent{
                         id = {allProps.id} 
                         Details = {this.state.StoryDetails}
                         title = {allProps.title}
-                        Comments = {this.state.AllStoryComments}
+                        Comments = {this.state.AllStoryComments.comments.reverse()}
                         Liked = {this.state.Liked}
                         />
                     </div>
@@ -127,6 +144,7 @@ class ReadStory extends React.PureComponent{
                     <p.StoryContent
                         Details = {this.state.StoryDetails}
                     />
+                    
                 </div>
             </div>
             ); 

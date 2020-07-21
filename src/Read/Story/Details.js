@@ -2,7 +2,7 @@ import React ,{useState}from 'react' ;
 import * as icons from 'react-icons/md';
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
-import {Caption} from '../../components/Loading' ; 
+import {Caption, LoadingPage} from '../../components/Loading' ; 
 import * as Atts from '../../Write/Story/Atts'; 
 import { Redirect, useHistory } from "react-router";
 import db from '../../database/db';
@@ -31,9 +31,8 @@ function StoryDetails(props)
 
     const [LikeState ,setLikeState] = useState(props.Liked) ; 
     console.log(LikeCommentCount); 
-    let storeComment = null ; 
-    if(props.Comments !=null) storeComment = props.Comments.comments ;  
-    const [AllStoryComments , setAllComments] = useState(storeComment) ;
+    
+    const [AllStoryComments , setAllComments] = useState(props.Comments) ;
     console.log("Storuy commets0"); 
     console.log(AllStoryComments); 
     var Hashtags = myStoryDetails.hastags ; 
@@ -77,35 +76,40 @@ function StoryDetails(props)
         event.preventDefault(); 
         console.log("THe event triggerd "); 
         let theComment = event.target.StoryComment.value ; 
-        let thePushComment = {"user": localStorage.getItem('username'), "comment" : theComment} ;
-        console.log(thePushComment);
-             
-        if(AllStoryComments != null)
+        if(theComment != "")
         {
-            db.firestore().collection("comments").doc(myStoryDetails.myid).update({
-                comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
-            });
-            
-            setAllComments([...AllStoryComments , thePushComment]) ;
+                    let thePushComment = {"user": localStorage.getItem('username'), "comment" : theComment} ;
+                console.log(thePushComment);
+                    
+                if(AllStoryComments != null)
+                {
+                    db.firestore().collection("comments").doc(myStoryDetails.myid).update({
+                        comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
+                    });
+                    
+                    setAllComments([ thePushComment ,...AllStoryComments ]) ;
+                }
+                else 
+                {
+                    db.firestore().collection("comments").doc(myStoryDetails.myid).set({
+                        comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
+                    });
+                    setAllComments([thePushComment]) ;
+                }
+                db.firestore().collection(Atts.documentName[props.title]).doc(myStoryDetails.myid).update(
+                    {
+                        "ncomments": myStoryDetails.ncomments+1 
+                    }
+                );
+                setLikeCommentCount({
+                    ...LikeCommentCount,
+                    "comments": LikeCommentCount.comments+ 1 
+                });
         }
-        else 
-        {
-            db.firestore().collection("comments").doc(myStoryDetails.myid).set({
-                comments: firebase.firestore.FieldValue.arrayUnion(thePushComment)
-            });
-            setAllComments([thePushComment]) ;
-        }
-        db.firestore().collection(Atts.documentName[props.title]).doc(myStoryDetails.myid).update(
-            {
-                "ncomments": myStoryDetails.ncomments+1 
-            }
-        );
-        setLikeCommentCount({
-            ...LikeCommentCount,
-            "comments": LikeCommentCount.comments+ 1 
-        }); 
+         
         if(CommentButton == "Back to Read "+ props.title)
             handleStoryAllComment(); 
+            
         setExpanded(!isExpanded);
     }
     function handleStoryAllComment()
@@ -159,13 +163,15 @@ function StoryDetails(props)
     {!myShelf?<icons.MdAdd  size="30"/>:<icons.MdCheck size="30"/>}<Caption caption={!myShelf?"Shelf":"Added"}/>
     </div>
 </div>  ; 
-    var EditStory =<div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
+    var EditStory =<div className="container-inner" style={{ display:"flex",justifyContent:"flex-end",  backgroundColor:"", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
 
         history.push({pathname:'/WriteStory', 
                         state: { id: myStoryDetails.myid , title:props.title , new:false }, 
                         key:{id: myStoryDetails.myid , title: props.title , new:false}
                         }); 
-}}>Edit {props.title}</button></div>  ; 
+}} style={{margin:"5px"}}>Edit {props.title}</button>
+<button className="btn btn-danger" style={{margin:"5px"}}  data-toggle="modal" data-target="#DeleteModal"  >Delete</button>
+</div>  ; 
 
     var BasedOn = null; 
     var ArticleType = null;
@@ -175,12 +181,38 @@ function StoryDetails(props)
    if (currLoc !="/ReadStory" || localStorage.getItem('username') != myStoryDetails.creator) EditStory = null ; 
    if (currLoc !="/ReadStory"){ LikeCommentAdd =shadow= null ; } 
    if (myStoryDetails.published == false) LikeCommentAdd = null ; 
-   var Hashtags = myStoryDetails.hashtags+"" ; 
-   var myHashtags = [...Hashtags.split("#")] ; 
+   var myHashtags = myStoryDetails.hashtags 
    console.log(myHashtags); 
 
     return (
         <div >
+            <div>
+                <div id="DeleteModal" className="modal fade" role="dialog" style={{marginTop:"200px"}}>
+                        <div className="modal-dialog" >
+                            <div className="modal-content" >
+                            <div className="modal-header">
+                                <strong  style={{color:"red"}}>Delete {props.title}</strong>
+                            </div>
+                            <div className="modal-body" >
+                                    Do you Really Want to Delete the {props.title}  <strong>"{myStoryDetails.title}"</strong> 
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal"b
+                                onClick={()=>{
+                                    db.firestore()
+                                    .collection(Atts.documentName[props.title])
+                                    .doc(myStoryDetails.myid)
+                                    .delete() ; 
+                                    db.firestore().collection("likes").doc(myStoryDetails.myid).delete() ; 
+                                    db.firestore().collection("comments").doc(myStoryDetails.myid).delete() ; 
+                                }}   style={{width:"100px" , marign:"5px"}}>Yes</button>
+                                <button type="button" className="btn btn-default" data-dismiss="modal" style={{width:"100px" , marign:"5px"}}>No</button>
+                            </div>
+                            </div>
+
+                        </div>
+                        </div>
+            </div>
             <div className={Details} >
             <div className = {shadow} style={{padding:"15px"}} >
                 {currLoc =="/home"|"/" ? firstprice : null}
@@ -194,11 +226,11 @@ function StoryDetails(props)
                 {ArticleType}
                 <p>Hashtags: </p>
                 <div className = "row container">
-                    {myHashtags.map((eachHashtag )=>{
+                    { myHashtags ? myHashtags.map((eachHashtag )=>{
                         return(
                             <a  href={"/Discover?tag="+eachHashtag} style={{fontSize:20, padding:"10px", }}><span className ="label label-default box" style={{ backgroundColor:Atts.getHashClassName(eachHashtag.length)}}>{eachHashtag}</span></a>
                         ); 
-                    })}
+                    }): null}
                 </div>
                 {LikeCommentAdd}
                 {EditStory}
@@ -218,7 +250,7 @@ function StoryDetails(props)
                     )}
                     <Zoom in={isExpanded}>
                         <button className="btn btn-primary col" style={{margin:"10px", marginTop:"-20px"}} >
-                        {/* <icons.MdSend size="20" /> */}
+                        
                         Comment
                         </button>
                     </Zoom>
@@ -257,5 +289,49 @@ function CoverPage(props)
         ); 
 }
 
+class Comments extends React.Component
+{
+    constructor(props)
+    {
+        super(props) ;
+        this.state = { AllStoryComments:{ comments:null} , stage : 0 }
+    }
+    GetAllComments = function (StoryId)
+    {
+        db.firestore().collection("comments")
+        .doc(StoryId)
+        .get()
+        .then(querysnapshot =>{
+            if(querysnapshot.exists)
+                this.setState({AllStoryComments : querysnapshot.data().comments , stage: 4 } ); 
+        }).catch(error =>{
+            console.log(error) ;console.log("NO COmmetns"); 
+        })
+    }
+   
+        render()
+        {
+            this.GetAllComments(this.props.id); 
+            if(this.state.stage == 4 )
+            {
+                return(
+
+                    <div>
+                        {this.state.AllStoryComments.reverse().map((eachComment , index)=>{
+
+                            return ( <div className="FitToContent" key= {index}>
+                                        <h4 className="FitToContent" style={{color: Atts.getHashClassName(eachComment.user.length)}}>{eachComment.user}</h4>
+                                        <p className = "FitToContent" >{eachComment.comment}</p>
+                                    </div>); 
+                        })}
+                    </div>
+                   
+                ); 
+            }
+            else return (<img src= {process.env.PUBLIC_URL +"ripple-nobg.gif"}></img>)
+           
+        }
+}
+
 export default StoryDetails; 
-export {StoryContent , StoryDetails , CoverPage}; 
+export {StoryContent , StoryDetails , CoverPage , Comments}; 

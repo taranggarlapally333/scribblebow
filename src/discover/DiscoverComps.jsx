@@ -281,7 +281,12 @@ class RetrieveSearch extends React.Component {
 
     shouldComponentUpdate(NextProps, NextState) {
 
-        if (this.props === NextProps && this.state.ids === NextState.ids && this.state.k === NextState.k && this.state.sswitch === NextState.sswitch && this.state.fcheck === NextState.fcheck) {
+        if (this.props === NextProps 
+            && this.state.ids === NextState.ids 
+            && this.state.k === NextState.k 
+            && this.state.sswitch === NextState.sswitch 
+            && this.state.fcheck === NextState.fcheck
+            ) {
             return false;
         }
         return true;
