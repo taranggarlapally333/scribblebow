@@ -90,8 +90,8 @@ export default class Discover extends React.PureComponent {
             if(this.state.searchkey==="")
             return <div className="container">
             <div className="col-md-10 discover-content myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <ContentArea cmsg={this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)+" Recommended For You"} category={this.state.category}  key={this.state.category} type="recommended"/>
-                <ContentArea cmsg={"Latest "+this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)} category={this.state.category}  key={this.state.category} type="latest"/>
+                <ContentArea cmsg={this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)+" Recommended For You"} category={this.state.category}   type="recommended"/>
+                <ContentArea cmsg={"Latest "+this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)} category={this.state.category} z type="latest"/>
                
 
             </div>
