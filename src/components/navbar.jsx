@@ -52,9 +52,8 @@ function Navbar(props)
                            
                         })
                     }}>Profile</a></li>
-                    <li><a href="/">My list</a></li>
                     <li><a href="">Settings</a></li>
-                    <li><a href="">Report</a></li>
+                    <li><a href="/Report">Report</a></li>
                     <li><a href = "/" type= "button" onClick={()=> {localStorage.clear();db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>

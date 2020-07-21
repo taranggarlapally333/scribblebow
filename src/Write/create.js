@@ -52,15 +52,7 @@ function Create() {
 
             <SelectButtons />
             <div className="container">
-                {/* <a  className="newwork" onClick={()=>{ if(category!=="works"){
-                      console.log(categoryPathName[category]); 
-                      history.push({pathname:"/WriteStory", 
-                                    state: { id: "" , title:category , new:true }, 
-                                    key:{id: "" , title:category, new:true}
-                                    }); 
-                      console.log("done with the redirecting") ;
-                }
-                }} ><i className="material-icons" style={{fontSize:"36px",marginTop: "20px",marginBottom:"-20px",marginRight: "5%",color: "#C5D9C3",float:"right"}}>add_circle</i></a> */}
+                
                 <p style={{ fontSize: "30px", marginTop: "20px", marginBottom: "-20px", marginLeft: "5%", color: "#C5D9C3", float: "left" }}>Drafts</p>
                 {category !== "works" ?
 
@@ -77,11 +69,23 @@ function Create() {
                             outline: "none",
                             fontSize: "36px", marginTop: "20px", marginBottom: "-20px", marginRight: "5%"
                         }} onClick={()=>{ if(category!=="works"){
-                      
-                      history.push({pathname:"/WriteStory", 
+
+                            if(category === "Story")
+                            {
+                                history.push({pathname:"/StorySeries", 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
-                                    });}}} >
+                                    })
+                            }
+                            else 
+                            {
+                                history.push({pathname:"/WriteStory", 
+                                    state: { id: "" , title:category , new:true }, 
+                                    key:{id: "" , title:category, new:true}
+                                    });
+                            }
+                            }
+                                    }} >
                             <AddIcon style={{ fontSize: 24 }} />
                         </Fab>
                     </Zoom>

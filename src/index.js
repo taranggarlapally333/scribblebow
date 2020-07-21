@@ -19,7 +19,7 @@ import Discover from './discover/Discover';
 import ReadStory1 from './temp/Story'; 
 import Reports from './Write/Report/Reports';
 import EditProfile from './Write/Profile/EditProfile';
-
+import StorySeries from './Write/Story/StorySeries' ;
 
 
 ReactDOM.render(
@@ -41,6 +41,7 @@ ReactDOM.render(
       />
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
        <Route exact path="/Profile"  render={(props) => <Profile {...props  }/>}  />
+       <Route exact path="/StorySeries"  render={(props) => <StorySeries  {...props} />}  />
       <PrivateRoute exact path="/Create" component={Create}/>
       
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />

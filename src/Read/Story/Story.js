@@ -15,7 +15,6 @@ class ReadStory extends React.PureComponent{
          super(props) ;
          this.state = {StoryDetails:{
              "myid":"",
-             "published": false ,
              
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
          AllStoryComments:{ comments:[]},
@@ -26,16 +25,16 @@ class ReadStory extends React.PureComponent{
            
     shouldComponentUpdate(nextprops , nextState)
     {
-        console.log("Update");  
-        console.log(this.state.AllStoryComments); 
-        console.log(this.state.StoryDetails.myid === nextState.StoryDetails.myid ); 
-        console.log(this.state.AllStoryComments.length === nextState.AllStoryComments.length); 
-        console.log(this.state.stage == nextState.stage);
+        
+        
+        
+        
+        console.log( this.state.AllStoryComments.comments.length=== nextState.AllStoryComments.comments.length) ; 
+        console.log(this.state.Liked === nextState.Liked)
         if(this.props == nextprops 
             && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
-            && this.state.AllStoryComments.length === nextState.AllStoryComments.length
+            && this.state.AllStoryComments.comments.length=== nextState.AllStoryComments.comments.length
             && this.state.Liked === nextState.Liked
-            && this.state.StoryDetails.published === nextState.published
             && this.state.stage == nextState.stage)
              return false ; 
         else return true ; 
@@ -54,15 +53,10 @@ class ReadStory extends React.PureComponent{
                 var sep = {
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
-                   }     ; 
-                   if (sep.published)
-                   {
+                   }     ;
                     this.setState({StoryDetails: sep } ) ; 
-                   }
-                   else 
-                   {
-                    this.setState({StoryDetails: sep , stage:4 } ) ; 
-                   }
+                   
+                   
                      
                 }
                 )
@@ -81,6 +75,8 @@ class ReadStory extends React.PureComponent{
             .then(querysnapshot =>{
                 if(querysnapshot.exists)
                     this.setState({AllStoryComments : querysnapshot.data()} ); 
+                else 
+                    this.setState({ AllStoryComments:{ comments:[]} }) ;
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
             })
@@ -100,6 +96,10 @@ class ReadStory extends React.PureComponent{
                        this.setState({Liked:val!=null , stage:4 });  
                        console.log("setting to 4 ")
                    }
+                else 
+                {
+                    this.setState({Liked:false , stage:4 });  
+                }
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
                 this.setState({stage:4})
@@ -114,11 +114,9 @@ class ReadStory extends React.PureComponent{
         }  ;
         console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
-        if( this.state.StoryDetails.published)
-        {
             this.GetAllComments(allProps.id) ; 
             this.CheckLiked(allProps.id);
-        }
+        
          
         if(this.state.stage === 4)
     {
