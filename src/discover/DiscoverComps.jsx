@@ -145,9 +145,9 @@ function ResultTab(myprops) {
     return <div className="container search-result-tab pointer" style={{ padding: "20px", height: "auto" }} onClick={() => {
         history.push({
             pathname: '/ReadStory',
-            search: "?title=" + categoryPathName[myprops.category] + "&StoryId=" + myprops.cobj[1],
+            search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
             state: {
-                title: categoryPathName[myprops.category],
+                title: myprops.cobj[2],
                 id: myprops.cobj[1],
             }
         })
@@ -251,7 +251,7 @@ function ResultUserTab(myprops) {
         <div className="col-sm-4" >
             <div style={{ height: "auto", width: "90%" }}>
 
-                {myprops.cobj[1] === localStorage.getItem("username") ? <i></i> : <button className={fstatus ? "btn fbtn2" : "btn fbtn"} onClick={(event) => { event.stopPropagation(); SetFollows(); }} >{fstatus ? "Following" : "Follow"}</button>}
+                {myprops.cobj[1] === localStorage.getItem("username") ? <i></i> : <button className={fstatus ? "btn fbtn2" : "btn fbtn"} style={{width:"50%"}} onClick={(event) => { event.stopPropagation(); SetFollows(); }} >{fstatus ? "Following" : "Follow"}</button>}
 
             </div>
         </div>
@@ -269,7 +269,12 @@ class RetrieveSearch extends React.Component {
 
     shouldComponentUpdate(NextProps, NextState) {
 
-        if (this.props === NextProps && this.state.ids === NextState.ids && this.state.k === NextState.k && this.state.sswitch === NextState.sswitch && this.state.fcheck === NextState.fcheck) {
+        if (this.props === NextProps 
+            && this.state.ids === NextState.ids 
+            && this.state.k === NextState.k 
+            && this.state.sswitch === NextState.sswitch 
+            && this.state.fcheck === NextState.fcheck
+            ) {
             return false;
         }
         return true;
@@ -313,7 +318,7 @@ class RetrieveSearch extends React.Component {
                                 if (!snapshot.length)
                                     this.setState({ k: 2 });
                                 snapshot.forEach((doc) => {
-                                    const d = [doc.data(), doc.id];
+                                    const d = [doc.data(), doc.id,categoryPathName[element]];
                                     const id = doc.id;
 
                                     ids = ids + id;
@@ -343,7 +348,7 @@ class RetrieveSearch extends React.Component {
                             if (!snapshot.length)
                                 this.setState({ k: 2 });
                             snapshot.forEach((doc) => {
-                                const d = [doc.data(), doc.id];
+                                const d = [doc.data(), doc.id,categoryPathName[this.props.category]];
                                 const id = doc.id;
 
                                 ids = ids + id;

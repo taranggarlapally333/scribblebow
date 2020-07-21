@@ -1,7 +1,9 @@
 import * as firebase from "firebase/app";
+import '@firebase/messaging' 
 import "firebase/auth";
 import { AuthContext } from "../Auth";
 import { useContext } from "react";
+
 
 
 
@@ -15,7 +17,28 @@ const db = firebase.initializeApp({
     messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID
 });
 
+// const messaging = firebase.messaging() ; 
 
+// messaging.usePublicVapidKey("BPI4TcoeyYAB0d8whsM0PMJoAZFeVQeSNwBidPwIGMZnPh7IMuyPkXcsSHTRYATajoMnMF6uTaKimpMd04ElNX4") ; 
+// messaging.requestPermission().then(()=>{
+//     console.log("permission Granted") ; 
+
+//     messaging.getToken().then(function(currentToken){
+//         console.log(currentToken) ; 
+//     }).catch(function(error){
+//         console.log(error) ; 
+    
+//     })
+// })
+
+// messaging.onMessage(function(payload){
+//     var obj = JSON.parse(payload.data.notification) ; 
+//     var notification = new   Notification(obj.title, {
+//         icon :obj.icon , 
+//         body: obj.body 
+//     }); 
+//     //...
+// }); 
 
 
 

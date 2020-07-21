@@ -176,8 +176,6 @@ cursor: pointer;
     transition: 0.4s ease;
     background-color: blue;
     color:white;
-    outline: none;
-    
 }
 
 .fbtn:hover{
@@ -186,7 +184,7 @@ cursor: pointer;
     border-width: 1px;
     background-color: white;
     color: black;
-    outline: none ; 
+    
 }
 
 
@@ -198,6 +196,12 @@ cursor: pointer;
     
 }
 
+.fbtn2:focus{
+    outline:none;
+}
+.fbtn:focus{
+    outline:none;
+}
 .fbtn2:hover{
     border-style: solid;
     border-color: black;

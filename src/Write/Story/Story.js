@@ -165,10 +165,9 @@ function WriteStory(props)
             var StoryId  = Date.now().toString() ; 
         else var StoryId = props.StoryDetails.id  ; 
         console.log(StoryId +"my id0"); 
-        let CoverId =props.StoryCoverPage ;  
+        let CoverId ="" ;  
         if(image != null)
             UploadFile.UploadImage("CoverPages/",  image ,StoryId , Atts.documentName[props.title]);
-        else if (CoverId === "ScribbleBow.png")CoverId="" ;
         var myStoryData = {
             "creator": localStorage.getItem("username") , 
             "title": StoryStatus.StoryTitle, 

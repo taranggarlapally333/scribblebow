@@ -163,13 +163,15 @@ function StoryDetails(props)
     {!myShelf?<icons.MdAdd  size="30"/>:<icons.MdCheck size="30"/>}<Caption caption={!myShelf?"Shelf":"Added"}/>
     </div>
 </div>  ; 
-    var EditStory =<div className="container-inner" style={{ display:"flex",justifyContent:"flex-end", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
+    var EditStory =<div className="container-inner" style={{ display:"flex",justifyContent:"flex-end",  backgroundColor:"", padding:"10px"}}><button className="btn btn-default" onClick={()=>{
 
         history.push({pathname:'/WriteStory', 
                         state: { id: myStoryDetails.myid , title:props.title , new:false }, 
                         key:{id: myStoryDetails.myid , title: props.title , new:false}
                         }); 
-}}>Edit {props.title}</button></div>  ; 
+}} style={{margin:"5px"}}>Edit {props.title}</button>
+<button className="btn btn-danger" style={{margin:"5px"}}  data-toggle="modal" data-target="#DeleteModal"  >Delete</button>
+</div>  ; 
 
     var BasedOn = null; 
     var ArticleType = null;
@@ -184,6 +186,33 @@ function StoryDetails(props)
 
     return (
         <div >
+            <div>
+                <div id="DeleteModal" className="modal fade" role="dialog" style={{marginTop:"200px"}}>
+                        <div className="modal-dialog" >
+                            <div className="modal-content" >
+                            <div className="modal-header">
+                                <strong  style={{color:"red"}}>Delete {props.title}</strong>
+                            </div>
+                            <div className="modal-body" >
+                                    Do you Really Want to Delete the {props.title}  <strong>"{myStoryDetails.title}"</strong> 
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal"b
+                                onClick={()=>{
+                                    db.firestore()
+                                    .collection(Atts.documentName[props.title])
+                                    .doc(myStoryDetails.myid)
+                                    .delete() ; 
+                                    db.firestore().collection("likes").doc(myStoryDetails.myid).delete() ; 
+                                    db.firestore().collection("comments").doc(myStoryDetails.myid).delete() ; 
+                                }}   style={{width:"100px" , marign:"5px"}}>Yes</button>
+                                <button type="button" className="btn btn-default" data-dismiss="modal" style={{width:"100px" , marign:"5px"}}>No</button>
+                            </div>
+                            </div>
+
+                        </div>
+                        </div>
+            </div>
             <div className={Details} >
             <div className = {shadow} style={{padding:"15px"}} >
                 {currLoc =="/home"|"/" ? firstprice : null}

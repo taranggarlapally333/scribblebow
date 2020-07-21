@@ -15,9 +15,10 @@ class ReadStory extends React.PureComponent{
          super(props) ;
          this.state = {StoryDetails:{
              "myid":"",
+             "published": false ,
              
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
-         AllStoryComments:{ comments:null},
+         AllStoryComments:{ comments:[]},
          stage:0,
         Liked:false } ; 
             
@@ -34,6 +35,7 @@ class ReadStory extends React.PureComponent{
             && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
             && this.state.AllStoryComments.length === nextState.AllStoryComments.length
             && this.state.Liked === nextState.Liked
+            && this.state.StoryDetails.published === nextState.published
             && this.state.stage == nextState.stage)
              return false ; 
         else return true ; 
@@ -53,7 +55,15 @@ class ReadStory extends React.PureComponent{
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
                    }     ; 
-                     this.setState({StoryDetails: sep } ) ; 
+                   if (sep.published)
+                   {
+                    this.setState({StoryDetails: sep } ) ; 
+                   }
+                   else 
+                   {
+                    this.setState({StoryDetails: sep , stage:4 } ) ; 
+                   }
+                     
                 }
                 )
             .catch(function(error) {
@@ -104,9 +114,12 @@ class ReadStory extends React.PureComponent{
         }  ;
         console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
-        
-        this.GetAllComments(allProps.id) ; 
-        this.CheckLiked(allProps.id);  
+        if( this.state.StoryDetails.published)
+        {
+            this.GetAllComments(allProps.id) ; 
+            this.CheckLiked(allProps.id);
+        }
+         
         if(this.state.stage === 4)
     {
         return (
