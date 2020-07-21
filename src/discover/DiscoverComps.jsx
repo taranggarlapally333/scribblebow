@@ -5,6 +5,8 @@ import * as firebase from 'firebase';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
+import Slide from "@material-ui/core/Slide";
+
 
 const categoryPathName = {
     "stories": "Story",
@@ -66,7 +68,11 @@ export function TopUserTile(myprops) {
 
     return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
         <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "white" }}>
-            <img alt="profile-pic small" style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg ? myprops.uobj[0].profileimg : process.env.PUBLIC_URL + '/usericon.png'} />
+            <img className="pointer" alt="profile-pic small" onClick={() => history.push({
+                pathname: '/Profile',
+                search: '?UserId=' + myprops.uobj[1],
+                state: { id: myprops.uobj[1] },
+            })} style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg ? myprops.uobj[0].profileimg : process.env.PUBLIC_URL + '/usericon.png'} />
         </div>
         <a href="" className="tcreator-tile-a" onClick={() => history.push({
             pathname: '/Profile',
@@ -107,7 +113,13 @@ export class TopCreators extends React.Component {
             this.setState({ follows: follows, fcheck: 2 });
         });
 
-        db.firestore().collection("users").orderBy("nfollowers", "desc").limit(7).get().then((snapshot) => {
+        var topuserdb;
+        if(this.props.category)
+        topuserdb = db.firestore().collection("users").where(this.props.category,">",0).orderBy(this.props.category).orderBy("nfollowers", "desc");
+        else
+        topuserdb = db.firestore().collection("users").orderBy("nfollowers", "desc");
+
+        topuserdb.limit(7).get().then((snapshot) => {
 
             snapshot.forEach((doc) => {
                 ids += doc.id;
@@ -251,7 +263,7 @@ function ResultUserTab(myprops) {
         <div className="col-sm-4" >
             <div style={{ height: "auto", width: "90%" }}>
 
-                {myprops.cobj[1] === localStorage.getItem("username") ? <i></i> : <button className={fstatus ? "btn fbtn2" : "btn fbtn"} style={{width:"50%"}} onClick={(event) => { event.stopPropagation(); SetFollows(); }} >{fstatus ? "Following" : "Follow"}</button>}
+                {myprops.cobj[1] === localStorage.getItem("username") ? <i></i> : <button className={fstatus ? "btn fbtn2" : "btn fbtn"} style={{ width: "50%" }} onClick={(event) => { event.stopPropagation(); SetFollows(); }} >{fstatus ? "Following" : "Follow"}</button>}
 
             </div>
         </div>
@@ -301,9 +313,9 @@ class RetrieveSearch extends React.Component {
                     var c = 0;
                     l.forEach(element => {
                         var hash;
-                        if(this.props.hash){
+                        if (this.props.hash) {
                             hash = 'hashtags'
-                        }else{
+                        } else {
                             hash = 'titlekeys'
                         }
                         db.firestore().collection(element).where("published", "==", true).where(hash, 'array-contains-any',
@@ -313,7 +325,7 @@ class RetrieveSearch extends React.Component {
                                 if (!snapshot.length)
                                     this.setState({ k: 2 });
                                 snapshot.forEach((doc) => {
-                                    const d = [doc.data(), doc.id,categoryPathName[element]];
+                                    const d = [doc.data(), doc.id, categoryPathName[element]];
                                     const id = doc.id;
 
                                     ids = ids + id;
@@ -332,18 +344,18 @@ class RetrieveSearch extends React.Component {
                 }
                 else {
                     var hash;
-                        if(this.props.hash){
-                            hash = 'hashtags'
-                        }else{
-                            hash = 'titlekeys'
-                        }
+                    if (this.props.hash) {
+                        hash = 'hashtags'
+                    } else {
+                        hash = 'titlekeys'
+                    }
                     db.firestore().collection(this.props.category).where("published", '==', true).where(hash, 'array-contains-any',
                         this.props.searchkey).limit(20).get().then(snapshot => {
 
                             if (!snapshot.length)
                                 this.setState({ k: 2 });
                             snapshot.forEach((doc) => {
-                                const d = [doc.data(), doc.id,categoryPathName[this.props.category]];
+                                const d = [doc.data(), doc.id, categoryPathName[this.props.category]];
                                 const id = doc.id;
 
                                 ids = ids + id;
@@ -430,7 +442,7 @@ export function SearchResults(props) {
     var hash = false;
     if (searchkey[0] === "#") {
         searchkey = searchkey.replace(/ /g, "");
-        searchkey =[searchkey.substring(1)];
+        searchkey = [searchkey.substring(1)];
         hash = true;
     } else {
         searchkey = searchkey.split(" ");
@@ -441,14 +453,128 @@ export function SearchResults(props) {
 
         return <div className="container" style={{ width: "90%" }}>
             <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <RetrieveSearch category={props.category} searchkey={searchkey} hash = {hash} key={props.category + searchkey} />
+                <RetrieveSearch category={props.category} searchkey={searchkey} hash={hash} key={props.category + searchkey} />
             </div></div>
     } else {
         return <div className="container" style={{ width: "90%" }}>
             <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <RetrieveSearch category={"nocat"} searchkey={searchkey} hash = {hash} key={props.category + searchkey} />
+                <RetrieveSearch category={"nocat"} searchkey={searchkey} hash={hash} key={props.category + searchkey} />
             </div></div>
     }
 
 
+}
+
+
+
+
+
+
+
+function Tab(myprops) {
+    const history = useHistory();
+    return <div className="draft-cont pointer" onClick={() => {
+        history.push({
+            pathname: '/ReadStory',
+            search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
+            state: {
+                title: myprops.cobj[2],
+                id: myprops.cobj[1],
+            }
+        })
+    }}>
+        <a style={{ textDecoration: "none", color: "black" }} >
+            <div className="container-inner myshadow rounded" style={{ borderRadius: "2px", backgroundColor: "", padding: "20px", margin: "20px" }}>
+                <div className="" style={{ width: "auto", backgroundColor: "" }}>
+                    <img className="draft-image sm-cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid !== "" ? myprops.cobj[0].coverid : process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ padding: "10px" }}></img>
+                    <div className="draft-title">
+
+                        {myprops.cobj[0].title?<h4>{'"'+myprops.cobj[0].title+'"'}</h4>:null}
+                        <p>{myprops.cobj[0].creator}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </a>
+    </div>
+}
+
+
+
+
+function Rclicked(scrollclass) {
+
+    document.getElementById(scrollclass).scrollLeft += 200;
+}
+
+function Lclicked(scrollclass) {
+
+    document.getElementById(scrollclass).scrollLeft -= 200;
+}
+
+
+
+
+
+export class ContentArea extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { tabslist: [], ids: "" };
+    }
+
+    shouldComponentUpdate(NextProps, NextState) {
+        if (this.props === NextProps && this.state.ids === NextState.ids) {
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
+    render() {
+        console.log("doing dude");
+        var ids = "";
+        var tabslist = [];
+        db.firestore().collection(this.props.category).where("published","==",true).limit(10).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                ids += doc.id;
+                tabslist.push([doc.data(), doc.id, categoryPathName[this.props.category]]);
+            });
+            
+            this.setState({ tabslist: tabslist, ids: ids })
+        });
+
+        var scrollclass = this.props.cmsg + "content";
+        return <div>
+            {
+                this.state.ids === ""
+                    ?
+                    <div className="container">
+                        <img align="center" alt="loading" style={{ marginLeft: "70px", marginTop: "40px", height: "40px", width: "auto" }} src={process.env.PUBLIC_URL + '/ripple-nobg.gif'} />
+                    </div>
+                    :
+                    <div>
+                        <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <i className="fa fa-chevron-circle-left pointer" onClick={() => { Lclicked(scrollclass) }} style={{ fontSize: "36px", color: "grey" }}></i>
+
+                            <Slide direction={"right"} in={true} {...{ timeout: 1000 }} mountOnEnter unmountOnExit>
+                                <div className="myscroller-invisible" id={scrollclass} style={{ display: "flex", alignItems: "center", width: "100%", overflowX: "auto", scrollBehavior: "smooth" }}>
+                                    {this.state.tabslist.map((cobj) => { return <Tab cobj={cobj} key={cobj} /> })}
+                                </div>
+                            </Slide>
+
+
+
+                            <i className="fa fa-chevron-circle-right pointer" onClick={() => { Rclicked(scrollclass) }} style={{ fontSize: "36px", color: "grey" }}></i>
+                        </div>
+                    </div>
+            }
+        </div>
+    }
 }
