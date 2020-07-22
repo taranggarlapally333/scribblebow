@@ -221,7 +221,7 @@ function StoryDetails(props)
                     <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
                 </div> 
                 <hr />
-                <p>Description:{myStoryDetails.description}</p>
+                <p>Description: {myStoryDetails.description}</p>
                 {BasedOn}
                 {ArticleType}
                 <p>Hashtags: </p>

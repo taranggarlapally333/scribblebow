@@ -19,6 +19,7 @@ import Discover from './discover/Discover';
 import ReadStory1 from './temp/Story'; 
 import Reports from './Write/Report/Reports';
 import EditProfile from './Write/Profile/EditProfile';
+import Myshelf from './MyShelf/Myshelf';
 
 
 
@@ -50,6 +51,8 @@ ReactDOM.render(
       <Route exact path="/test" component={Test}
       />
       <PrivateRoute exact path="/unverif" component={Unverif}
+      />
+       <PrivateRoute exact path="/my-shelf" component={Myshelf}
       />
       <Route exact path="/Pref0" component={Pref0}
       />

@@ -7,7 +7,6 @@ html,body
     margin: 0px;
     padding: 0px;
     overflow-x: hidden; 
-   
 }
 
 .scaling{
@@ -211,12 +210,24 @@ cursor: pointer;
     outline :none;
 }
 
+
+.myshelfBtns{
+    height: 70vh;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
 .pointer:hover{
     cursor: pointer;
 }
 .myh{
     float: left;
 }
+
+
 
 .create-btn{
     font-weight: bold;
@@ -231,13 +242,15 @@ cursor: pointer;
     color: black;
 }
 
+
+
 .creator-btn{
     transition: 0.4s ease;
 }
 .creator-btn:hover{
     color: blue;
-
 }
+
 
 
 .lgsg{

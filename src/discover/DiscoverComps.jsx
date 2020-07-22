@@ -476,7 +476,7 @@ export function SearchResults(props) {
 
 
 
-function Tab(myprops) {
+export function DiscoverTab(myprops) {
     const history = useHistory();
     return <div className="draft-cont pointer" onClick={() => {
         history.push({
@@ -571,7 +571,7 @@ export class ContentArea extends React.Component {
 
                             <Slide direction={"right"} in={true} {...{ timeout: 1000 }} mountOnEnter unmountOnExit>
                                 <div className="myscroller-invisible" id={scrollclass} style={{ display: "flex", alignItems: "center", width: "100%", overflowX: "auto", scrollBehavior: "smooth" }}>
-                                    {this.state.tabslist.map((cobj) => { return <Tab cobj={cobj} key={cobj} /> })}
+                                    {this.state.tabslist.map((cobj) => { return <DiscoverTab cobj={cobj} key={cobj} /> })}
                                 </div>
                             </Slide>
 
