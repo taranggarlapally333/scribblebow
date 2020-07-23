@@ -217,6 +217,13 @@ function StoryDetails(props)
             <div className = {shadow} style={{padding:"15px"}} >
                 {currLoc =="/home"|"/" ? firstprice : null}
                 <p style = {{fontSize:40}}>{myStoryDetails.title}</p>
+                <p  className="handy" onClick={()=>{
+                        history.push({
+                            pathname:"/Profile", 
+                            search: "?UserId="+ myStoryDetails.creator, 
+
+                        })
+                }}>{myStoryDetails.creator}</p>
                 <div className= "row container">
                     <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
                 </div> 

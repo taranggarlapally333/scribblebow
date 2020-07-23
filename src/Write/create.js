@@ -70,22 +70,14 @@ function Create() {
                             fontSize: "36px", marginTop: "20px", marginBottom: "-20px", marginRight: "5%"
                         }} onClick={()=>{ if(category!=="works"){
 
-                            if(category === "Story")
-                            {
-                                history.push({pathname:"/StorySeries", 
-                                    state: { id: "" , title:category , new:true }, 
-                                    key:{id: "" , title:category, new:true}
-                                    })
-                            }
-                            else 
-                            {
+                            
                                 history.push({pathname:"/WriteStory", 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     });
-                            }
-                            }
-                                    }} >
+                            
+                            
+                                    }}} >
                             <AddIcon style={{ fontSize: 24 }} />
                         </Fab>
                     </Zoom>
