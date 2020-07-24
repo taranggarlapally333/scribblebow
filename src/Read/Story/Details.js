@@ -30,7 +30,10 @@ function StoryDetails(props)
     );
 
     const [myShelf , setMyShelf] = useState(props.myShelf) ;
-
+    const [ReportStory, setReportStory] = useState({
+        message : "" , 
+        button : true 
+    }) ; 
     const [LikeState ,setLikeState] = useState(props.Liked) ; 
     console.log(LikeCommentCount , myShelf); 
     
@@ -172,6 +175,18 @@ function StoryDetails(props)
         }
         
     }
+    function handleReportStorySubmit(event)
+    {
+        
+        event.preventDefault() ; 
+        let temp = {
+            cid: myStoryDetails.myid  , 
+            message: ReportStory.message
+        }
+
+        db.firestore().collection("content_reports").doc().set(temp) ; 
+
+    }
 
     var firstprice = <h1 style={{color:"gold", }}><i class='fas fa-crown'></i></h1> ; 
     var LikeCommentAdd = <div id = "likeComment"className = "row container " style = {{width : 205 , backgroundColor:"" }}>
@@ -191,7 +206,7 @@ function StoryDetails(props)
                         key:{id: myStoryDetails.myid , title: props.title , new:false}
                         }); 
 }} style={{margin:"5px"}}>Edit {props.title}</button>:null}
-<button className="btn btn-default">Report {props.title} </button>
+<button className="btn btn-default"   data-toggle="modal" data-target="#ReportStoryModal">Report {props.title} </button>
 {localStorage.getItem('username') === myStoryDetails.creator? <button className="btn btn-danger" style={{margin:"5px"}}  data-toggle="modal" data-target="#DeleteModal"  >Delete</button>:null}
 </div>  ; 
 
@@ -233,6 +248,46 @@ function StoryDetails(props)
 
                         </div>
                         </div>
+
+                        <div id="ReportStoryModal" className="modal fade" role="dialog" style={{marginTop:"50px"}}>
+                            <div className="modal-dialog" >
+                                <div className="modal-content" >
+                                <div className="modal-header">
+                                    <strong  style={{color:"red"}}>Report Story</strong>  "<strong>{myStoryDetails.title}</strong>" 
+                                </div>
+                                <div className="modal-body" >
+                                            <div className="container">
+                                                    <form className="create-note" style={{boxShadow:"none"}} onSubmit={handleReportStorySubmit}>
+                                                        <textarea rows="10" placeholder="Report Issue" name="message"  onChange={(event)=>{
+                                                                let val = event.target.value;
+                                                                console.log(!(val.length>=3)) ; 
+                                                                setReportStory(preval =>{
+                                                                    return {
+                                                                        ...preval , 
+                                                                        message: val , 
+                                                                        button: val.length<3 
+                                                                    }
+                                                                }) ;
+                                                               
+                                                        }}></textarea>
+                                                        <button className="btn btn-danger" style={{ display:"none" }} id="SubmitReportStory"
+                                                        type="submit"
+                                                        >Report</button>
+                                                    </form>
+                                                </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-danger" data-dismiss="modal"
+                                    onClick= {()=>{let SubmitReportButton = document.getElementById("SubmitReportStory") ;
+                                        
+                                        SubmitReportButton.click() ; }}    
+                                    style={{ margin:"10px" , width:"200px"  }}  disabled= {ReportStory.button}>Report</button>
+                                    <button type="button" className="btn btn-default" data-dismiss="modal" style={{width:"100px" , marign:"5px"}}>Close</button>
+                                </div>
+                                </div>
+
+                                        </div>
+                                </div>
             </div>
             <div className={Details} >
             <div className = {shadow} style={{padding:"15px"}} >
