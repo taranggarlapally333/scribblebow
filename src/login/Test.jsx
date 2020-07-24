@@ -59,14 +59,16 @@ export const Test = function () {
         .then(querySnapshot => {
 
             querySnapshot.forEach(doc => {
-              
-                  var name = doc.data().fname+" "+doc.data().lname;
-                  name = name.toLowerCase();
-                  const userkeys = Subs(name);
-                  console.log(userkeys);
-                                db.firestore().collection("users").doc(doc.id).update({
-                                    userkeys: userkeys
-                                });
+                console.log(doc.id);
+                db.firestore().collection("myshelf").doc(doc.id).set({
+                    stories:[],
+                    poems:[],
+                    quotes:[],
+                    scripts:[],
+                    fanfiction:[],
+                    audio:[],
+                    articles:[],
+                });
             });
         });
 
@@ -187,7 +189,7 @@ export const Test = function () {
         <div className="login-bg">
             <div className="login-bar">
                 <p>{currentLocation}</p>
-                <a onClick={() => { ContentNum() }}>click for subs</a>
+                <a onClick={() => { UserKey() }}>click for subs</a>
                 <p>{tname.toLowerCase()}</p>
                 <form onSubmit={checkEmail}>
                     <input type="text" className="form-control" name="email" onChange={handleChange} id="email" placeholder="email" value={email} />

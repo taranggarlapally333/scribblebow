@@ -10,9 +10,16 @@ html,body
    
 }
 
-.scaling{
-    transition: transform .2s;
+.theCommentButton
+{
+    margin :10px ; 
+    margin-top: -20px;  
 }
+@media only screen and (max-width: 100px) {
+    .theCommentButton {
+      margin-top: 2px;
+    }
+  }
 .scaling:hover{
     transform: scale(1.2); 
 }
@@ -211,12 +218,24 @@ cursor: pointer;
     outline :none;
 }
 
+
+.myshelfBtns{
+    height: 70vh;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
 .pointer:hover{
     cursor: pointer;
 }
 .myh{
     float: left;
 }
+
+
 
 .create-btn{
     font-weight: bold;
@@ -231,13 +250,15 @@ cursor: pointer;
     color: black;
 }
 
+
+
 .creator-btn{
     transition: 0.4s ease;
 }
 .creator-btn:hover{
     color: blue;
-
 }
+
 
 
 .lgsg{
@@ -637,7 +658,7 @@ outline-width: 0;
 .Comment
 {
     margin: auto -16px;
-    padding: 20px; 
+    padding: 15px; 
     margin-bottom: 20px ;
     text-align: left;
     white-space: pre-wrap;
@@ -650,7 +671,8 @@ outline-width: 0;
 }
 .Comment p 
 {
-    margin-top: 20px;
+    margin-top: 14px;
+    margin-bottom: 0px;
 }
 .FitToContent
 {

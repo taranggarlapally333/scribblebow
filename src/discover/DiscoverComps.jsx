@@ -476,7 +476,7 @@ export function SearchResults(props) {
 
 
 
-function Tab(myprops) {
+export function DiscoverTab(myprops) {
     const history = useHistory();
     return <div className="draft-cont pointer" onClick={() => {
         history.push({
@@ -512,11 +512,13 @@ function Tab(myprops) {
 function Rclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft += 200;
+    console.log("right") ; 
 }
 
 function Lclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft -= 200;
+    console.log("left") ; 
 }
 
 
@@ -554,7 +556,7 @@ export class ContentArea extends React.Component {
             
             this.setState({ tabslist: tabslist, ids: ids })
         });
-
+        var currLoc = window.location.pathname ; 
         var scrollclass = this.props.cmsg + "content";
         return <div>
             {
@@ -565,13 +567,13 @@ export class ContentArea extends React.Component {
                     </div>
                     :
                     <div>
-                        <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4>
+                        { currLoc =="/discover"? <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4> : null}
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <i className="fa fa-chevron-circle-left pointer" onClick={() => { Lclicked(scrollclass) }} style={{ fontSize: "36px", color: "grey" }}></i>
 
                             <Slide direction={"right"} in={true} {...{ timeout: 1000 }} mountOnEnter unmountOnExit>
                                 <div className="myscroller-invisible" id={scrollclass} style={{ display: "flex", alignItems: "center", width: "100%", overflowX: "auto", scrollBehavior: "smooth" }}>
-                                    {this.state.tabslist.map((cobj) => { return <Tab cobj={cobj} key={cobj} /> })}
+                                    {this.state.tabslist.map((cobj) => { return <DiscoverTab cobj={cobj} key={cobj} /> })}
                                 </div>
                             </Slide>
 

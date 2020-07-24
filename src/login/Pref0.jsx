@@ -139,6 +139,18 @@ function Pref0(props){
         db.firestore().collection("users").doc(name).update({
             userkeys: userkeys
         });
+
+        db.firestore().collection("myshelf").doc(name).set({
+            stories:[],
+            poems:[],
+            quotes:[],
+            scripts:[],
+            fanfiction:[],
+            audio:[],
+            articles:[],
+        });
+
+        
         const uid=currentUser.uid;
         const emailverif = currentUser.emailVerified;
         localStorage.setItem("username", name);
@@ -146,6 +158,7 @@ function Pref0(props){
         localStorage.setItem("emailverif",emailverif);
         setTimeout(function(){ setTWait(2); }, 3000);
 
+       
         if(twait === 0){
             return <Loading message={"Setting up your Account, do not close this tab."} />;
         }else{

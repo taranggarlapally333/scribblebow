@@ -72,7 +72,17 @@ export const AuthProvider = ({ children }) => {
                     });
                     db.firestore().collection("followers").doc(localStorage.getItem("username")).set({
                         followers: []
-                    })
+                    });
+                    db.firestore().collection("myshelf").doc(localStorage.getItem("username")).set({
+                        stories:[],
+                        poems:[],
+                        quotes:[],
+                        scripts:[],
+                        fanfiction:[],
+                        audio:[],
+                        articles:[],
+                    });
+            
                 }
             });
     }
