@@ -8,6 +8,7 @@ html,body
     margin: 0px;
     padding: 0px;
     overflow-x: hidden; 
+   
 }
 
 
@@ -15,6 +16,16 @@ html,body
 .scaling{
     transition: transform .2s;
 }
+.theCommentButton
+{
+    margin :10px ; 
+    margin-top: -20px;  
+}
+@media only screen and (max-width: 100px) {
+    .theCommentButton {
+      margin-top: 2px;
+    }
+  }
 .scaling:hover{
     transform: scale(1.2); 
 }
@@ -664,7 +675,7 @@ outline-width: 0;
 .Comment
 {
     margin: auto -16px;
-    padding: 20px; 
+    padding: 15px; 
     margin-bottom: 20px ;
     text-align: left;
     white-space: pre-wrap;
@@ -677,7 +688,8 @@ outline-width: 0;
 }
 .Comment p 
 {
-    margin-top: 20px;
+    margin-top: 14px;
+    margin-bottom: 0px;
 }
 .FitToContent
 {

@@ -61,6 +61,9 @@ class WriteTheStory extends React.PureComponent{
                     "published":querySnapshot.data().published,
                 }   ;
 
+                if(this.props.location.state.part!= null)
+                 sep= {...sep , "part":this.props.location.state.part , "StorySeries":this.props.location.state.SeriesId }
+
                 console.log("setting the Story data")
                      this.setState({StoryDetails: sep, StoryCoverPage: querySnapshot.data().coverid , stage:4 }) ; 
                     

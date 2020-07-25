@@ -289,6 +289,7 @@ function WriteStory(props)
                             style= {{resize:"none" , width:"595px", height:"842px", padding:"10px" ,
                             fontFamily: StoryStatus.StoryFont, 
                             fontSize:StoryStatus.StoryFontSize+"px", }} 
+                            
                             placeholder= "Type Your Content Here,"
                             value={StoryStatus.StoryContent}>
                             

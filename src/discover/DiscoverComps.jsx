@@ -518,11 +518,13 @@ export function DiscoverTab(myprops) {
 function Rclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft += 200;
+    
 }
 
 function Lclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft -= 200;
+    
 }
 
 
@@ -560,7 +562,7 @@ export class ContentArea extends React.Component {
             
             this.setState({ tabslist: tabslist, ids: ids })
         });
-
+        var currLoc = window.location.pathname ; 
         var scrollclass = this.props.cmsg + "content";
         return <div>
             {
@@ -571,7 +573,7 @@ export class ContentArea extends React.Component {
                     </div>
                     :
                     <div>
-                        <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4>
+                        { currLoc =="/discover"? <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4> : null}
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <i className="fa fa-chevron-circle-left pointer" onClick={() => { Lclicked(scrollclass) }} style={{ fontSize: "36px", color: "grey" }}></i>
 

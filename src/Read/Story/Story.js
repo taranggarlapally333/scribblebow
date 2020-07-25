@@ -6,6 +6,7 @@ import * as Story from '../../database/StoryFuns';
 import * as Atts from "../../Write/Story/Atts";  
 import Loading from '../../components/Loading';
 import db from "../../database/db";
+import * as firebase from 'firebase';
 
 class ReadStory extends React.PureComponent{
     
@@ -15,28 +16,28 @@ class ReadStory extends React.PureComponent{
          super(props) ;
          this.state = {StoryDetails:{
              "myid":"",
-             "published": false ,
              
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
          AllStoryComments:{ comments:[]},
          stage:0,
-        Liked:false } ; 
+        Liked:false , 
+        myShelf:false  } ; 
             
     }
            
     shouldComponentUpdate(nextprops , nextState)
     {
-        console.log("Update");  
-        console.log(this.state.AllStoryComments); 
-        console.log(this.state.StoryDetails.myid === nextState.StoryDetails.myid ); 
-        console.log(this.state.AllStoryComments.length === nextState.AllStoryComments.length); 
-        console.log(this.state.stage == nextState.stage);
+        
+        
+        
+        
+        console.log( this.state.AllStoryComments.comments.length=== nextState.AllStoryComments.comments.length) ; 
+        console.log(this.state.Liked === nextState.Liked)
         if(this.props == nextprops 
             && this.state.StoryDetails.myid === nextState.StoryDetails.myid 
-            && this.state.AllStoryComments.length === nextState.AllStoryComments.length
             && this.state.Liked === nextState.Liked
-            && this.state.StoryDetails.published === nextState.published
-            && this.state.stage == nextState.stage)
+            && this.state.stage == nextState.stage
+            && this.state.myShelf === nextState.myShelf)
              return false ; 
         else return true ; 
     }
@@ -54,15 +55,10 @@ class ReadStory extends React.PureComponent{
                 var sep = {
                     ...querySnapshot.data(),
                     "myid": querySnapshot.id 
-                   }     ; 
-                   if (sep.published)
-                   {
+                   }     ;
                     this.setState({StoryDetails: sep } ) ; 
-                   }
-                   else 
-                   {
-                    this.setState({StoryDetails: sep , stage:4 } ) ; 
-                   }
+                   
+                   
                      
                 }
                 )
@@ -72,18 +68,6 @@ class ReadStory extends React.PureComponent{
             //console.log("Returning the Story Details"); 
             
              
-        }
-        GetAllComments = function (StoryId)
-        {
-            db.firestore().collection("comments")
-            .doc(StoryId)
-            .get()
-            .then(querysnapshot =>{
-                if(querysnapshot.exists)
-                    this.setState({AllStoryComments : querysnapshot.data()} ); 
-            }).catch(error =>{
-                console.log(error) ;console.log("NO COmmetns"); 
-            })
         }
         CheckLiked(StoryId)
         {
@@ -100,10 +84,44 @@ class ReadStory extends React.PureComponent{
                        this.setState({Liked:val!=null , stage:4 });  
                        console.log("setting to 4 ")
                    }
+                else 
+                {
+                    this.setState({Liked:false , stage:4 });  
+                }
             }).catch(error =>{
                 console.log(error) ;console.log("NO COmmetns"); 
                 this.setState({stage:4})
             }); 
+        }
+        CheckMyShelf(StoryId)
+        {
+            db.firestore().collection("myshelf").doc(localStorage.getItem('username'))
+            .get()
+            .then(qs=>{
+                let myshelf ; 
+                let title = new URLSearchParams(this.props.location.search).get("title") ; 
+                switch(title)
+                {
+                    case "Story" : myshelf = qs.data().stories ;  break   ; 
+                    case "Poem" : myshelf = qs.data().poems ; break  ; 
+                    case "Audio": myshelf = qs.data().audio ; break  ; 
+                    case "fanFiction": myshelf = qs.data().fanfiction ; break  ;
+                    case "Script": myshelf = qs.data().scripts ; break  ;
+                    default : myshelf = qs.data().stories ; break  ;   
+
+                }
+                console.log(myshelf)
+                console.log("Setting the MySHELF " , this.state.myShelf); 
+                myshelf.forEach(eachStory=>{
+                    if(eachStory === StoryId)
+                    {   
+                        this.setState({myShelf : true}) ; 
+                    }
+
+                })
+               
+
+            })
         }
 
     render(){
@@ -114,11 +132,10 @@ class ReadStory extends React.PureComponent{
         }  ;
         console.log(allProps);
         this.GetStoryDetails(Atts.documentName[allProps.title],allProps.id) ;
-        if( this.state.StoryDetails.published)
-        {
-            this.GetAllComments(allProps.id) ; 
+        this.CheckMyShelf(allProps.id)
+           
             this.CheckLiked(allProps.id);
-        }
+        
          
         if(this.state.stage === 4)
     {
@@ -136,15 +153,18 @@ class ReadStory extends React.PureComponent{
                         id = {allProps.id} 
                         Details = {this.state.StoryDetails}
                         title = {allProps.title}
-                        Comments = {this.state.AllStoryComments.comments.reverse()}
                         Liked = {this.state.Liked}
+                        myShelf = {this.state.myShelf}
                         />
+                       
                     </div>
-                    <hr></hr>
-                    <p.StoryContent
-                        Details = {this.state.StoryDetails}
-                    />
                     
+                        <p.StoryContent
+                        id = {allProps.id} 
+                             Details = {this.state.StoryDetails}
+                        />
+                    
+                   
                 </div>
             </div>
             ); 

@@ -11,25 +11,19 @@ function Reports()
     return(
         <div>
             <Header title="Report" />
-            <div className="container ">
-                <div className="col-12 col-md-6" style={{padding:"10px"}}>
-                    <div className="container-inner" style={{padding:"10px", width:"auto" ,wordWrap:"break-word" ,textJustify:"newspaper"}}>
-                        FROM: {localStorage.getItem('email')}
-                        <hr></hr> 
-                    </div>
-                    <div className="container-inner myscroller" style={{height:"300px",overflowY:"auto",wordWrap:"break-word" ,textJustify:"newspaper" , padding:"10px" }}>
-                                <SnackbarProvider>
-                                <SnackBar/>
-                                </SnackbarProvider>
-                    </div>
-                </div>
-
-                
-                <div className="col-12 col-md-6 " style={{position:""}}>
+            <div className="container" style={{display:"flex" , justifyContent:"center"}}>
+                <div className=" " style={{position:""}}>
                     <form className="create-note">
                         <input  placeholder="Title" style={{borderBottom:"0" , borderBottomColor:"white"}}></input>
                         <textarea rows="10" placeholder="Report Issue"></textarea>
-                        <button className="btn btn-danger" style={{ position:"relative", margin:"10px" , width:"200px"}}>Report</button>
+                        <SnackbarProvider>
+                            <SnackBar />
+                        </SnackbarProvider>
+                        <button className="btn btn-danger" style={{ position:"relative", margin:"10px" , width:"200px"}}
+                        onClick={()=>{
+
+                        }}
+                        >Report</button>
                     </form>
                 </div>
                 

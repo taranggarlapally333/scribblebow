@@ -2,6 +2,9 @@ import React from 'react' ;
 import * as StoryDetails from '../Read/Story/Details' ;
 import * as icons from 'react-icons/md';
 import  * as mdb from "mdbreact";
+import { ContentArea } from '../discover/DiscoverComps';
+import { documentName } from '../Write/Story/Atts';
+import db from "../database/db" ; 
 
 function Aboutus()
 {
@@ -47,62 +50,63 @@ function Tabs(props)
     
 </div>) ; 
 }
-function  FamousStories(props)
+class FamousStories extends React.Component
 {
-    var titleClassName ="" ; 
-    switch (props.title) {
-        case "Story" : titleClassName = "" ; break ; 
-        case "Poem" : titleClassName = "alert alert-warning" ; break ; 
-        case "Article": titleClassName="alert alert-info" ; break ; 
+    constructor(props)
+    {
+        super(props) ; 
+        this.state = { tabslist: [], stage: 0  };
     }
-    return (
+
+    shouldComponentUpdate( nextProps, nextState)
+    {
+        if(this.props === nextProps 
+            && this.state.tabslist.length === nextState.tabslist.length
+            &&this.state.stage === nextState.stage) return false ; else return true  ; 
+    }
+    render(){
+        console.log(this.state.tabslist , "this is the Tablist");
+        var tabslist = [];
+        db.firestore().collection(documentName[this.props.title]).where("published","==",true).limit(1).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                
+                tabslist.push([doc.data(), doc.id, this.props.title]);
+            });
+            
+            this.setState({ tabslist: tabslist, stage:4})
+        });
+
+        return (
             <div className="container">
-                <h1 className={titleClassName} style={{backgroundColor:""}}>{props.title.toUpperCase()}</h1>
+                <h1 className="" style={{backgroundColor:""}}>{this.props.title.toUpperCase()}</h1>
                 <hr></hr>
-                <div className = "row container myshadow " style={{margin:"20px",  width:"95%" , backgroundColor:""}}>
-                        <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
-                        <a href= "ReadStory?title="><StoryDetails.CoverPage 
-                imageAddress = "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg" 
-                /></a>
+                {
+                    this.state.stage === 0 ? 
+                        "wait"
+                            :<div className = "row container myshadow " style={{margin:"20px",  width:"95%" , backgroundColor:""}}>
+                                <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
+                                <a href= "ReadStory?title="><StoryDetails.CoverPage 
+                                  imageAddress = {this.state.tabslist[0][0].coverid === ""? process.env.PUBLIC_URL+"ScribbleBow.png" :this.state.tabslist[0][0].coverid  }
+                        /></a>
+                                </div>
+                                <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
+                                    <StoryDetails.StoryDetails
+                                        id = {this.state.tabslist[0][1]} 
+                                        Details = {this.state.tabslist[0][0]}
+                                        title = {this.props.title}
+                                        Comments = {[]}
+                                        Liked = {false}
+                                    />
+                                </div>
                         </div>
-                        <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
-                            <StoryDetails.StoryDetails  
-                                title= "THE UNTOLD STORY"
-                            />
-                        </div>
-                </div>
+                }
+                
                 <h3>Trending</h3>
-              
-                <div className = "row container myscroller" id="movable" style={{backgroundColor:"" ,display:"flex" ,overflowX:"auto", justifyContent: "flex-start"}}>
-                    <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-                    <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-                     <a href= "/ReadStory?title=" style={{textDecoration:"none", color:"black"}}><Tabs 
-                        imageAddress= "https://i.pinimg.com/originals/53/d4/ab/53d4ab97a2bf8a16a67950c52e34ca47.jpg"
-                        title="The Untold Story"
-                    /></a>
-    
-                    
-                </div>
+                <ContentArea  cmsg= {this.props.title} category= {documentName[this.props.title] } type="famous"/>
             </div>
-        ); 
+        );
+    }
+     
 }
 
 export default Aboutus ; 

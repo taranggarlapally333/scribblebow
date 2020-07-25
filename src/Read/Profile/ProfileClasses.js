@@ -50,7 +50,7 @@ class CategoryAll extends React.PureComponent{
         <h5><strong>{myprops[0].title}</strong></h5>
         <div className="handy" style={{display:"flex", justifyContent:"space-evenly" }} >
             {this.SameCurrentUser ? <a  onClick={()=>{this.setState({id:myprops[1], edit:true});console.log("clicked")}}>Edit</a>: null}
-            <a  onClick={()=>{this.setState({id:myprops[1] , edit:false});console.log("clicked")}} >{this.state.switchToDrafts?"Preview":"Read"}</a>
+            <a  onClick={()=>{this.setState({id:myprops[1] , edit:false});console.log("clicked")}} >{this.state.switchToDrafts?null:"Read"}</a>
             { this.state.switchToDrafts && this.SameCurrentUser?  <a  style={{color:"#E61D42"}}   data-toggle="modal" data-target="#DeleteModal" onClick={()=>{this.setState({ shouldDelete:{id:myprops[1] , Storytitle:myprops[0].title} }); console.log(this.state.shouldDelete)}}>Delete</a> :null }
            
         </div>

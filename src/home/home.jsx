@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
-import db from "../database/db";
-import {UserEmail, UserUid, Username, Userdata} from "../database/funcs";
-import { Redirect } from "react-router";
 import { AuthContext } from "../Auth";
 import Gravatar from 'react-gravatar'
 import Header from '../components/NavHeader' ; 
-import Navbar from '../components/navbar' ; 
 import * as funs from "./homeFuns";
+// import { categoryAvailable } from "../Write/Story/Atts";
 
 function Home(){
     const {currentUser} = useContext(AuthContext);
@@ -16,15 +13,16 @@ function Home(){
     if(localStorage.getItem("username")){
         logged=1;
     }
+    var categoryAvailable = ["Story","Poem" , "Article" , "Fanfiction"];  
     return (
+
+        
         <div>
         
            <Header title="HOME" logged={logged}/> 
           
           {currentLocation == "/home" ? aboutUs : null }
-           <funs.FamousStories title="Story"/> 
-           <funs.FamousStories title="Poem"/> 
-           <funs.FamousStories title="Article"/> 
+          {categoryAvailable.map(eachCat =>{ return( <funs.FamousStories title={eachCat}/> ) ; })}
            
         </div>
 ); 
