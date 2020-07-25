@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import Slide from "@material-ui/core/Slide";
-
+import Avatar from '@material-ui/core/Avatar';
 
 const categoryPathName = {
     "stories": "Story",
@@ -68,11 +68,17 @@ export function TopUserTile(myprops) {
 
     return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
         <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "white" }}>
-            <img className="pointer" alt="profile-pic small" onClick={() => history.push({
+            {myprops.uobj[0].profileimg?<img className="pointer" alt="profile-pic small" onClick={() => history.push({
                 pathname: '/Profile',
                 search: '?UserId=' + myprops.uobj[1],
                 state: { id: myprops.uobj[1] },
             })} style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg ? myprops.uobj[0].profileimg : process.env.PUBLIC_URL + '/usericon.png'} />
+            :
+            <Avatar className="pointer" onClick={() => history.push({
+                pathname: '/Profile',
+                search: '?UserId=' + myprops.uobj[1],
+                state: { id: myprops.uobj[1] },
+            })} style={{ backgroundColor:"#f5ba13", height: "30px", width: "30px", borderRadius: "50%" }}>{myprops.uobj[0].fname[0].toUpperCase()+myprops.uobj[0].lname[0].toUpperCase()}</Avatar>}
         </div>
         <a href="" className="tcreator-tile-a" onClick={() => history.push({
             pathname: '/Profile',

@@ -14,6 +14,18 @@ import db from '../../database/db';
 import * as firebase from 'firebase';
 import { Caption } from '../../components/Loading';
 //end Charts 
+//Dialog- Edit Profile
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Button from '@material-ui/core/Button';
+import {EditProfileComp} from "../../Write/Profile/EditProfile";
+//end dialog edit profile
+
 export const UserDetails  = function (props)
 {   
     
@@ -28,6 +40,16 @@ export const UserDetails  = function (props)
     const [image , setImage] = useState(null) ; 
     var [UploadImageButton ,setUploadImageButton ] = useState("none"); 
     const [FollowButton , setFollowButton] = useState(props.IsUserFollowed); 
+    const [open,setOpen] = useState(false);
+
+    const Transition = React.forwardRef(function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+      });
+
+      function handleClose(){
+          setOpen(false);
+          window.location.reload();
+      }
     console.log(allprops.id)
     console.log(props.follows , "Follow Button")
     const [followCount , setFollowCount] = useState({
@@ -43,7 +65,7 @@ export const UserDetails  = function (props)
     
     //Here Comes the Edit Profile Button
     const EditProfile =  <div><button className={ !AnalyticsButton?"btn btn-default": "btn btn-success" } style={{width:"45%" , margin:"10px",outline:"none" ,}}  onClick={handleAnalytics}>Analytics Mode</button>
-    <button className= "btn btn-default" style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Edit Profile</button></div> ;
+    <button className= "btn btn-default" onClick={()=> {setOpen(true)}} style={{width:"45%",  margin:"10px" , marginRight:"0px"}}>Edit Profile</button></div> ;
     function handleUploadImageButton()
     {
       //upload the Image using the Upload file Fuction in storage
@@ -286,7 +308,7 @@ export const UserDetails  = function (props)
             <hr></hr>
             <div className= "col-md-6" style={{ wordWrap:"pre-wrap"}} >
                 <p>Bio: {allprops.bio}</p>
-                <p>Website: <a href= "https://youtu.be/XipZ2n8AcAc"  target="_blank">https://youtu.be/XipZ2n8AcAc</a> </p>
+                {allprops.website?<p>Website: <a href= {allprops.website}  target="_blank">{allprops.website}</a> </p>:null}
                 <br></br>
                 <audio controls style={{outline:"none"}} loop controlsList="nodownload">
                       <source  src= {process.env.PUBLIC_URL + "mysong.mp3"} type="audio/mp3" ></source>
@@ -314,6 +336,23 @@ export const UserDetails  = function (props)
            
             
             </div>
+            
+            <Dialog fullScreen open={open}   scroll={"body"}>
+         <div className="myshadow2" style={{height:"150px",color:"white",backgroundColor:"#f5ba13"}} >
+          <Toolbar>
+           
+            <Typography variant="h4" style={{ flex: 1}}>
+              EDIT PROFILE
+            </Typography>
+            <Button size="large" style={{fontFamily:"'Josefin Sans', sans-serif", fontSize:"20px"}} autoFocus color="inherit" onClick={handleClose}>
+              CLOSE
+            </Button>
+          </Toolbar>
+        </div>
+       
+        
+        <EditProfileComp user = {allprops}/>
+        </Dialog>
         </div>
     ) ; 
 }
