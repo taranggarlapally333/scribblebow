@@ -18,12 +18,30 @@ export function EditProfileComp(props) {
         website: props.user.website ? props.user.website : "",
         title: props.user.title,
         mobile: props.user.mobile ? props.user.mobile : "",
-        audio: props.user.audio
+        audio: props.user.audio,
+        
     });
     const [open,setOpen] = useState(false);
    
 
 
+    function Subs(ctitle) {
+        var title = ctitle;
+        title = title.split("");
+        var l = title.length;
+        var ss = [];
+        for (var i = 0; i < l; i++) {
+            var x = title[i];
+            ss.push(x);
+            for (var j = i + 1; j < l; j++) {
+
+                x += title[j];
+                ss.push(x);
+            }
+
+        }
+        return ss;
+    }
    
 
 
@@ -33,6 +51,15 @@ export function EditProfileComp(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
+        var tname =newdata.fname+" "+newdata.lname;
+        tname = tname.toLowerCase();
+        const userkeys = Subs(tname);
+        
+        
+        db.firestore().collection("users").doc(localStorage.getItem("username")).update({
+            userkeys:userkeys
+        })
+        
         db.firestore().collection("users").doc(localStorage.getItem("username")).update(newdata).then(error=>{
             if(error){
                 alert("error");

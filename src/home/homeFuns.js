@@ -91,7 +91,7 @@ class FamousStories extends React.Component
                                 </div>
                                 <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
                                     <StoryDetails.StoryDetails
-                                        id = {this.state.tabslist[0][1]} 
+                                        myid = {this.state.tabslist[0][1]} 
                                         Details = {this.state.tabslist[0][0]}
                                         title = {this.props.title}
                                         Comments = {[]}
