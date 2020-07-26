@@ -127,7 +127,7 @@ export default class Discover extends React.PureComponent {
 
     handleSearch = (event) => {
         event.preventDefault();
-        const searchkey = event.target.searchinput.value;
+        const searchkey = event.target.searchinput.value.toLowerCase();
         this.setState({searchkey: searchkey,category:""});
         if(searchkey){
             console.log(searchkey);

@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 import db from '../database/db' ;
 import { Redirect, useHistory } from "react-router";
+import Dialog from '@material-ui/core/Dialog';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import EditSettings from "../Write/Profile/EditSettings";
+
 function Navbar(props)
 {
 
+    const [open,setOpen] = useState(false);
     var currentLocation = window.location.pathname;
     var history = useHistory() ; 
+
+    function handleClose(){
+        setOpen(false);
+      
+    }
+
     var forhome = <ul className="nav navbar-nav ">
     <li><a className="nav-btn" href= "/Create">CREATE</a></li>
     <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
@@ -52,13 +65,29 @@ function Navbar(props)
                            
                         })
                     }}>Profile</a></li>
-                    <li><a href="">Settings</a></li>
+                    <li><a onClick={()=> {setOpen(true)}}>Settings</a></li>
                     <li><a href="/Report">Report</a></li>
                     <li><a href = "/" type= "button" onClick={()=> {localStorage.clear();db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
        </ul>
    </div>
+   <Dialog fullScreen open={open}   scroll={"body"}>
+         <div className="myshadow2" style={{height:"150px",color:"white",backgroundColor:"#f5ba13"}} >
+          <Toolbar>
+           
+            <Typography variant="h4" style={{ flex: 1}}>
+              SETTINGS
+            </Typography>
+            <Button size="large" style={{fontFamily:"'Josefin Sans', sans-serif", fontSize:"20px"}} autoFocus color="inherit" onClick={handleClose}>
+              CLOSE
+            </Button>
+          </Toolbar>
+        </div>
+       
+        
+        <EditSettings />
+        </Dialog>
    </div>
    </nav>) ; 
 }
