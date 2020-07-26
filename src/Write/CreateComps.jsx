@@ -128,6 +128,9 @@ GetCoverPage  = (imageId)=>
         }else{
             if(this.state.id===""){
                 return <div class="container">
+                {this.state.tabs.length===0?
+                    null
+                    :<p style={{ marginLeft: "5%" }}>Continue Writing</p>}
             {this.state.tabs.length===0?
             <div className="container" align="center">
             {this.state.r===2?<p>You have no unpublished {Atts.documentName[this.props.category]}</p>:null}
