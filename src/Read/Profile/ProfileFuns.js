@@ -377,7 +377,7 @@ export const UserWorks = function(props)
     }
     return(
         <div>
-            <div className = "container-inner buttonGroup" style={{display:"flex",justifyContent:"space-evenly" , color:"white" }} >
+            <div className = "container-inner buttonGroup  myscroller-notrack " style={{display:"flex",justifyContent:"" , color:"white" , overflowX:"auto" }} >
             {Atts.categoryAvailable.map(getcategoryButtons)}</div>
             <hr></hr>
             <CategoryAll category={title} key={title} UserId  = {props.UserId} />

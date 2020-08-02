@@ -9,6 +9,7 @@ import { Redirect, useHistory } from "react-router";
 import Loading from '../../components/Loading'; 
 import StoryDetails from "../../Read/Story/Details";
 import * as firebase from 'firebase';
+import MySnackBar from "../../components/SnackBar";
 
 function WriteStory(props)
 {
@@ -18,7 +19,8 @@ function WriteStory(props)
     console.log(StoryStatus); 
     var  [image , setImage] = useState(null) ; 
     var [stage , setStage] = useState(0) ;
-    var [StoryId , setStoryId] = useState("") ;  
+    var [StoryId , setStoryId] = useState("") ; 
+    var [openSnackbar , setSnackbar] = useState(false) ;  
     
     function handleImageChange(event)
     {
@@ -191,6 +193,7 @@ function WriteStory(props)
 
                
                 if(!PubSaveButton){
+                    setSnackbar(true) ; 
                     history.push(
                         {
                             pathname:'/WriteStory', 
@@ -211,11 +214,11 @@ function WriteStory(props)
             setStoryId(StoryId); 
             if(!PubSaveButton)
             {
-                alert("Your "+ props.title + " is Succesfully Saved."); 
+                setSnackbar(true) ; 
             }
             else 
             {
-                alert("Your "+ props.title + " is Succesfully Published."); 
+                
                 if (props.new)
                 {
                     db.firestore().collection("comments").doc(StoryId).set({
@@ -225,7 +228,7 @@ function WriteStory(props)
                         usernames: []
                     });
                 }
-                 
+                setSnackbar(true) ; 
                 setStage(5) ;
                 setTimeout(()=>{setStage(4)},6000) ; 
                 
@@ -303,6 +306,11 @@ function WriteStory(props)
                             
                         </div>
                         </form>
+
+                        <MySnackBar message= {!PubSaveButton ? "your "+props.title+" has been Saved" : "your "+props.title+ " has been Published"}
+                            open = {openSnackbar}
+                            key ={openSnackbar}
+                        />
                     </div>
                 ) ; 
     } 
