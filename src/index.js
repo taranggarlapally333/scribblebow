@@ -39,8 +39,7 @@ ReactDOM.render(
       />
       <Route exact path="/Report" component={Reports}
       />
-       <Route exact path="/EditProfile" component={EditProfile}
-      />
+       
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
        <Route exact path="/Profile"  render={(props) => <Profile {...props  }/>}  />
        <Route exact path="/StorySeries"  render={(props) => <StorySeries  {...props} />}  />

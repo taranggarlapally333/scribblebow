@@ -84,20 +84,20 @@ class FamousStories extends React.Component
                     this.state.stage === 0 ? 
                         "wait"
                             :<div className = "row container myshadow " style={{margin:"20px",  width:"95%" , backgroundColor:""}}>
-                                <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
+                                {/* <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
                                 <a href= "ReadStory?title="><StoryDetails.CoverPage 
                                   imageAddress = {this.state.tabslist[0][0].coverid === ""? process.env.PUBLIC_URL+"ScribbleBow.png" :this.state.tabslist[0][0].coverid  }
                         /></a>
-                                </div>
-                                <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
+                                </div> 
+                                 <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
                                     <StoryDetails.StoryDetails
-                                        id = {this.state.tabslist[0][1]} 
+                                        myid = {this.state.tabslist[0][1]} 
                                         Details = {this.state.tabslist[0][0]}
                                         title = {this.props.title}
                                         Comments = {[]}
                                         Liked = {false}
                                     />
-                                </div>
+                                </div> */}
                         </div>
                 }
                 

@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material/snackbar": "^7.0.0",
     "@mdi/font": "^5.3.45",
     "@testing-library/jest-dom": "^4.2.4",
@@ -21,6 +22,7 @@
     "fusioncharts": "^3.15.1-sr.1",
     "js-cookie": "^2.2.1",
     "mdbreact": "^4.27.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-canvas-js": "^1.0.1",

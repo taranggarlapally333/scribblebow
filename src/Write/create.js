@@ -29,7 +29,7 @@ function Create() {
 
     function SelectButtons() {
         console.log("the buttons");
-        return <div className=" container myscroller" style={{ display: "flex", overflowX: "auto", justifyContent: "space-evenly" }} >
+        return <div className=" container myscroller-notrack" style={{ display: "flex", overflowX: "auto", justifyContent: "" }} >
             <a className="btn create-btn" style={{ backgroundColor: "#E61D42", marginBottom: "10px", fontWeight: "bold" }} onClick={() => { setCategory("Story") }}>Story</a>
             <a className="btn create-btn" style={{ backgroundColor: "#FF7F00", marginBottom: "10px", fontWeight: "bold" }} onClick={() => { setCategory("Poem") }}>Poem</a>
             <a className="btn create-btn" style={{ backgroundColor: "#FFED07", marginBottom: "10px", fontWeight: "bold" }} onClick={() => { setCategory("Quote") }}>Quote</a>
@@ -49,8 +49,9 @@ function Create() {
             <div className="container">
                 <h4 className="font0" align="center" style={{ marginTop: "-20px" }}>Choose what to create...</h4>
             </div>
-
+            <div className='container-fluid' style={{ marginTop: "-20px", marginBottom: "20px" }}>
             <SelectButtons />
+            </div>
             <div className="container">
                 
                 <p style={{ fontSize: "30px", marginTop: "20px", marginBottom: "-20px", marginLeft: "5%", color: "#C5D9C3", float: "left" }}>Drafts</p>
@@ -85,7 +86,7 @@ function Create() {
             </div>
             <div className="container">
                 <hr style={{ width: "90%", borderTop: "2px solid #C5D9C3" }} />
-                <p style={{ marginLeft: "5%" }}>Continue Writing</p>
+               
             </div>
             <CategoryDrafts category={category} key={category} />
 
