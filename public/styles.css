@@ -514,16 +514,22 @@ text-decoration: none;
     letter-spacing: normal;
     font-size: large ;
     text-align: left;
+   
+    
 }
 .myborder
 {
     border:1px solid lightgray;  
 }
 .buttonGroup button{
-    width: 13%
+    width: 150px ; 
+    margin-right: 10px;
+    margin-left: 10px;
+    
 }
 .buttonGroup button:hover{
     color:"black"
+    
 }
 
 
@@ -697,8 +703,7 @@ outline-width: 0;
     width: fit-content;
 }
 form.create-note {
-    position: relative;
-    width: 480px;
+    position: relative; 
     background: #fff;
     padding: 15px;
     border-radius: 7px;

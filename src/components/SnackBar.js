@@ -1,20 +1,63 @@
 import React from 'react'
 import { useSnackbar } from 'react-simple-snackbar'
 import * as Atts from "../Write/Story/Atts"  ; 
-export default function SomeChildComponent() {
-  const [openSnackbar, closeSnackbar] = useSnackbar({
-    style :{
-        backgroundColor: "#4BB543",
-        fontFamily: '"Josefin Sans", sans-serif',
-        textAlign: 'center',
-    }}
-  )
- 
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { SnackbarContent } from '@material-ui/core'; 
+import { render } from 'react-dom';
+export default class MySnackBar extends React.Component {
+
+  constructor(props)
+  {
+    super(props) ; 
+    this.state = {open : this.props.open }
+  }
+
+  shouldComponentUpdate(nextProps , nextState)
+  {
+     if( this.props.open === nextProps.open 
+      && this.state.open === nextState.open
+      ) return false ; else return true  ; 
+  }
+
+  handleClose = ()=>{
+    this.setState({open : !this.state.open })
+}
+ TransitionUp = (props)=> {
+  return <Slide {...props} direction="up" />;
+}
+
+ render()
+ {
   return (
     <div>
-      <button onClick={() => openSnackbar(<a style={{textDecoration:'none' , color:"white"}} href="/EditProfile" >This is the content of the Snackbar.</a>)}>
-        Click me to open the Snackbar!
-      </button>
+        <Snackbar
+    open={this.state.open}
+    onClose={this.handleClose}
+    TransitionComponent={this.TransitionUp}
+    autoHideDuration={5000}
+    
+    >
+<SnackbarContent style={{
+  backgroundColor:'#4BB543',
+  fontSize: 14
+}}
+message={<span id="client-snackbar"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;&nbsp;{this.props.message}</span>}
+action={
+      <React.Fragment>
+        
+        <IconButton size="small" aria-label="close" color="inherit" onClick={this.handleClose}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </React.Fragment>
+    }
+/>
+</Snackbar>
     </div>
-  )
+    
+  ) ; 
+ }
+  
 }
