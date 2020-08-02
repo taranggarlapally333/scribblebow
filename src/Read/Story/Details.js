@@ -354,7 +354,7 @@ function StoryDetails(props)
                 </Zoom>)}
             </div>
             <div id="AllComments" style={{display:"none"}} >
-                            <Comments  id = {myStoryDetails.myid}   
+                            <Comments  id = {props.id}   
                             addedComments={AllStoryComments} 
                             creator={myStoryDetails.creator} 
                             title = {props.title}
