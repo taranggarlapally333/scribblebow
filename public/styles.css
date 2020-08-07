@@ -39,6 +39,23 @@ background-image: url(http://www.transparenttextures.com/patterns/wood-pattern.p
     height: 180px;
     width: 120px;
 }
+/* Quote */
+.QuoteEditArea {
+    min-width :600px  ; 
+    max-width: 600px;
+    min-height: 430px ; 
+    /* max-height: 430px; */
+    white-space: pre-wrap;
+    word-wrap: pre-wrap;
+    overflow-wrap: break-word;
+    background-image:  url("./ScribbleBow.png") ; 
+    background-position:center ;
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    text-align: center;
+    padding: 10px;
+} 
+/* End of Quote Part */
 /* All types of cursors*/
 .alias {cursor: alias;}
 .all-scroll {cursor: all-scroll;}

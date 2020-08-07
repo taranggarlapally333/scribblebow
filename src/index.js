@@ -21,6 +21,7 @@ import Reports from './Write/Report/Reports';
 import EditProfile from './Write/Profile/EditProfile';
 import StorySeries from './Write/Story/StorySeries' ;
 import Myshelf from './MyShelf/Myshelf';
+import WriteQuote from './Write/Quote/Main';
 
 
 
@@ -44,7 +45,7 @@ ReactDOM.render(
        <Route exact path="/Profile"  render={(props) => <Profile {...props  }/>}  />
        <Route exact path="/StorySeries"  render={(props) => <StorySeries  {...props} />}  />
       <PrivateRoute exact path="/Create" component={Create}/>
-      
+      <Route  exact path= "/WriteQuote"  render={(props) => <WriteQuote {...props} />  } ></Route>
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
 
       <PrivateRoute exact path="/discover" component={Discover}/>
