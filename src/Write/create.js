@@ -8,14 +8,17 @@ import { Redirect, useHistory } from 'react-router';
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
+import ScribblePlayer from '../AudioUI/ScribblePlayer';
 
 
 function Create() {
 
+    const [play, setPlay] = useState(false);
     const [stage, setStage] = useState(0);
     const [category, setCategory] = useState("works");
     const [ripple, setRipple] = useState();
     var history = useHistory();
+    
 
     const categoryPathName = {
         "Story": "/WriteStory",
@@ -46,6 +49,8 @@ function Create() {
     return (
         <div>
             <Header title="Create" />
+            <p onClick={()=>{setPlay(true)}}>play</p>
+            {play===true?<ScribblePlayer play={setPlay}/>:null}
             <div className="container">
                 <h4 className="font0" align="center" style={{ marginTop: "-20px" }}>Choose what to create...</h4>
             </div>

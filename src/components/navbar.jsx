@@ -61,8 +61,7 @@ function Navbar(props)
                         history.push({
                             pathname:'/Profile' , 
                             search:"?UserId="+localStorage.getItem('username'),
-                            state:{id: localStorage.getItem('username') ,  key:localStorage.getItem('username')}, 
-                           
+                            state:{id: localStorage.getItem('username') ,  key:localStorage.getItem('username')},
                         })
                     }}>Profile</a></li>
                     <li><a onClick={()=> {setOpen(true)}}>Settings</a></li>
@@ -72,6 +71,7 @@ function Navbar(props)
           </li>
        </ul>
    </div>
+ 
    <Dialog fullScreen open={open}   scroll={"body"}>
          <div className="myshadow2" style={{height:"150px",color:"white",backgroundColor:"#f5ba13"}} >
           <Toolbar>

@@ -21,11 +21,13 @@ import Reports from './Write/Report/Reports';
 import EditProfile from './Write/Profile/EditProfile';
 import StorySeries from './Write/Story/StorySeries' ;
 import Myshelf from './MyShelf/Myshelf';
+import ScribblePlayer from './AudioUI/ScribblePlayer';
 
 
 
 ReactDOM.render(
-
+  <div>
+ 
   <AuthProvider>
   <Router>
     <div>
@@ -67,6 +69,9 @@ ReactDOM.render(
     </div>
   </Router>
   </AuthProvider>
+ 
+
+  </div>
 
   ,
   document.getElementById('root')
