@@ -22,10 +22,10 @@ function Create() {
 
     const categoryPathName = {
         "Story": "/WriteStory",
-        "Poem": "/WritePoem",
+        "Poem": "/WriteStory",
         "Quote": "/WriteQuote",
-        "Article": "/WriteArticle",
-        "fanfiction": "/WriteFanfiction",
+        "Article": "/WriteStory",
+        "fanfiction": "/WriteStory",
         "Audio": "/WriteAudio",
         "Script": "/WriteScript"
     };
@@ -77,7 +77,7 @@ function Create() {
                         }} onClick={()=>{ if(category!=="works"){
 
                             
-                                history.push({pathname:"/WriteStory", 
+                                history.push({pathname:categoryPathName[category], 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     });
