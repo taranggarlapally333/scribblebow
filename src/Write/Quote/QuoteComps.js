@@ -129,7 +129,7 @@ export default function QuoteEditor(props)
                         }}
                         step={1}
                         marks
-                        min={0}
+                        min={-5}
                         max={5}
                         
                     />
