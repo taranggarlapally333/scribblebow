@@ -337,7 +337,8 @@ export const UserDetails  = function (props)
             
             </div>
             
-            <Dialog fullScreen open={open}   scroll={"body"}>
+            
+            <Dialog fullScreen open={open} scroll={"body"}>
          <div className="myshadow2" style={{height:"150px",color:"white",backgroundColor:"#f5ba13"}} >
           <Toolbar>
            

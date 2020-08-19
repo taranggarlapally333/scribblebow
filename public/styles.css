@@ -343,6 +343,8 @@ cursor: pointer;
 .draft-cont:hover .draft-image {
     opacity: 0.1;
   }
+
+  
   
 .draft-cont:hover .draft-title {
     opacity: 1;
@@ -788,3 +790,59 @@ form.create-note textarea {
     border-right: 50px solid transparent;
     border-top: 100px solid red;
   }
+
+
+
+
+
+
+
+/* Audio Part Start*/
+
+.audioplayer{
+    display:block;
+}
+
+.audio-image{
+    border-radius: 50%; 
+    height: 140px;
+    width: 140px;
+    margin-top: -20px;
+    margin-left: 30px;
+    position: absolute;
+    transition: 0.4s ease;
+    background: white;
+}
+
+.audioplayer:hover .audio-image {
+    opacity: 0.1;
+}
+
+
+.audio-ops{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    transition: 0.4s ease;
+    opacity:0;
+}
+
+.audioplayer:hover .audio-ops  {
+    opacity: 1;
+}
+
+.audio-close{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* Audio Part end*/
