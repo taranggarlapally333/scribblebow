@@ -9,6 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
 import ScribblePlayer from '../AudioUI/ScribblePlayer';
+import { categoryPathName } from './Story/Atts';
 
 
 function Create() {
@@ -20,15 +21,7 @@ function Create() {
     var history = useHistory();
     
 
-    const categoryPathName = {
-        "Story": "/WriteStory",
-        "Poem": "/WriteStory",
-        "Quote": "/WriteQuote",
-        "Article": "/WriteStory",
-        "fanfiction": "/WriteStory",
-        "Audio": "/WriteAudio",
-        "Script": "/WriteScript"
-    };
+    
 
     function SelectButtons() {
         console.log("the buttons");
@@ -77,7 +70,7 @@ function Create() {
                         }} onClick={()=>{ if(category!=="works"){
 
                             
-                                history.push({pathname:categoryPathName[category], 
+                                history.push({pathname: categoryPathName[category], 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     });

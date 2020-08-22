@@ -146,7 +146,7 @@ GetCoverPage  = (imageId)=>
                 console.log(this.state.id);
                 console.log(this.props.category);
                 return <Redirect to={{
-                     pathname: "/WriteStory",
+                     pathname: Atts.categoryPathName[this.props.category],
                      state: {
                          title: this.props.category,
                          id: this.state.id,

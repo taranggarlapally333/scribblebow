@@ -15,13 +15,13 @@ function WriteStory(props)
 {
 
     console.log(props); 
-    var [StoryStatus , setStoryStatus] = useState(props.StoryDetails) ; 
+    const [StoryStatus , setStoryStatus] = useState(props.StoryDetails) ; 
     console.log(StoryStatus); 
-    var  [image , setImage] = useState(null) ; 
-    var [stage , setStage] = useState(0) ;
-    var [StoryId , setStoryId] = useState("") ; 
-    var [openSnackbar , setSnackbar] = useState(false) ;  
-    
+    const  [image , setImage] = useState(null) ;  
+    const [stage , setStage] = useState(0) ;
+    const [StoryId , setStoryId] = useState("") ; 
+    const [openSnackbar , setSnackbar] = useState(false) ;  
+    const [prePub , setPrePub] = useState(StoryStatus.published) ; 
     function handleImageChange(event)
     {
         var ImageFile =event.target.files[0] ;  
@@ -145,7 +145,7 @@ function WriteStory(props)
                 ...prevValue,
                 "StoryFont" : "", 
                 "StoryFontSize":"20" ,
-                "StoryTitle" : props.location.state.title+" Title" ,  
+                "StoryTitle" : props.title+" Title" ,  
             };
         });
 
@@ -188,6 +188,9 @@ function WriteStory(props)
         if(props.title =="Fanfiction") myStoryData ={...myStoryData ,"basedOn":StoryStatus.FictionBasedOn} ; 
         if (props.title == "Story"|"Poem"|"Fanfiction") myStoryData = {...myStoryData , "part": StoryStatus.part} ;      
         console.log(myStoryData)  ;
+        db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).get().then(qs=>{
+            
+        })
         if (props.new)
             {db.firestore().collection(Atts.documentName[props.title]).doc(StoryId).set(myStoryData) ;
 
@@ -219,7 +222,7 @@ function WriteStory(props)
             else 
             {
                 
-                if (props.new)
+                if (!prePub)
                 {
                     db.firestore().collection("comments").doc(StoryId).set({
                         comments: []
@@ -255,6 +258,7 @@ function WriteStory(props)
                                 <h4>Title</h4>
                                 <input className = {Atts.propsClass} type="text" name = "StoryTitle" value={StoryStatus.StoryTitle} 
                                     onChange = {handleStoryStatus}
+                                    
                                 />
                                 <h4>{props.title} Font</h4>
                                 <select className = {Atts.propsClass} type="text" name = "StoryFont" onChange =  {handleStoryStatus}  value={StoryStatus.StoryFont}

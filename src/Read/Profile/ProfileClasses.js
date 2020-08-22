@@ -186,9 +186,10 @@ Switch = () => {
                 console.log(this.props.category);
                 if(this.state.edit === false)
                 {
+                    let temp  = this.props.category == "Quote" ? "&QuoteId=" : "&StoryId="
                     return <Redirect to={{
-                        pathname: "/ReadStory",
-                        search: "?title="+ this.props.category+"&StoryId="+this.state.id,
+                        pathname: this.props.category == "Quote" ? "/ReadQuote" : "/ReadStory" ,
+                        search: "?title="+ this.props.category+ temp +this.state.id,
                         state: {
                             title: this.props.category,
                             id: this.state.id,
@@ -204,7 +205,7 @@ Switch = () => {
                 else 
                 {
                     return <Redirect  to ={{
-                        pathname:"/WriteStory" , 
+                        pathname: this.props.category == "Quote" ? "/ReadQuote" : "/ReadStory" , 
                         state: {
                             title: this.props.category,
                             id: this.state.id,

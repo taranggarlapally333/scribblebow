@@ -256,8 +256,8 @@ function StoryDetails(props)
                                     <strong  style={{color:"red"}}>Report Story</strong>  "<strong>{myStoryDetails.title}</strong>" 
                                 </div>
                                 <div className="modal-body" >
-                                            <div className="container-inner">
-                                                    <form className="create-note" style={{boxShadow:"none"}} onSubmit={handleReportStorySubmit}>
+                                            <div className="">
+                                                    <form className="create-note container-inner" style={{boxShadow:"none"}} onSubmit={handleReportStorySubmit}>
                                                         <textarea rows="10" placeholder="Report Issue" name="message"  onChange={(event)=>{
                                                                 let val = event.target.value;
                                                                 console.log(!(val.length>=3)) ; 
@@ -457,13 +457,13 @@ class Comments extends React.Component
 
                         <div>
                                 <div id="ReportCommentModal" className="modal fade" role="dialog" style={{marginTop:"50px"}}>
-                                        <div className="modal-dialog" style={{position:"fixed"}} >
+                                        <div className="modal-dialog"  >
                                             <div className="modal-content" >
                                             <div className="modal-header">
                                                 <strong  style={{color:"red"}}>Report Comment</strong>
                                             </div>
                                             <div className="modal-body" >
-                                                        <div className="container">
+                                                        <div className="">
                                                                 <form className="create-note container-inner" style={{boxShadow:"none"}} onSubmit={this.handleReportSubmit}>
                                                                     <textarea rows="10" placeholder="Report Issue" name="message"  onChange={(event)=>{
                                                                           let val = event.target.value;
