@@ -59,7 +59,7 @@ function Player(props) {
 
 
   const xaudio = <audio id="playaudio" controls preload autobuffer autoplay style={{ display: "none", outline: "none" }} loop controlsList="nodownload">
-    <source src={process.env.PUBLIC_URL + "mysong.mp3"} type="audio/mp3" ></source>
+    <source src={"https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/AudioFiles%2FRise%20%E2%80%94%20Airixis%20%5BAudio%20Library%20Release%5D.mp3?alt=media&token=d4b206f9-342e-4fba-8761-d9d984445395"} type="audio/mp3" ></source>
   </audio>
 
 

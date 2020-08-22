@@ -11,6 +11,15 @@ html,body
    
 }
 
+audio{
+    width: 60%;
+}
+
+
+.theme-color-bg{
+    background-color: #f5ba13;
+}
+
 .tabfont{
     font-size: 16px; 
 }
@@ -299,6 +308,8 @@ cursor: pointer;
     background-color: #E6B010;
     color: white;
 }
+
+
 
 
 .draft-cont{

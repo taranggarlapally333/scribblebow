@@ -23,6 +23,7 @@ import StorySeries from './Write/Story/StorySeries' ;
 import Myshelf from './MyShelf/Myshelf';
 import ScribblePlayer from './AudioUI/ScribblePlayer';
 import WriteQuote from './Write/Quote/Main';
+import { Recorder } from './AudioUI/Recorder';
 
 
 
@@ -57,6 +58,8 @@ ReactDOM.render(
       <PrivateRoute exact path="/unverif" component={Unverif}
       />
        <PrivateRoute exact path="/my-shelf" component={Myshelf}
+      />
+      <PrivateRoute exact path="/recorder" component={Recorder}
       />
       <Route exact path="/Pref0" component={Pref0}
       />

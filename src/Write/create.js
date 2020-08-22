@@ -26,7 +26,7 @@ function Create() {
         "Quote": "/WriteQuote",
         "Article": "/WriteStory",
         "fanfiction": "/WriteStory",
-        "Audio": "/WriteAudio",
+        "Audio": "/recorder",
         "Script": "/WriteScript"
     };
 

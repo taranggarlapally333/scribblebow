@@ -6,7 +6,7 @@ import db from "../database/db";
 import * as Atts from "../Write/Story/Atts"
 const storage = firebase.storage() ; 
 
-export const UploadImage = function (MainDirectory,image , imageId , collectionName)
+export const UploadImage = function (MainDirectory,image , imageId , collectionName, type)
 {
   const uploadTask  = storage.ref( MainDirectory+imageId).put(image) ;
 
@@ -21,11 +21,20 @@ export const UploadImage = function (MainDirectory,image , imageId , collectionN
       {
         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
             console.log('File available at', downloadURL);
-            db.firestore().collection(collectionName).doc(imageId).update(
-              {
-                [collectionName==="users"?"profileimg" :"coverid"]: downloadURL
-              }
-            ); 
+            if(collectionName==="audio"){
+              db.firestore().collection(collectionName).doc(imageId).update(
+                {
+                  [type==="audio"?"audioUrl" :"coverid"]: downloadURL
+                }
+              ); 
+            }else{
+              db.firestore().collection(collectionName).doc(imageId).update(
+                {
+                  [collectionName==="users"?"profileimg" :"coverid"]: downloadURL
+                }
+              ); 
+            }
+            
           }); 
       }  
       );
