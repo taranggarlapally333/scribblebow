@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import Header from '../components/NavHeader';
 import CategoryDrafts from "./CreateComps";
-import { icons } from 'react-icons/lib';
-import db from '../database/db';
-import WriteStory from './Story/Story';
-import { Redirect, useHistory } from 'react-router';
+import {  useHistory } from 'react-router';
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
-import ScribblePlayer from '../AudioUI/ScribblePlayer';
 
 
-function Create() {
 
-    const [play, setPlay] = useState(false);
+
+function Create(props) {
+
+    
     const [stage, setStage] = useState(0);
     const [category, setCategory] = useState("works");
     const [ripple, setRipple] = useState();
@@ -49,8 +47,7 @@ function Create() {
     return (
         <div>
             <Header title="Create" />
-            <p onClick={()=>{setPlay(true)}}>play</p>
-            {play===true?<ScribblePlayer play={setPlay}/>:null}
+            <p onClick={()=>{props.setPlayAudio("https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/AudioFiles%2FRise%20%E2%80%94%20Airixis%20%5BAudio%20Library%20Release%5D.mp3?alt=media&token=d4b206f9-342e-4fba-8761-d9d984445395")}}>play</p>
             <div className="container">
                 <h4 className="font0" align="center" style={{ marginTop: "-20px" }}>Choose what to create...</h4>
             </div>
@@ -77,7 +74,7 @@ function Create() {
                         }} onClick={()=>{ if(category!=="works"){
 
                             
-                                history.push({pathname:categoryPathName[category], 
+                                history.push({pathname: categoryPathName[category], 
                                     state: { id: "" , title:category , new:true }, 
                                     key:{id: "" , title:category, new:true}
                                     });

@@ -62,7 +62,7 @@ export default class Discover extends React.PureComponent {
         if(this.state.category===""){
             if(this.state.searchkey==="")
             return <div className="container">
-            <div className="col-md-10 discover-content myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
+            <div className="col-md-10 discover-content myscroller-notrack" style={{ height: "60vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
                 <ContentArea cmsg="Stories Recommended For You" category="stories" type="recommended"/>
                 <ContentArea cmsg="Latest Stories" category="stories" type="latest"/>
                 <ContentArea cmsg="Poems Recommended For You" category="poems" type="recommended"/>
@@ -73,8 +73,8 @@ export default class Discover extends React.PureComponent {
                 <ContentArea cmsg="Latest Fanfiction" category="fanfiction" type="latest"/>
                 <ContentArea cmsg="Quotes Recommended For You" category="quotes" type="recommended"/>
                 <ContentArea cmsg="Latest Quotes" category="quotes" type="latest"/>
-                <ContentArea cmsg="Audio Recommended For You" category="Audio" type="recommended"/>
-                <ContentArea cmsg="Latest Audio" category="Audio" type="latest"/>
+                <ContentArea cmsg="Audio Recommended For You" category="audio" setPlayAudio={this.props.setPlayAudio} type="recommended"/>
+                <ContentArea cmsg="Latest Audio" category="audio" setPlayAudio={this.props.setPlayAudio} type="latest"/>
 
             </div>
             <div className="col-md-2 trending-creators" style={{ marginLeft: "20px", marginRight: "-20px" }}>
@@ -90,8 +90,8 @@ export default class Discover extends React.PureComponent {
             if(this.state.searchkey==="")
             return <div className="container">
             <div className="col-md-10 discover-content myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <ContentArea cmsg={this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)+" Recommended For You"} category={this.state.category}   type="recommended"/>
-                <ContentArea cmsg={"Latest "+this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)} category={this.state.category} z type="latest"/>
+                <ContentArea setPlayAudio={this.props.setPlayAudio} cmsg={this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)+" Recommended For You"} category={this.state.category}   type="recommended"/>
+                <ContentArea setPlayAudio={this.props.setPlayAudio} cmsg={"Latest "+this.state.category.charAt(0).toUpperCase() + this.state.category.slice(1)} category={this.state.category} z type="latest"/>
                
 
             </div>

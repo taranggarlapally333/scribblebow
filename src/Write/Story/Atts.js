@@ -33,7 +33,15 @@ var GenreColors = {
     
     
  }
-
+ const categoryPathName = {
+    "Story": "/WriteStory",
+    "Poem": "/WriteStory",
+    "Quote": "/WriteQuote",
+    "Article": "/WriteStory",
+    "fanfiction": "/WriteStory",
+    "Audio": "/recorder",
+    "Script": "/WriteScript"
+};
 
 
 
@@ -116,6 +124,7 @@ function Subs(ctitle) {
 }
 
  export {fontsAvailable ,categoryAvailable, 
+    categoryPathName,
     propsClass, 
     CoverPage , 
     GenreAvailable , 

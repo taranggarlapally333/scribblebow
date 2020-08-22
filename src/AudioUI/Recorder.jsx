@@ -297,7 +297,7 @@ export class Recorder extends React.Component {
           {this.state.recording === true ? <div><p>Recording </p><Timer timer={this.state.timer} /></div> : null}
             <div style={{ position: "absolute", width: "100%", bottom: "15%", display: "flex", flex: "wrap" }}>
                 {this.state.audioUrl === "" ? null : <audio controls>
-                    <source src={this.state.audioUrl} type="audio/mp3" />
+                    <source src={this.state.audioUrl} type="audio/webm" />
                 </audio>}
                 {this.state.audioUrl === "" ? null : <input className="btn btn-default mybtn" value="SAVE" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)} />}
                 {this.state.audioUrl === "" ? null : <input className="btn btn-default mybtn" value="PUBLISH" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)} />}

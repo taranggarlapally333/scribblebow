@@ -8,7 +8,7 @@ export default function ScribblePlayer(props) {
   const settingZoom = () => {
     props.play(false);
   }
-  return <Player settingZoom={settingZoom} />
+  return <Player settingZoom={settingZoom} data={props.data}/>
 }
 
 
@@ -19,12 +19,10 @@ export default function ScribblePlayer(props) {
 
 function Player(props) {
   var playing = false;
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(props.data.audioUrl);
+  const [cover, setCover] = useState(props.data.coverid);
 
-
-  window.addEventListener("storage", (e) => {
-    setUrl("abcd");
-  });
+  
 
   useEffect(() => {
     playAudio();
@@ -59,7 +57,7 @@ function Player(props) {
 
 
   const xaudio = <audio id="playaudio" controls preload autobuffer autoplay style={{ display: "none", outline: "none" }} loop controlsList="nodownload">
-    <source src={"https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/AudioFiles%2FRise%20%E2%80%94%20Airixis%20%5BAudio%20Library%20Release%5D.mp3?alt=media&token=d4b206f9-342e-4fba-8761-d9d984445395"} type="audio/mp3" ></source>
+    <source src={url} type="audio/webm" ></source>
   </audio>
 
 
@@ -68,7 +66,7 @@ function Player(props) {
     <div className="audioplayer myshadow" style={{ height: "200px", width: "200px", borderRadius: "50%", backgroundColor: "#2E2B5F", bottom: "5vh", right: "20px", position: "absolute", zIndex: "100" }}>
       <div className="audio-close myshadow pointer" onClick={() => { props.settingZoom(); pauseAudio(); }}><i class="fa fa-close" style={{ marginTop: "15px", marginLeft: "15px", opacity: "0.5", fontSize: "24px", color: "grey" }}></i></div>
 
-      <img className="audio-image" src="https://wallpapercave.com/wp/wp3022826.jpg" alt="music cover" />
+      <img className="audio-image" src={cover===""?process.env.PUBLIC_URL + '/ScribbleBow.png':cover} alt="music cover" />
 
       <div className="audio-ops" >
         <i className="fas fa-heart pointer" style={{ fontSize: "24px", color: "grey" }} onClick={() => { alert("like") }}></i>

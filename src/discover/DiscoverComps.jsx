@@ -17,6 +17,15 @@ const categoryPathName = {
     "audio": "Audio",
     "scripts": "Script"
 };
+const ReadPathName = {
+    "Story": "/ReadStory",
+    "Poem": "/ReadStory",
+    "Quote": "/ReadQuote",
+    "Article": "/ReadStory",
+    "Fanfiction": "/ReadStory",
+    "Audio": "/audio-content",
+    "Script": "/ReadStory"
+};
 
 export function TopUserTile(myprops) {
     const history = useHistory();
@@ -68,17 +77,17 @@ export function TopUserTile(myprops) {
 
     return <div style={{ display: "flex", justifyContent: "space-between", borderColor: "grey", borderStyle: "solid", borderWidth: "0px", borderTop: "0px", borderLeft: "0px", borderRight: "0px" }}>
         <div style={{ height: "30px", width: "30px", borderRadius: "50%", margin: "5px", backgroundColor: "white" }}>
-            {myprops.uobj[0].profileimg?<img className="pointer" alt="profile-pic small" onClick={() => history.push({
+            {myprops.uobj[0].profileimg ? <img className="pointer" alt="profile-pic small" onClick={() => history.push({
                 pathname: '/Profile',
                 search: '?UserId=' + myprops.uobj[1],
                 state: { id: myprops.uobj[1] },
             })} style={{ height: "30px", width: "30px", borderRadius: "50%" }} src={myprops.uobj[0].profileimg ? myprops.uobj[0].profileimg : process.env.PUBLIC_URL + '/usericon.png'} />
-            :
-            <Avatar className="pointer" onClick={() => history.push({
-                pathname: '/Profile',
-                search: '?UserId=' + myprops.uobj[1],
-                state: { id: myprops.uobj[1] },
-            })} style={{ backgroundColor:"#f5ba13", height: "30px", width: "30px", borderRadius: "50%" }}>{myprops.uobj[0].fname[0].toUpperCase()+myprops.uobj[0].lname[0].toUpperCase()}</Avatar>}
+                :
+                <Avatar className="pointer" onClick={() => history.push({
+                    pathname: '/Profile',
+                    search: '?UserId=' + myprops.uobj[1],
+                    state: { id: myprops.uobj[1] },
+                })} style={{ backgroundColor: "#f5ba13", height: "30px", width: "30px", borderRadius: "50%" }}>{myprops.uobj[0].fname[0].toUpperCase() + myprops.uobj[0].lname[0].toUpperCase()}</Avatar>}
         </div>
         <a href="" className="tcreator-tile-a" onClick={() => history.push({
             pathname: '/Profile',
@@ -120,10 +129,10 @@ export class TopCreators extends React.Component {
         });
 
         var topuserdb;
-        if(this.props.category)
-        topuserdb = db.firestore().collection("users").where(this.props.category,">",0).orderBy(this.props.category).orderBy("nfollowers", "desc");
+        if (this.props.category)
+            topuserdb = db.firestore().collection("users").where(this.props.category, ">", 0).orderBy(this.props.category).orderBy("nfollowers", "desc");
         else
-        topuserdb = db.firestore().collection("users").orderBy("nfollowers", "desc");
+            topuserdb = db.firestore().collection("users").orderBy("nfollowers", "desc");
 
         topuserdb.limit(7).get().then((snapshot) => {
 
@@ -287,12 +296,12 @@ class RetrieveSearch extends React.Component {
 
     shouldComponentUpdate(NextProps, NextState) {
 
-        if (this.props === NextProps 
-            && this.state.ids === NextState.ids 
-            && this.state.k === NextState.k 
-            && this.state.sswitch === NextState.sswitch 
+        if (this.props === NextProps
+            && this.state.ids === NextState.ids
+            && this.state.k === NextState.k
+            && this.state.sswitch === NextState.sswitch
             && this.state.fcheck === NextState.fcheck
-            ) {
+        ) {
             return false;
         }
         return true;
@@ -484,23 +493,33 @@ export function SearchResults(props) {
 
 export function DiscoverTab(myprops) {
     const history = useHistory();
+    let temp = myprops.cobj[2] === "Quote" ? "&QuoteId=" : "&StoryId="
     return <div className="draft-cont pointer" onClick={() => {
-        history.push({
-            pathname: '/ReadStory',
-            search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
-            state: {
-                title: myprops.cobj[2],
-                id: myprops.cobj[1],
-            }
-        })
+        if (myprops.cobj[2] === "Audio")
+        myprops.setPlayAudio(myprops.cobj[0]);
+        else
+            history.push({
+
+                pathname: myprops.cobj[2] === "Quote" ? "/ReadQuote" : "/ReadStory",
+                search: "?title=" + myprops.cobj[2] + temp + myprops.cobj[1],
+                state: {
+                    title: myprops.cobj[2],
+                    id: myprops.cobj[1],
+
+                },
+                key: {
+                    title: myprops.cobj[2],
+                    id: myprops.cobj[1],
+                }
+            })
     }}>
         <a style={{ textDecoration: "none", color: "black" }} >
             <div className="container-inner myshadow rounded" style={{ borderRadius: "2px", backgroundColor: "", padding: "20px", margin: "20px" }}>
                 <div className="" style={{ width: "auto", backgroundColor: "" }}>
                     <img className="draft-image sm-cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid !== "" ? myprops.cobj[0].coverid : process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ padding: "10px" }}></img>
                     <div className="draft-title">
-
-                        {myprops.cobj[0].title?<h4>{'"'+myprops.cobj[0].title+'"'}</h4>:null}
+                        {myprops.cobj[2] === "Audio" ? <p><i className="fa fa-play" style={{ marginTop: "8px", marginLeft: "11px", color: "grey", fontSize: "36px" }}></i></p> : null}
+                        {myprops.cobj[0].title ? <h4>{'"' + myprops.cobj[0].title + '"'}</h4> : null}
                         <p>{myprops.cobj[0].creator}</p>
 
                     </div>
@@ -518,13 +537,13 @@ export function DiscoverTab(myprops) {
 function Rclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft += 200;
-    
+
 }
 
 function Lclicked(scrollclass) {
 
     document.getElementById(scrollclass).scrollLeft -= 200;
-    
+
 }
 
 
@@ -547,22 +566,22 @@ export class ContentArea extends React.Component {
 
 
 
-    
+
 
 
     render() {
         console.log("doing dude");
         var ids = "";
         var tabslist = [];
-        db.firestore().collection(this.props.category).where("published","==",true).limit(10).get().then((snapshot) => {
+        db.firestore().collection(this.props.category).where("published", "==", true).limit(10).get().then((snapshot) => {
             snapshot.forEach((doc) => {
                 ids += doc.id;
                 tabslist.push([doc.data(), doc.id, categoryPathName[this.props.category]]);
             });
-            
+
             this.setState({ tabslist: tabslist, ids: ids })
         });
-        var currLoc = window.location.pathname ; 
+        var currLoc = window.location.pathname;
         var scrollclass = this.props.cmsg + "content";
         return <div>
             {
@@ -573,13 +592,13 @@ export class ContentArea extends React.Component {
                     </div>
                     :
                     <div>
-                        { currLoc =="/discover"? <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4> : null}
+                        {currLoc == "/discover" ? <h4 style={{ marginTop: "20px", marginLeft: "40px" }}>{this.props.cmsg}</h4> : null}
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <i className="fa fa-chevron-circle-left pointer" onClick={() => { Lclicked(scrollclass) }} style={{ fontSize: "36px", color: "grey" }}></i>
 
                             <Slide direction={"right"} in={true} {...{ timeout: 1000 }} mountOnEnter unmountOnExit>
                                 <div className="myscroller-invisible" id={scrollclass} style={{ display: "flex", alignItems: "center", width: "100%", overflowX: "auto", scrollBehavior: "smooth" }}>
-                                    {this.state.tabslist.map((cobj) => { return <DiscoverTab cobj={cobj} key={cobj} /> })}
+                                    {this.state.tabslist.map((cobj) => { return <DiscoverTab setPlayAudio={this.props.setPlayAudio} cobj={cobj} key={cobj} /> })}
                                 </div>
                             </Slide>
 

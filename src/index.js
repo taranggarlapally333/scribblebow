@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Home from './home/home';
 import Login from './login/Login';
@@ -16,20 +16,28 @@ import Create from './Write/create' ;
 import PrivateRoute from './PrivateRoute';
 import Unverif from './login/Unverif';
 import Discover from './discover/Discover';
-import ReadStory1 from './temp/Story'; 
 import Reports from './Write/Report/Reports';
-import EditProfile from './Write/Profile/EditProfile';
 import StorySeries from './Write/Story/StorySeries' ;
 import Myshelf from './MyShelf/Myshelf';
 import ScribblePlayer from './AudioUI/ScribblePlayer';
 import WriteQuote from './Write/Quote/Main';
 import { Recorder } from './AudioUI/Recorder';
+import ReadQuote from './Read/Quote/Main';
 
 
+function App(){
+  const [play, setPlay] = useState(false);
+  const [data,setData] = useState()
 
-ReactDOM.render(
-  <div>
- 
+  function setPlayAudio(data){
+    if(play){
+      setPlay(false);
+    }
+    setTimeout(()=>{setPlay(true);},200)
+    setData(data);
+  }
+  
+  return <div>
   <AuthProvider>
   <Router>
     <div>
@@ -47,11 +55,11 @@ ReactDOM.render(
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
        <Route exact path="/Profile"  render={(props) => <Profile {...props  }/>}  />
        <Route exact path="/StorySeries"  render={(props) => <StorySeries  {...props} />}  />
-      <PrivateRoute exact path="/Create" component={Create}/>
+      <Route exact path="/Create" render={(props) => <Create setPlayAudio={setPlayAudio} {...props} />  } ></Route>
       <Route  exact path= "/WriteQuote"  render={(props) => <WriteQuote {...props} />  } ></Route>
       <Route exact path="/WriteStory"  render={(props) => <WriteTheStory {...props}/>}  />
-
-      <PrivateRoute exact path="/discover" component={Discover}/>
+      <Route exact path="/ReadQuote"  render={(props) => <ReadQuote {...props}/> }/>
+      <Route exact path="/discover" render={(props) => <Discover setPlayAudio={setPlayAudio} {...props} />  } />
      
       <Route exact path="/test" component={Test}
       />
@@ -73,8 +81,15 @@ ReactDOM.render(
     </div>
   </Router>
   </AuthProvider>
- 
+  {play===true?<ScribblePlayer play={setPlay} data={data}/>:null}
+  </div>
+}
 
+
+
+ReactDOM.render(
+  <div>
+  <App />
   </div>
 
   ,
