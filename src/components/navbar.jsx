@@ -20,8 +20,8 @@ function Navbar(props)
     }
 
     var forhome = <ul className="nav navbar-nav ">
-    <li><a className="nav-btn" href= "/Create">CREATE</a></li>
-    <li><a className="nav-btn" href = "/discover">DISCOVER</a></li>
+    <li><a className="nav-btn pointer" onClick={()=>{history.push("/Create")}}>CREATE</a></li>
+    <li><a className="nav-btn pointer" onClick={()=>{history.push("/discover")}}>DISCOVER</a></li>
     {/* {ckd===0?<li><a className="nav-btn"  onClick={searchClicked} > <i className="fa fa-search"></i></a></li>:null}
     {ckd===0?null:<li><div className="search-bar"  style={{marginTop:"10px"}}>
                 <i className="fa fa-search"></i>
@@ -36,7 +36,7 @@ function Navbar(props)
 
     <div className="container-fluid ">
 
-       <a className="navbar-brand nav-btn" href ="/home" >HOME</a>
+       <a className="navbar-brand nav-btn pointer" onClick={()=>{history.push("/home")}} >HOME</a>
       
                 
                
@@ -50,7 +50,7 @@ function Navbar(props)
         {forhome}
       
      <ul className="nav navbar-nav navbar-right">
-              <li><a className="nav-btn" href="/my-shelf">MY SHELF</a></li>
+              <li><a className="nav-btn pointer" onClick={()=>{history.push("/my-shelf")}}>MY SHELF</a></li>
               <li><a className="nav-btn" href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
 
             <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span className="caret"></span></a>
@@ -64,8 +64,8 @@ function Navbar(props)
                             state:{id: localStorage.getItem('username') ,  key:localStorage.getItem('username')},
                         })
                     }}>Profile</a></li>
-                    <li><a onClick={()=> {setOpen(true)}}>Settings</a></li>
-                    <li><a href="/Report">Report</a></li>
+                    <li><a className="pointer" onClick={()=> {setOpen(true)}}>Settings</a></li>
+                    <li><a className="pointer" onClick={()=>{history.push("/Report")}}>Report</a></li>
                     <li><a href = "/" type= "button" onClick={()=> {localStorage.clear();db.auth().signOut()}}>Logout</a></li>
                 </ul>
           </li>
