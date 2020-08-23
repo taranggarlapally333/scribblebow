@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { CircleSlider } from "react-circle-slider";
 import Zoom from "@material-ui/core/Zoom";
+import {addRemoveLike,toggleShelf} from "./audiodbfuncs";
+
 
 export default function ScribblePlayer(props) {
 
@@ -8,7 +10,7 @@ export default function ScribblePlayer(props) {
   const settingZoom = () => {
     props.play(false);
   }
-  return <Player settingZoom={settingZoom} data={props.data}/>
+  return <Player settingZoom={settingZoom} id={props.id} setLiked={props.setLiked} setAdded={props.setAdded} added={props.added} liked={props.liked} data={props.data}/>
 }
 
 
@@ -69,11 +71,11 @@ function Player(props) {
       <img className="audio-image" src={cover===""?process.env.PUBLIC_URL + '/ScribbleBow.png':cover} alt="music cover" />
 
       <div className="audio-ops" >
-        <i className="fas fa-heart pointer" style={{ fontSize: "24px", color: "grey" }} onClick={() => { alert("like") }}></i>
+        <i className="fas fa-heart pointer" style={props.liked===false?{ fontSize: "24px", color: "grey" }:{ fontSize: "24px", color: "red" }} onClick={() => { props.setLiked(!props.liked);addRemoveLike(props.id, props.liked) }}></i>
         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <PlayPauseButton togglePlay={togglePlay} />
         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <i className="fa fa-plus pointer" style={{ fontSize: "24px", color: "grey" }} onClick={() => { alert("plus") }}></i>
+        <i className={props.added===false?"fa fa-plus pointer":"fa fa-check pointer"} style={props.added===false?{ fontSize: "24px", color: "grey" }:{ fontSize: "24px", color: "green" }} onClick={() => { props.setAdded(!props.added);toggleShelf(props.id, props.added) }}></i>
       </div>
       <div style={{ marginTop: "-40px", marginLeft: "10px" }}>
         <CirclularSlider handleSliderChange={handleSliderChange} />

@@ -23,18 +23,40 @@ import ScribblePlayer from './AudioUI/ScribblePlayer';
 import WriteQuote from './Write/Quote/Main';
 import { Recorder } from './AudioUI/Recorder';
 import ReadQuote from './Read/Quote/Main';
+import db from "./database/db";
 
 
 function App(){
   const [play, setPlay] = useState(false);
-  const [data,setData] = useState()
+  const [data,setData] = useState();
+  const [id,setId] = useState();
+  const [liked,setLiked] = useState(false);
+  const [added,setAdded] = useState(false);
 
-  function setPlayAudio(data){
+  function checkLikeAdd(id){
+    db.firestore().collection("likes").doc(id).get().then(snapshot => {
+      const lst = snapshot.data().usernames;
+      setLiked(lst.includes(localStorage.getItem("username")));
+     
+      db.firestore().collection("myshelf").doc(localStorage.getItem("username")).get().then(snapshot2 =>{
+        const lst2 = snapshot2.data().audio;
+        setAdded(lst2.includes(id));
+        setPlay(true);
+      });
+    });
+
+  }
+
+ 
+
+  function setPlayAudio(data, Id){
     if(play){
       setPlay(false);
     }
-    setTimeout(()=>{setPlay(true);},200)
     setData(data);
+    setId(Id);
+    setTimeout(()=>{checkLikeAdd(Id)},200)
+    
   }
   
   return <div>
@@ -81,7 +103,7 @@ function App(){
     </div>
   </Router>
   </AuthProvider>
-  {play===true?<ScribblePlayer play={setPlay} data={data}/>:null}
+  {play===true?<ScribblePlayer play={setPlay} id={id} setLiked={setLiked} setAdded={setAdded} added={added} liked={liked} data={data}/>:null}
   </div>
 }
 

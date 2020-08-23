@@ -496,7 +496,7 @@ export function DiscoverTab(myprops) {
     let temp = myprops.cobj[2] === "Quote" ? "&QuoteId=" : "&StoryId="
     return <div className="draft-cont pointer" onClick={() => {
         if (myprops.cobj[2] === "Audio")
-        myprops.setPlayAudio(myprops.cobj[0]);
+        myprops.setPlayAudio(myprops.cobj[0],myprops.cobj[1]);
         else
             history.push({
 

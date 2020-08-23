@@ -47,7 +47,6 @@ function Create(props) {
     return (
         <div>
             <Header title="Create" />
-            <p onClick={()=>{props.setPlayAudio("https://firebasestorage.googleapis.com/v0/b/scribblebow.appspot.com/o/AudioFiles%2FRise%20%E2%80%94%20Airixis%20%5BAudio%20Library%20Release%5D.mp3?alt=media&token=d4b206f9-342e-4fba-8761-d9d984445395")}}>play</p>
             <div className="container">
                 <h4 className="font0" align="center" style={{ marginTop: "-20px" }}>Choose what to create...</h4>
             </div>
