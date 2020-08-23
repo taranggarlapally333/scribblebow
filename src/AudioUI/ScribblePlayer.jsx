@@ -75,7 +75,7 @@ function Player(props) {
         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <PlayPauseButton togglePlay={togglePlay} />
         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <i className={props.added===false?"fa fa-plus pointer":"fa fa-check pointer"} style={props.added===false?{ fontSize: "24px", color: "grey" }:{ fontSize: "24px", color: "green" }} onClick={() => { props.setAdded(!props.added);toggleShelf(props.id, props.added) }}></i>
+        {props.data.creator===localStorage.getItem("username")?null:<i className={props.added===false?"fa fa-plus pointer":"fa fa-check pointer"} style={props.added===false?{ fontSize: "24px", color: "grey" }:{ fontSize: "24px", color: "green" }} onClick={() => { props.setAdded(!props.added);toggleShelf(props.id, props.added) }}></i>}
       </div>
       <div style={{ marginTop: "-40px", marginLeft: "10px" }}>
         <CirclularSlider handleSliderChange={handleSliderChange} />
