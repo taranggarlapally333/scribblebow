@@ -51,7 +51,7 @@ function Navbar(props)
       
      <ul className="nav navbar-nav navbar-right">
               <li><a className="nav-btn pointer" onClick={()=>{history.push("/my-shelf")}}>MY SHELF</a></li>
-              <li><a className="nav-btn" href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
+              <li><a className="nav-btn" style={{display:"none"}} href=""><i className="fa fa-bell" aria-hidden="true"></i></a></li>
 
             <li><a href="#" className="dropdown-toggle" type="button" data-toggle="dropdown"><span className="glyphicon glyphicon-user"></span><span className="caret"></span></a>
                   <ul className="dropdown-menu">

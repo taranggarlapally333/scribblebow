@@ -6,7 +6,7 @@ import MySnackBar from "../../components/SnackBar";
 import db from '../../database/db'; 
 import * as UploadFile from '../../Storage/UploadFile' ; 
 import { Redirect, useHistory } from "react-router";
-import Loading from '../../components/Loading';
+import {LoadingPage} from '../../components/Loading';
 import * as firebase from 'firebase';
 export default function QuoteEditor(props)
 {
@@ -381,7 +381,7 @@ export default function QuoteEditor(props)
         }
     else if(stage == 5)
     {
-        return(<Loading message={"Your"+props.title+ "is Getting Uploaded"}/>) ;
+        return(<LoadingPage message={"Your"+props.title+ "is Getting Uploaded"}/>) ;
          
     }
    
