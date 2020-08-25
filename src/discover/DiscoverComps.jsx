@@ -169,9 +169,31 @@ export class TopCreators extends React.Component {
 
 function ResultTab(myprops) {
     const history = useHistory();
+
+    function CreatorClicked(e){
+        history.push({
+            pathname: '/Profile',
+            search: '?UserId=' + myprops.cobj[0].creator,
+            state: { id: myprops.cobj[0].creator },
+        });
+        e.stopPropagation();
+    }
+
+    function handlePlayAudio(e){
+        myprops.setPlayAudio(myprops.cobj[0],myprops.cobj[1]);
+        e.stopPropagation();
+    }
+    var path;
+    if(myprops.cobj[2] === "Quote"){
+        path = "/ReadQuote";
+    }else if(myprops.cobj[2] === "Audio"){
+        path = "/ReadAudio";
+    }else{
+        path = "/ReadStory";
+    }
     return <div className="container search-result-tab pointer" style={{ padding: "20px", height: "auto" }} onClick={() => {
         history.push({
-            pathname: '/ReadStory',
+            pathname: path,
             search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
             state: {
                 title: myprops.cobj[2],
@@ -182,10 +204,10 @@ function ResultTab(myprops) {
         <div className="col-sm-3">
             <img className="sm-cover" style={{ backgroundColor: "white" }} alt="search result cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid !== "" ? myprops.cobj[0].coverid : process.env.PUBLIC_URL + '/ScribbleBow.png'} />
         </div>
-        <div className="col-sm-9" >
+        <div className={myprops.cobj[2]==="Audio"?"col-sm-6":"col-sm-9"} >
             <div style={{ height: "180px", width: "90%" }}>
                 {myprops.cobj[0].title ? <h2>{myprops.cobj[0].title}</h2> : null}
-                <p>{myprops.cobj[0].creator}</p>
+                <p onClick={CreatorClicked} style={{display:"inline"}}>{myprops.cobj[0].creator}</p>
                 <p><i className="fa fa-heart" style={{ color: "red" }}></i> {myprops.cobj[0].nlikes} <i className='fas fa-comment-alt' style={{ color: "blue" }}></i> {myprops.cobj[0].ncomments} </p>
                 <hr />
                 {myprops.cobj[0].type ? <p>{myprops.cobj[0].type}</p> : null}
@@ -194,6 +216,15 @@ function ResultTab(myprops) {
                 {myprops.cobj[0].description ? <p>{myprops.cobj[0].description.length > 40 ? myprops.cobj[0].description.substring(0, 40) + "..." : myprops.cobj[0].description}</p> : null}
             </div>
         </div>
+        {
+            myprops.cobj[2]==="Audio"
+            ?
+            <div className="col-sm-3" style={{height:"180px", position:"relative"}}>
+            <i className="fa fa-play draft-title" onClick={handlePlayAudio} style={{opacity:1, position:"absolute", color: "grey", fontSize: "36px" }}></i>
+            </div>
+            :
+            null
+        }
     </div>
 }
 
@@ -447,7 +478,7 @@ class RetrieveSearch extends React.Component {
                 return <div>
                     <this.Switch />
                     <h2>Search results</h2>
-                    {this.state.retrieved.length === 0 ? <p>Empty</p> : this.state.retrieved.map((data) => { return this.state.sswitch ? <ResultUserTab cobj={data} key={data[1]} follows={this.state.follows} category={this.props.category} /> : <ResultTab cobj={data} key={data[1]} category={this.props.category} /> })}
+                    {this.state.retrieved.length === 0 ? <p>Empty</p> : this.state.retrieved.map((data) => { return this.state.sswitch ? <ResultUserTab cobj={data} key={data[1]} follows={this.state.follows} category={this.props.category} /> : <ResultTab cobj={data} setPlayAudio={this.props.setPlayAudio} key={data[1]} category={this.props.category} /> })}
                 </div>
             }
         }
@@ -473,12 +504,12 @@ export function SearchResults(props) {
 
         return <div className="container" style={{ width: "90%" }}>
             <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <RetrieveSearch category={props.category} searchkey={searchkey} hash={hash} key={props.category + searchkey} />
+                <RetrieveSearch category={props.category} searchkey={searchkey} hash={hash} setPlayAudio={props.setPlayAudio} key={props.category + searchkey} />
             </div></div>
     } else {
         return <div className="container" style={{ width: "90%" }}>
             <div className="myscroller-notrack" style={{ height: "80vh", overflowY: "scroll", paddingBottom: "200px", position: "relative" }}>
-                <RetrieveSearch category={"nocat"} searchkey={searchkey} hash={hash} key={props.category + searchkey} />
+                <RetrieveSearch category={"nocat"} searchkey={searchkey} hash={hash} setPlayAudio={props.setPlayAudio} key={props.category + searchkey} />
             </div></div>
     }
 
@@ -494,13 +525,19 @@ export function SearchResults(props) {
 export function DiscoverTab(myprops) {
     const history = useHistory();
     let temp = myprops.cobj[2] === "Quote" ? "&QuoteId=" : "&StoryId="
+    var path;
+    if(myprops.cobj[2] === "Quote"){
+        path = "/ReadQuote";
+    }else if(myprops.cobj[2] === "Audio"){
+        path = "/ReadAudio";
+    }else{
+        path = "/ReadStory";
+    }
     return <div className="draft-cont pointer" onClick={() => {
-        if (myprops.cobj[2] === "Audio")
-        myprops.setPlayAudio(myprops.cobj[0],myprops.cobj[1]);
-        else
+        
             history.push({
 
-                pathname: myprops.cobj[2] === "Quote" ? "/ReadQuote" : "/ReadStory",
+                pathname: path,
                 search: "?title=" + myprops.cobj[2] + temp + myprops.cobj[1],
                 state: {
                     title: myprops.cobj[2],
@@ -515,10 +552,11 @@ export function DiscoverTab(myprops) {
     }}>
         <a style={{ textDecoration: "none", color: "black" }} >
             <div className="container-inner myshadow rounded" style={{ borderRadius: "2px", backgroundColor: "", padding: "20px", margin: "20px" }}>
-                <div className="" style={{ width: "auto", backgroundColor: "" }}>
+                <div className="" style={{ width: "auto", position:"relative", backgroundColor: "" }}>
                     <img className="draft-image sm-cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid !== "" ? myprops.cobj[0].coverid : process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ padding: "10px" }}></img>
-                    <div className="draft-title">
-                        {myprops.cobj[2] === "Audio" ? <p><i className="fa fa-play" style={{ marginTop: "8px", marginLeft: "11px", color: "grey", fontSize: "36px" }}></i></p> : null}
+                    <div className="draft-title" style={{position:"absolute"}}>
+                        {myprops.cobj[2] === "Audio" ? <p><i className="fa fa-play" onClick={(e)=>{myprops.setPlayAudio(myprops.cobj[0],myprops.cobj[1]);e.stopPropagation();}} style={{ marginTop: "8px", marginLeft: "11px", color: "grey", fontSize: "36px" }}></i></p> : null}
+                        
                         {myprops.cobj[0].title ? <h4>{'"' + myprops.cobj[0].title + '"'}</h4> : null}
                         <p>{myprops.cobj[0].creator}</p>
 

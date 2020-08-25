@@ -20,22 +20,38 @@ const categoryPathName = {
 
 export function ShelfTab(myprops) {
     const history = useHistory();
+    let temp = myprops.cobj[2] === "Quote" ? "&QuoteId=" : "&StoryId=";
+    var path;
+    if(myprops.cobj[2] === "Quote"){
+        path = "/ReadQuote";
+    }else if(myprops.cobj[2] === "Audio"){
+        path = "/ReadAudio";
+    }else{
+        path = "/ReadStory";
+    }
     return <Zoom in={true}><div className="draft-cont pointer" onClick={() => {
-        history.push({
-            pathname: '/ReadStory',
-            search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
-            state: {
-                title: myprops.cobj[2],
-                id: myprops.cobj[1],
-            }
-        })
+        
+            history.push({
+
+                pathname: path,
+                search: "?title=" + myprops.cobj[2] + temp + myprops.cobj[1],
+                state: {
+                    title: myprops.cobj[2],
+                    id: myprops.cobj[1],
+
+                },
+                key: {
+                    title: myprops.cobj[2],
+                    id: myprops.cobj[1],
+                }
+            })
     }}>
         <a style={{ textDecoration: "none", color: "black" }} >
             <div className="container-inner myshadow rounded" style={{ borderRadius: "2px", backgroundColor: "", padding: "20px", margin: "20px" }}>
-                <div className="" style={{ width: "auto", backgroundColor: "", textAlign: "center" }}>
+                <div className="" style={{ width: "auto", position:"relative", backgroundColor: "" }}>
                     <img className="draft-image sm-cover" src={myprops.cobj[0].coverid && myprops.cobj[0].coverid !== "" ? myprops.cobj[0].coverid : process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ padding: "10px" }}></img>
-                    <div className="draft-title" >
-
+                    <div className="draft-title" style={{position:"absolute"}}>
+                        {myprops.cobj[2] === "Audio" ? <p><i className="fa fa-play" onClick={(e)=>{myprops.setPlayAudio(myprops.cobj[0],myprops.cobj[1]);e.stopPropagation();}} style={{ marginTop: "8px", marginLeft: "11px", color: "grey", fontSize: "36px" }}></i></p> : null}
                         {myprops.cobj[0].title ? <h4>{'"' + myprops.cobj[0].title + '"'}</h4> : null}
                         <p>{myprops.cobj[0].creator}</p>
 
@@ -97,7 +113,7 @@ export class ShelfResults extends React.Component {
         }
         else {
             return <div className="col-sm-9 myscroller-notrack" style={{ height: "70vh", display: "flex", flexWrap: "wrap", overflowY: "auto" }}>
-                {this.state.ids==="0"?<div style={{  display: "block", marginLeft: "auto", marginRight: "auto",marginTop:"10%",textAlign:"center"}}><i align="center" className='far fa-frown' style={{fontSize:"72px",color:"#f5ba13",opacity:"0.5",marginBottom:"20px"}}></i><p align="center" >You haven't added any {this.props.category} to your shelf yet!</p></div>:this.state.res.map((data)=>{return <ShelfTab cobj = {data}/>})}
+                {this.state.ids==="0"?<div style={{  display: "block", marginLeft: "auto", marginRight: "auto",marginTop:"10%",textAlign:"center"}}><i align="center" className='far fa-frown' style={{fontSize:"72px",color:"#f5ba13",opacity:"0.5",marginBottom:"20px"}}></i><p align="center" >You haven't added any {this.props.category} to your shelf yet!</p></div>:this.state.res.map((data)=>{return <ShelfTab cobj = {data} setPlayAudio={this.props.setPlayAudio}/>})}
                 
                 
             </div>

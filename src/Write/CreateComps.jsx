@@ -39,7 +39,7 @@ class CategoryDrafts extends React.PureComponent{
     return (
     <Zoom in={true}>
     <div className="draft-cont">
-    <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]});console.log("clicked")}}>
+    <a style={{textDecoration:"none",color:"black"}} onClick={()=>{this.setState({id:myprops[1]})}}>
     <div className= "container-inner myshadow rounded" style={{ borderRadius: "2px",backgroundColor:"" , padding:"20px", margin:"20px"}}>
     <div className = ""  style = {{width:200,backgroundColor:"" , justifyContent:"center" , display:"flex"}}>
     <img className="draft-image" src = {myprops[0].coverid!==""? myprops[0].coverid:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:277, maxHeight:"277"}}></img>

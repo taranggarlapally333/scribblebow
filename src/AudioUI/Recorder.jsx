@@ -16,14 +16,18 @@ export class Recorder extends React.Component {
         this.state = {
             recording: false,
             paused: false,
+            isoldaudio:false,
             audioUrl: "",
             timer: 0,
             image:null,
             ctitle:"",
             cdescription:"",
             chashtags:"",
-            id:"",
-            publish:false
+            coverid:"",
+            id:this.props.location.state.id,
+            publish:false,
+            published:false,
+            new: this.props.location.state.new
         };
        
 
@@ -69,7 +73,7 @@ export class Recorder extends React.Component {
             if (this.mediaRecorder) {
                 this.mediaRecorder.start(10);
 
-                this.setState({ audioUrl: "", recording: true, paused: false, timer: 0 });
+                this.setState({ audioUrl: "", isoldaudio:false, recording: true, paused: false, timer: 0 });
             }
             else {
                 alert("Please allow us to access your microphone to record audio");
@@ -107,19 +111,20 @@ export class Recorder extends React.Component {
             alert("Title is mandatory");
         }
         else{
-        
+        var audioID="";
         if(this.state.id===""){
-            var audioID = Date.now().toString();
+            audioID = Date.now().toString();
+            
             this.setState({id:audioID});
             db.firestore().collection("audio").doc(audioID).set({
                 creator: localStorage.getItem("username"),
                 description: this.state.cdescription,
-                hashtags: this.state.chashtags,
+                hashtags: typeof this.state.chashtags === 'string' ?this.state.chashtags.split("#"):this.state.chashtags, 
                 ncomments:0,
                 nlikes:0,
                 published: e.target.value==="SAVE"?false:true,
                 title: this.state.ctitle,
-                titlekeys: Atts.Subs(this.state.ctitle),
+                titlekeys: Atts.Subs(this.state.ctitle.toLowerCase()),
                 transcript:""
             });
             e.preventDefault();
@@ -132,18 +137,20 @@ export class Recorder extends React.Component {
             UploadImage("CoverPages/",  this.state.image, audioID, "audio","cover");
         }
         else{
+            audioID = this.state.id;
             db.firestore().collection("audio").doc(this.state.id).update({
                 creator: localStorage.getItem("username"),
                 description: this.state.cdescription,
-                hashtags: this.state.chashtags,
-                ncomments:0,
-                nlikes:0,
-                published: e.target.value==="SAVE"?false:true,
+                hashtags:  typeof this.state.chashtags === 'string' ?this.state.chashtags.split("#"):this.state.chashtags, 
+                ncomments:this.state.published?firebase.firestore.FieldValue.increment(0):0,
+                nlikes:this.state.published?firebase.firestore.FieldValue.increment(0):0,
+                published: e.target.value==="SAVE" && this.state.published===false?false:true,
                 title: this.state.ctitle,
                 titlekeys: Atts.Subs(this.state.ctitle),
                 transcript:""
             });
             e.preventDefault();
+            if(!this.state.isoldaudio)
             UploadImage('AudioFiles/', this.blob, this.state.id, "audio", "audio");
        
             if(this.state.image != null)
@@ -155,10 +162,10 @@ export class Recorder extends React.Component {
         
         if( e.target.value==="PUBLISH"){
             
-            db.firestore().collection("comments").doc(this.state.id).set({
+            db.firestore().collection("comments").doc(audioID).set({
                 comments: []
             });
-            db.firestore().collection("likes").doc(this.state.id).set({
+            db.firestore().collection("likes").doc(audioID).set({
                 usernames: []
             });
             db.firestore().collection("users").doc(localStorage.getItem("username")).update({
@@ -207,6 +214,23 @@ export class Recorder extends React.Component {
     render() {
 
 
+
+        
+        if(!this.state.new){
+            db.firestore().collection("audio").doc(this.state.id).get().then(snapshot => {
+                this.setState({
+                    new: true,
+                    audioUrl:snapshot.data().audioUrl,
+                    coverid:snapshot.data().coverid,
+                    cdescription: snapshot.data().description,
+                    chashtags: snapshot.data().hashtags.join("#"),
+                    published: snapshot.data().published,
+                    ctitle: snapshot.data().title,
+                    isoldaudio: true,
+                })
+            });
+            
+        }
         const UploadImage = <div>
             <h4 style={{marginLeft:"20px"}}>Select Cover Image</h4>
             <input type="file"
@@ -220,7 +244,7 @@ export class Recorder extends React.Component {
                     }} >
                     <img
                         className="overlay"
-                        id="previewImage" src={process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ width: 160,borderRadius:"50%", height: 160}}></img>
+                        id="previewImage" src={this.state.coverid?this.state.coverid:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt="Cover " style={{ width: 160,borderRadius:"50%", height: 160}}></img>
                 </div>
             </div>
         </div>
@@ -234,15 +258,18 @@ export class Recorder extends React.Component {
         const playpauseRec = { margin: "5px", width: "36px", height: "36px", backgroundColor: "blue" };
         const playpauseNoRec = { margin: "5px", width: "36px", height: "36px", backgroundColor: "blue", opacity: 0.2 };
        
+        
         if(this.state.publish){
 
             return <SaveAndRedirect />
         }
        
-       return <div style={{ overflow: "hidden", height: "100vh" }}>
+       if(this.state.new){
+       return <div style={{ overflowY: "hidden",height: "100vh" }}>
+       
             <Header title="Audio" />
             
-            
+            <div style={{ overflowY: "auto", height:"auto", position:"absolute",top:"35%", bottom:"20%"}}>
             <div className="container">
             <div className="col-md-6">
             {UploadImage}
@@ -295,12 +322,13 @@ export class Recorder extends React.Component {
             
             
           {this.state.recording === true ? <div><p>Recording </p><Timer timer={this.state.timer} /></div> : null}
+            </div>
             <div style={{ position: "absolute", width: "100%", bottom: "15%", display: "flex", flex: "wrap" }}>
                 {this.state.audioUrl === "" ? null : <audio controls>
                     <source src={this.state.audioUrl} type="audio/webm" />
                 </audio>}
-                {this.state.audioUrl === "" ? null : <input className="btn btn-default mybtn" value="SAVE" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)} />}
-                {this.state.audioUrl === "" ? null : <input className="btn btn-default mybtn" value="PUBLISH" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)} />}
+                {this.state.audioUrl === "" ? null : <button className="btn btn-default mybtn" value="SAVE" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)} >SAVE</button>}
+                {this.state.audioUrl === "" || this.state.published===true? null : <button className="btn btn-default mybtn" value="PUBLISH" style={{ borderRadius: "20px", width: "20%" }} onClick={e=>this.handleUploadAudio(e)}>PUBLISH</button>}
             </div>
             <div className="nocopy theme-color-bg myshadow" style={{ position: "absolute", width: "100%", height: "15%", bottom: 0 }}>
                 <div style={{ display: "flex", flex: "wrap", justifyContent: "center", padding: "10px" }}>
@@ -315,6 +343,10 @@ export class Recorder extends React.Component {
                 </div>
             </div>
         </div>
+       }
+       else{
+        return <LoadingPage message={"Loading Your Draft"}/>
+       }
     }
 }
 

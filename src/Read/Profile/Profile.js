@@ -11,7 +11,7 @@ function Profile(props)
     let UserId ; 
     UserId =  new URLSearchParams(props.location.search).get("UserId") ;
     if (UserId == null) UserId = localStorage.getItem('username') ; 
-    return <ProfilePage id = {UserId} key  =  {UserId} /> ; 
+    return <ProfilePage setPlayAudio={props.setPlayAudio} id = {UserId} key  =  {UserId} /> ; 
 }
 
 class ProfilePage  extends React.Component
@@ -148,7 +148,7 @@ class ProfilePage  extends React.Component
                             followers={this.state.Usersfollowers.array}
                         /></div>
                         <hr></hr>
-                        <div id ="UserWorks"><User.UserWorks UserId = {UserId} /></div>
+                        <div id ="UserWorks"><User.UserWorks setPlayAudio={this.props.setPlayAudio} UserId = {UserId} /></div>
                         <div id="UserAnalytics" style={{display:"none"}}><User.Analytics /></div>
                     
                     </div>

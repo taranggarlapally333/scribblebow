@@ -40,6 +40,7 @@ class CategoryAll extends React.PureComponent{
     Tabs=(myprops)=>
 {
    
+    var ReadOrView = myprops[2]==="Audio"?"View":"Read";
     console.log(myprops) ;  
     return <div className="draft-cont">
     <a style={{textDecoration:"none",color:"black"}}>
@@ -48,9 +49,10 @@ class CategoryAll extends React.PureComponent{
     <img  className="draft-image" src = {myprops[0].coverid? myprops[0].coverid:process.env.PUBLIC_URL + '/ScribbleBow.png'} alt = "Cover " style = {{width:160, maxWidth:160,height:160*1.5, maxHeight:"277"}}></img>
     <div className="draft-title" style={{backgroundColor:"" , width:160 , height:160}}>
         <h5><strong>{myprops[0].title}</strong></h5>
+        {myprops[2] === "Audio" && !this.state.switchToDrafts ? <p><i className="fa fa-play pointer" onClick={()=>{myprops[3](myprops[0],myprops[1]);}} style={{ marginTop: "8px", marginLeft: "11px", color: "grey", fontSize: "36px" }}></i></p> : null}
         <div className="handy" style={{display:"flex", justifyContent:"space-evenly" }} >
             {this.SameCurrentUser ? <a  onClick={()=>{this.setState({id:myprops[1], edit:true});console.log("clicked")}}>Edit</a>: null}
-            <a  onClick={()=>{this.setState({id:myprops[1] , edit:false});console.log("clicked")}} >{this.state.switchToDrafts?null:"Read"}</a>
+            <a  onClick={()=>{this.setState({id:myprops[1] , edit:false});console.log("clicked")}} >{this.state.switchToDrafts?null:ReadOrView}</a>
             { this.state.switchToDrafts && this.SameCurrentUser?  <a  style={{color:"#E61D42"}}   data-toggle="modal" data-target="#DeleteModal" onClick={()=>{this.setState({ shouldDelete:{id:myprops[1] , Storytitle:myprops[0].title} }); console.log(this.state.shouldDelete)}}>Delete</a> :null }
            
         </div>
@@ -86,6 +88,8 @@ Switch = () => {
     render() {
         
         console.log("Hello");
+        var cat = this.props.category;
+        var setPlayAudio = this.props.setPlayAudio;
         let snapshot  = db.firestore()
         .collection( Atts.documentName[this.props.category])
         .where("creator","==",this.props.UserId) ;
@@ -100,7 +104,10 @@ Switch = () => {
             
             
             querySnapshot.forEach(function(doc) {
-                const d = [doc.data(),doc.id]; 
+                var d = [doc.data(),doc.id,cat];
+                if(cat==="Audio"){
+                    d.push(setPlayAudio);
+                } 
                 ntabs.push(d);
             
             });
@@ -186,9 +193,17 @@ Switch = () => {
                 console.log(this.props.category);
                 if(this.state.edit === false)
                 {
+                    var path;
+                    if(this.props.category === "Quote")
+                    path = "/ReadQuote";
+                    else if(this.props.category === "Audio")
+                    path = "/ReadAudio";
+                    else
+                    path = "/ReadStory";
+
                     let temp  = this.props.category === "Quote" ? "&QuoteId=" : "&StoryId="
                     return <Redirect to={{
-                        pathname: this.props.category === "Quote" ? "/ReadQuote" : "/ReadStory" ,
+                        pathname: path,
                         search: "?title="+ this.props.category+ temp +this.state.id,
                         state: {
                             title: this.props.category,
@@ -204,8 +219,14 @@ Switch = () => {
                 }
                 else 
                 {
+                    var path = "/WriteStory";
+                    if(this.props.category==="Audio"){
+                        path = "/recorder"
+                    }else if(this.props.category==="Quote"){
+                        path = "/WriteQuote"
+                    }
                     return <Redirect  to ={{
-                        pathname: this.props.category == "Quote" ? "/ReadQuote" : "/ReadStory" , 
+                        pathname: path,
                         state: {
                             title: this.props.category,
                             id: this.state.id,

@@ -15,7 +15,7 @@ export default class ReadQuote extends React.Component
 
     shouldComponentUpdate(nextProps , nextState )
     {
-         if(this.props == nextProps &&  this.state.id == nextState.id && this.state.stage ==  nextState.stage) return false  ; 
+         if(this.props === nextProps &&  this.state.id === nextState.id && this.state.stage ===  nextState.stage) return false  ; 
          else return true  ; 
     }
     getQuoteDetails(collecName , QuoteId)
@@ -86,20 +86,21 @@ export default class ReadQuote extends React.Component
         }
     render()
     {
+        const title = new URLSearchParams(this.props.location.search).get("title");
         var allProps = {
-            "title": new URLSearchParams(this.props.location.search).get("title"), 
-            "id": new URLSearchParams(this.props.location.search).get("QuoteId")
+            "title": title, 
+            "id": title==="Quote"?new URLSearchParams(this.props.location.search).get("QuoteId"):new URLSearchParams(this.props.location.search).get("StoryId"),
         }  ;
         console.log(allProps);
         this.getQuoteDetails(Atts.documentName[allProps.title],allProps.id) ;
         this.CheckMyShelf(allProps.id)
            
         this.CheckLiked(allProps.id);
-        if(this.state.stage == 0 )
+        if(this.state.stage === 0 )
         {
                 return <LoadingPage message = "Loading Content" />
         }
-        else if(this.state.stage == 4 )
+        else if(this.state.stage === 4 )
         {
             return(
                 <div>
@@ -110,6 +111,7 @@ export default class ReadQuote extends React.Component
                     title = {allProps.title}
                     preLiked  = {this.state.preLiked}
                     myshelf = {this.state.myshelf}
+                    setPlayAudio = {this.props.setPlayAudio}
                 />
                 </div>
                
@@ -117,7 +119,7 @@ export default class ReadQuote extends React.Component
         }
         else 
         {
-            return <h1>Page Cannot bE LOADED :  Please try later </h1>
+            return <LoadingPage message = "Loading Content" />
         }
         
     }  

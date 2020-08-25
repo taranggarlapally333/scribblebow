@@ -310,9 +310,9 @@ export const UserDetails  = function (props)
                 <p>Bio: {allprops.bio}</p>
                 {allprops.website?<p>Website: <a href= {allprops.website}  target="_blank">{allprops.website}</a> </p>:null}
                 <br></br>
-                <audio controls style={{outline:"none"}} loop controlsList="nodownload">
+                {allprops.audio>0?<audio controls style={{outline:"none"}} loop controlsList="nodownload">
                       <source  src= {process.env.PUBLIC_URL + "mysong.mp3"} type="audio/mp3" ></source>
-                  </audio>
+                  </audio>:null}
             </div>
             
             <div className="col-md-6" >
@@ -381,7 +381,7 @@ export const UserWorks = function(props)
             <div className = "container-inner buttonGroup  myscroller-notrack " style={{display:"flex",justifyContent:"" , color:"white" , overflowX:"auto" }} >
             {Atts.categoryAvailable.map(getcategoryButtons)}</div>
             <hr></hr>
-            <CategoryAll category={title} key={title} UserId  = {props.UserId} />
+            <CategoryAll category={title} setPlayAudio={props.setPlayAudio} key={title} UserId  = {props.UserId} />
         </div>
     ); 
 }
