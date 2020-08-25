@@ -20,15 +20,17 @@ export default function Quote(props)
             "comments": QuoteStatus.ncomments,
         }
     );
+    const [AllCommentsDisplay , setAllCommentsDisplay] = useState(false) ; 
     const [LikeState , setLikeState] = useState(props.preLiked) ; 
     const [ReportStory, setReportStory] = useState({
         message : "" , 
         button : true 
     }) ; 
-    const ImageProps = 
+    let SBImage = process.env.PUBLIC_URL + "ScribbleBow.png" ; 
+     const ImageProps = 
     {
         LinearGrad :  "linear-gradient( rgba(0, 0, 0, "+ QuoteStatus.upContrast*(0.1)  + "), rgba(0, 0, 0, "+ QuoteStatus.downContrast*(0.1) +") ) ," , 
-        imageUrl :  "url('" + QuoteStatus.coverid + "')"
+        imageUrl :  "url('" + (QuoteStatus.coverid == ""? SBImage : QuoteStatus.coverid)  + "')"
     }
     console.log(ImageProps , "Image Props ") ; 
     function handleMyShelf()
@@ -151,6 +153,13 @@ export default function Quote(props)
                                     .delete() ; 
                                     db.firestore().collection("likes").doc(props.QuoteId).delete() ; 
                                     db.firestore().collection("comments").doc(props.QuoteId).delete() ; 
+
+                                    db.firestore().collection('users').doc(QuoteStatus.creator).update(
+                                        {
+                                            "quotes":  firebase.firestore.FieldValue.increment(-1) 
+                                        }
+                                    )
+                                    
                                     history.push({
                                     pathname: '/Profile',
                                     search: '?UserId=' + localStorage.getItem('username') , 
@@ -168,7 +177,7 @@ export default function Quote(props)
                             <div className="modal-dialog" >
                                 <div className="modal-content" >
                                 <div className="modal-header">
-                                    <strong  style={{color:"red"}}>Report {props.title} </strong>  "<strong>{QuoteStatus.QuoteContent.substring(1,10)}</strong>" 
+                                    <strong  style={{color:"red"}}>Report {props.title} </strong>  "<strong>{QuoteStatus.QuoteContent.substring(0,20)}...</strong>" 
                                 </div>
                                 <div className="modal-body" >
                                             <div className="">
@@ -240,9 +249,10 @@ export default function Quote(props)
                         Comment
                     </button>
                 </form>
-                <a className= "handy">All Comments ({LikeCommentCount.comments} ) </a>
-                <div>
-                    <AllComments id = {props.QuoteId}  title = {props.title} ncomments  = {LikeCommentCount.ncomments} key = {Math.random()} />
+                <a className= "handy" onClick = {()=>{ setAllCommentsDisplay(!AllCommentsDisplay)}}>All Comments ({LikeCommentCount.comments} ) </a>
+                <div id= "AllComments" style={{ display : AllCommentsDisplay ? "": "none"}} >
+                    <AllComments id = {props.QuoteId}  title = {props.title} ncomments  = {LikeCommentCount.comments}
+                    setCommentFunction = {setLikeCommentCount} nlikes = {LikeCommentCount.likes} key = {Math.random()} />
                 </div>
                       
             </div>
@@ -369,6 +379,13 @@ class AllComments  extends React.Component
                                                 
                                             }).then( qs =>{
                                                 this.setState({stage:0}) ; 
+                                            }) 
+                                            this.props.setCommentFunction(prevals =>{
+                                                return {
+                                                    ...prevals ,
+                                                    comments : this.props.ncomments -1  
+
+                                                }
                                             }) 
                                            
 

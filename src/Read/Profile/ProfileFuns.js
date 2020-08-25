@@ -385,7 +385,7 @@ export const UserWorks = function(props)
         </div>
     ); 
 }
-export const Analytics = function()
+export const Analytics = function(props)
 {
     
     ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
@@ -397,73 +397,57 @@ export const Analytics = function()
       dataFormat: 'json',
       dataSource:  {
         chart: {
-          caption: "Countries With Most Oil Reserves [2017-18]",
-          subcaption: "In MMbbl = One Million barrels",
-          xaxisname: "Country",
-          yaxisname: "Reserves (MMbbl)",
-          numbersuffix: "K",
+          caption: "Analytics of your content",
+          subcaption: props.UserId,
+          xaxisname: "Category",
+          yaxisname: "no of published documents",
+          numbersuffix: "",
           theme: "fusion"
         },
         data: [
           {
-            label: "Venezuela",
-            value: "290"
+            label: "Stories",
+            value:props.Details.stories,
+            color: Atts.categoryColors['Story']
           },
           {
-            label: "Saudi",
-            value: "260"
+            label: "Poems",
+            value: props.Details.poems,
+            color: Atts.categoryColors['Poem']
           },
           {
-            label: "Canada",
-            value: "180"
+            label: "Quotes",
+            value: props.Details.quotes,
+            color: Atts.categoryColors['Quote']
           },
           {
-            label: "Iran",
-            value: "140"
+            label: "Articles",
+            value: props.Details.articles,
+            color: Atts.categoryColors['Article']
           },
           {
-            label: "Russia",
-            value: "115"
+            label: "FanFiction",
+            value: props.Details.fanfiction,
+            color: Atts.categoryColors['Fanfiction']
           },
           {
-            label: "UAE",
-            value: "100"
+            label: "Audio",
+            value: props.Details.audio,
+            color: Atts.categoryColors['Audio']
           },
+         
           {
-            label: "US",
-            value: "30"
-          },
-          {
-            label: "China",
-            value: "30"
+            label: "Scripts",
+            value: props.Details.scripts,
+            color: Atts.categoryColors['Script']
           }
         ]
       },
     };
     
-        return (
-        <div className = "container center"  >
-             <h1>Here You Can See the Analytics</h1> 
-        </div>
-        ) ; 
+        return  <ReactFC {...chartConfigs} />;
     
 }
 
 
 
-// mycode my UserWorks 
-{/* <div className="container-inner" style={{height:"600px", borderColor:"black"}}>
-<div className="row container" style={{display:"flex",justifyContent:"center",}}>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , minWidth:"320px", margin:"5px", float:"left"}}>{title}1</div>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , minWidth:"320px", margin:"5px", float:"left"}}>{title}1</div>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , minWidth:"320px", margin:"5px", float:"left"}}>{title}1</div>
-
-</div>
-<div className="row container" style={{display:"flex",justifyContent:"center"}}>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , width:"320px", margin:"5px", float:"left"}}>{title}1</div>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , width:"320px", margin:"5px", float:"left"}}>{title}1</div>
-    <div className="myborder" style={{textAlign:"center",height:"300px" , width:"320px", margin:"5px", float:"left"}}>{title}1</div>
-
-</div>
-
-</div> */}

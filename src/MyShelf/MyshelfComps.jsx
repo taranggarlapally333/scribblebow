@@ -20,10 +20,11 @@ const categoryPathName = {
 
 export function ShelfTab(myprops) {
     const history = useHistory();
+    const path  = myprops.cobj[2]=="Quote" ? "&QuoteId=" : "&StoryId=" ; 
     return <Zoom in={true}><div className="draft-cont pointer" onClick={() => {
         history.push({
-            pathname: '/ReadStory',
-            search: "?title=" + myprops.cobj[2] + "&StoryId=" + myprops.cobj[1],
+            pathname: myprops.cobj[2]=="Quote" ? '/ReadQuote' : '/ReadStory',
+            search: "?title=" + myprops.cobj[2] + path + myprops.cobj[1],
             state: {
                 title: myprops.cobj[2],
                 id: myprops.cobj[1],

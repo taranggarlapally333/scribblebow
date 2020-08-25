@@ -13,7 +13,7 @@ function Home(){
     if(localStorage.getItem("username")){
         logged=1;
     }
-    var categoryAvailable = ["Story","Poem" , "Article" , "Fanfiction"];  
+    var categoryAvailable = ["Story","Poem" , "Article" , "Fanfiction" ];  
     return (
 
         

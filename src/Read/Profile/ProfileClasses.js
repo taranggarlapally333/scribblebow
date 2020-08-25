@@ -82,9 +82,10 @@ Switch = () => {
 }
 
     
+
     
     render() {
-        
+        let emptyStatement  =  !this.state.switchToDrafts ? "published" : "unpublished" ; 
         console.log("Hello");
         let snapshot  = db.firestore()
         .collection( Atts.documentName[this.props.category])
@@ -169,7 +170,9 @@ Switch = () => {
                         
                         {this.state.tabs.length===0?
                         <div className="container" align="center">
-                        {this.state.r===2?<p>{ this.props.UserId === localStorage.getItem('username')? "You have no unpublished":"No unpublished "} {Atts.documentName[this.props.category]}</p>:null}
+                        
+                        {this.state.r===2?<p>{ this.props.UserId === localStorage.getItem('username')? "You have no "+ emptyStatement:"No " + emptyStatement} {Atts.documentName[this.props.category]}</p>:null}
+
                         </div>
                         :
                         <div className = "container-inner" style={{backgroundColor:"" ,display:"flex" ,flexWrap: "wrap", justifyContent: "center" , width:"80%" }}>
@@ -205,7 +208,7 @@ Switch = () => {
                 else 
                 {
                     return <Redirect  to ={{
-                        pathname: this.props.category == "Quote" ? "/ReadQuote" : "/ReadStory" , 
+                        pathname: this.props.category == "Quote" ? "/WriteQuote" : "/WriteStory" , 
                         state: {
                             title: this.props.category,
                             id: this.state.id,

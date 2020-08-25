@@ -39,6 +39,7 @@ class WriteQuote extends React.Component
         db.firestore().collection(collecName).doc(QuoteId).get().then(qs =>{
 
             let tempdata = { 
+                QuoteContent : qs.data().quotecontent ,   
              ...qs.data(), 
             }
 

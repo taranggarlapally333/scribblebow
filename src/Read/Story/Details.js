@@ -241,6 +241,23 @@ function StoryDetails(props)
                                     .delete() ; 
                                     db.firestore().collection("likes").doc(myStoryDetails.myid).delete() ; 
                                     db.firestore().collection("comments").doc(myStoryDetails.myid).delete() ; 
+                                    db.firestore().collection('users').doc(myStoryDetails.creator).update(
+                                        {
+                                            [Atts.documentName[props.title]] : firebase.firestore.FieldValue.increment(-1)
+                                        }
+                                    ) ;
+                                    
+                                    history.push(
+                                        {
+                                            pathname:"/Profile" ,
+                                            search: "?UserId=" + localStorage.getItem("username")  , 
+                                            state : { id : localStorage.getItem("username")}
+
+                                        }
+                                         
+
+                                    ) ; 
+                                    
                                 }}   style={{width:"100px" , marign:"5px"}}>Yes</button>
                                 <button type="button" className="btn btn-default" data-dismiss="modal" style={{width:"100px" , marign:"5px"}}>No</button>
                             </div>
