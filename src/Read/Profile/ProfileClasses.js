@@ -84,9 +84,10 @@ Switch = () => {
 }
 
     
+
     
     render() {
-        
+        let emptyStatement  =  !this.state.switchToDrafts ? "published" : "unpublished" ; 
         console.log("Hello");
         var cat = this.props.category;
         var setPlayAudio = this.props.setPlayAudio;
@@ -176,7 +177,9 @@ Switch = () => {
                         
                         {this.state.tabs.length===0?
                         <div className="container" align="center">
-                        {this.state.r===2?<p>{ this.props.UserId === localStorage.getItem('username')? "You have no unpublished":"No unpublished "} {Atts.documentName[this.props.category]}</p>:null}
+                        
+                        {this.state.r===2?<p>{ this.props.UserId === localStorage.getItem('username')? "You have no "+ emptyStatement:"No " + emptyStatement} {Atts.documentName[this.props.category]}</p>:null}
+
                         </div>
                         :
                         <div className = "container-inner" style={{backgroundColor:"" ,display:"flex" ,flexWrap: "wrap", justifyContent: "center" , width:"80%" }}>

@@ -7,6 +7,7 @@ import db from '../../database/db';
 import * as UploadFile from '../../Storage/UploadFile' ; 
 import { Redirect, useHistory } from "react-router";
 import Loading from '../../components/Loading';
+import * as firebase from 'firebase';
 export default function QuoteEditor(props)
 {
 
@@ -47,8 +48,8 @@ export default function QuoteEditor(props)
         {
             imageUrl :   QuotePreDetails.coverid == "" ? scribbleBow: tempImage , 
             LinearGrad : "linear-gradient( rgba(0, 0, 0, "+ QuotePreDetails.upContrast*(0.1)  + "), rgba(0, 0, 0, "+ QuotePreDetails.downContrast*(0.1) +") ) ,"   , 
-            UpSlider:0 , 
-            DownSlider:0 
+            UpSlider:QuotePreDetails.upContrast , 
+            DownSlider:QuotePreDetails.downContrast
         }
     ) ; 
 
@@ -120,12 +121,18 @@ export default function QuoteEditor(props)
         
         setQuoteId(QuoteId) ; 
          if(Image != null)
-            UploadFile.UploadImage("QuoteCoverPages/",  Image ,QuoteId , Atts.documentName[props.title]);
+            UploadFile.UploadImage("QuoteCoverPages/",  Image ,QuoteId , Atts.documentName[props.title]); 
         console.log(QuoteStatus); 
          let FinalAttributes = {
              creator : localStorage.getItem("username") , 
-             ...QuoteStatus ,
-             coverid  : "" ,
+             quotecontent : QuoteStatus.QuoteContent,
+             fontSize: QuoteStatus.fontSize , 
+            fontStyle: QuoteStatus.fontStyle , 
+            bold: QuoteStatus.bold,
+            italic:QuoteStatus.italic, 
+            fontColor: QuoteStatus.fontColor, 
+            brightness:QuoteStatus.brightness,
+             coverid  : QuoteStatus.coverid ,
              upContrast : ImageProps.UpSlider , 
              downContrast :ImageProps.DownSlider, 
              published: PubSaveButton , 
@@ -139,6 +146,9 @@ export default function QuoteEditor(props)
          if(props.new)
          {
             db.firestore().collection(Atts.documentName[props.title]).doc(QuoteId).set(FinalAttributes) ;
+            db.firestore().collection('users').doc(FinalAttributes.creator).update({
+                [Atts.documentName[props.title]] : firebase.firestore.FieldValue.increment(1)
+            })
 
             if(!PubSaveButton)
             {
@@ -160,6 +170,7 @@ export default function QuoteEditor(props)
             db.firestore().collection(Atts.documentName[props.title]).doc(QuoteId).update(FinalAttributes) ; 
          }
 
+        
          if(!PubSaveButton)
             {
                 setSnackbar(true) ;
@@ -174,6 +185,9 @@ export default function QuoteEditor(props)
                     });
                     db.firestore().collection("likes").doc(QuoteId).set({
                         usernames: []
+                    });
+                    db.firestore().collection('users').doc(FinalAttributes.creator).update({
+                        [Atts.documentName[props.title]] : firebase.firestore.FieldValue.increment(1)
                     });
                 }
                 setSnackbar(true) ; 

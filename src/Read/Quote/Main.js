@@ -23,10 +23,11 @@ export default class ReadQuote extends React.Component
         db.firestore().collection(collecName).doc(QuoteId).get().then(qs =>{
 
             let tempdata = { 
+                QuoteContent : qs.data().quotecontent , 
              ...qs.data(), 
             }
 
-            this.setState({ QuoteDetails: tempdata ,  stage  : 4 , id : qs.id    }) ; 
+            this.setState({ QuoteDetails: tempdata  , id : qs.id    }) ; 
         })
     }
 
@@ -59,24 +60,16 @@ export default class ReadQuote extends React.Component
             db.firestore().collection("myshelf").doc(localStorage.getItem('username'))
             .get()
             .then(qs=>{
-                let myshelf ; 
+              
                 let title = new URLSearchParams(this.props.location.search).get("title") ; 
-                switch(title)
-                {
-                    case "Story" : myshelf = qs.data().stories ;  break   ; 
-                    case "Poem" : myshelf = qs.data().poems ; break  ; 
-                    case "Audio": myshelf = qs.data().audio ; break  ; 
-                    case "fanFiction": myshelf = qs.data().fanfiction ; break  ;
-                    case "Script": myshelf = qs.data().scripts ; break  ;
-                    default : myshelf = qs.data().stories ; break  ;   
-
-                }
+                let myshelf = title==="Audio"?qs.data().audio:qs.data().quotes; 
+                
                 console.log(myshelf)
                 console.log("Setting the MySHELF " , this.state.myShelf); 
                 myshelf.forEach(eachStory=>{
                     if(eachStory === StoryId)
                     {   
-                        this.setState({myShelf : true}) ; 
+                        this.setState({myshelf : true}) ; 
                     }
 
                 })

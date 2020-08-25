@@ -208,6 +208,7 @@ function WriteStory(props)
                         }
                     )
                 }
+                
             }
                 
                 
@@ -230,6 +231,11 @@ function WriteStory(props)
                     db.firestore().collection("likes").doc(StoryId).set({
                         usernames: []
                     });
+                    let tempAtts  = Atts.documentName[props.title] ; 
+                    db.firestore().collection('users').doc(myStoryData.creator).update({
+
+                    [tempAtts] : firebase.firestore.FieldValue.increment(1)   
+                }) ; 
                 }
                 setSnackbar(true) ; 
                 setStage(5) ;
