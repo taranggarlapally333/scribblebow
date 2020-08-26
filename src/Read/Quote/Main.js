@@ -64,7 +64,7 @@ export default class ReadQuote extends React.Component
                 let title = new URLSearchParams(this.props.location.search).get("title") ; 
                 
                 console.log(myshelf)
-                console.log("Setting the MySHELF " , this.state.myShelf); 
+                console.log("Setting the MySHELF " , this.state.myshelf); 
                 myshelf.forEach(eachStory=>{
                     if(eachStory === StoryId)
                     {   
