@@ -107,6 +107,7 @@ class ReadStory extends React.PureComponent{
                     case "Audio": myshelf = qs.data().audio ; break  ; 
                     case "fanFiction": myshelf = qs.data().fanfiction ; break  ;
                     case "Script": myshelf = qs.data().scripts ; break  ;
+                    case "Article": myshelf = qs.data().articles ; break ;
                     default : myshelf = qs.data().stories ; break  ;   
 
                 }
