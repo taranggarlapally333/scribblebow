@@ -103,7 +103,14 @@ function App(){
     </div>
   </Router>
   </AuthProvider>
-  {play===true?<ScribblePlayer play={setPlay} id={id} setLiked={setLiked} setAdded={setAdded} added={added} liked={liked} data={data}/>:null}
+  {play===true?<ScribblePlayer 
+  play={setPlay} 
+  id={id} 
+  setLiked={setLiked} 
+  setAdded={setAdded} 
+  added={added} 
+  liked={liked} 
+  data={data}/>:null}
   </div>
 }
 
