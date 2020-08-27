@@ -82,7 +82,7 @@ class FamousStories extends React.Component
                 <hr></hr>
                 {
                     this.state.stage === 0 ? 
-                        "wait"
+                        null
                             :<div className = "row container myshadow " style={{margin:"20px",  width:"95%" , backgroundColor:""}}>
                                 <div className = "col-md-3"style={{width:"30%",height:"100%", fontSize:"25px" , padding:"20px"}}>
                                 <a href= { "ReadStory?title="+ this.props.title + "&StoryId="+ this.state.tabslist[0][1] } ><StoryDetails.CoverPage 
@@ -102,7 +102,7 @@ class FamousStories extends React.Component
                 }
                 
                 <h3>Trending</h3>
-                <ContentArea  cmsg= {this.props.title} category= {documentName[this.props.title] } type="famous"/>
+                <ContentArea  cmsg= {this.props.title} category= {documentName[this.props.title] } setPlayAudio={this.props.title==="Audio"?this.props.setPlayAudio:null} type="famous"/>
             </div>
         );
     }

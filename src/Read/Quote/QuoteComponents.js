@@ -1,4 +1,4 @@
-import React, { useState } from 'react' ; 
+import React, { useState, useEffect } from 'react' ; 
 import * as icons from 'react-icons/md';
 import {Caption, LoadingPage} from '../../components/Loading' ; 
 import * as Atts from '../../Write/Story/Atts' ; 
@@ -57,7 +57,7 @@ export default function Quote(props)
         event.preventDefault(); 
         console.log("THe event triggerd "); 
         let theComment = event.target.QuoteComment.value ;
-        if(theComment != "")
+        if(theComment !== "")
         {
                 let thePushComment = {"user": localStorage.getItem('username'), "comment" : theComment} ;
                 console.log(thePushComment);
@@ -114,11 +114,11 @@ export default function Quote(props)
     }
     const EditQuote  =  <div className= "box"  onClick = {()=>{
 
-        history.push({pathname:'/WriteQuote', 
+        history.push({pathname:props.title==="Quote"?'/WriteQuote':'/recorder',
                         state: { id: props.QuoteId , title:props.title , new:false }, 
                         key:{ id: props.QuoteId , title:props.title , new:false }
                         }); 
-        }} ><h3>Edit Quote</h3></div> ; 
+        }} ><h3>Edit {props.title}</h3></div> ; 
     function handleReportStorySubmit(event)
     {
         
@@ -132,6 +132,14 @@ export default function Quote(props)
 
     }
 
+    
+    
+    
+        function PlayIt(){if(props.title==="Audio"){
+            props.setPlayAudio(props.Details,props.QuoteId)
+        }}
+   
+
     return ( 
         <div>
             <div>
@@ -142,7 +150,7 @@ export default function Quote(props)
                                 <strong  style={{color:"red"}}>Delete {props.title}</strong>
                             </div>
                             <div className="modal-body" >
-                                    Do you Really Want to Delete the {props.title}  <strong>"{QuoteStatus.QuoteContent.substring(1,10)}"...</strong> 
+                                  <span>Do you Really Want to Delete the {props.title}  {props.title==="Quote"?<strong>"{QuoteStatus.QuoteContent.substring(1,10)}"...</strong>:<strong>{QuoteStatus.title}</strong>}</span>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-default" data-dismiss="modal"b
@@ -181,7 +189,7 @@ export default function Quote(props)
                             <div className="modal-dialog" >
                                 <div className="modal-content" >
                                 <div className="modal-header">
-                                    <strong  style={{color:"red"}}>Report {props.title} </strong>  "<strong>{QuoteStatus.QuoteContent.substring(0,20)}...</strong>" 
+                                  <strong  style={{color:"red"}}>Report {props.title} </strong>   {props.title==="Quote"?<div>"<strong>{QuoteStatus.QuoteContent.substring(1,10)}</strong>"</div>:null}
                                 </div>
                                 <div className="modal-body" >
                                             <div className="">
@@ -218,7 +226,8 @@ export default function Quote(props)
                                 </div>
             </div>
             <div className="container ReadQuoteArea" id="ReadQuote"   >
-            <div  style = {{backgroundColor:"", padding:"10px"  }}>
+            {props.title==="Quote"?
+           <div  style = {{backgroundColor:"", padding:"10px"  }}>
                     <div className="myshadow" > 
                         <div className="QuoteEditArea" id="QuoteEditArea"  style={{fontSize: QuoteStatus.fontSize ,  fontWeight:QuoteStatus.bold ? "bold": "" , color: QuoteStatus.fontColor , 
                         fontStyle:QuoteStatus.italic ? "italic": "" , 
@@ -228,12 +237,25 @@ export default function Quote(props)
                         </div>
                     </div>
             </div>
-            <div className = "container-inner" style= {{display:"flex" , justifyContent:"flex-end"}}><h4>-{QuoteStatus.creator}</h4></div>
+            :
+           <div className="myshadow" style={{padding:"20px",position:"relative",height:"300px"}}>
+           <img className="myshadow" src={QuoteStatus.coverid} alt="audio thumbnail" style={{position:"absolute",left:0,right:0,margin:"auto",height:"150px",width:"150px", borderRadius:"50%"}}/>
+           <h4 align="center" style={{position:"absolute",left:0,right:0,margin:"auto",marginTop:"160px"}}>{QuoteStatus.title}</h4>
+           <i className="fa fa-play pointer" onClick={PlayIt} style={{fontSize: "24px",color:"grey"}}></i>
+           <p align="center" style={{position:"absolute",left:0,right:0,margin:"auto",marginTop:"180px",color:"grey"}}>{QuoteStatus.description}</p>
+           <p align="center" style={{position:"absolute",left:0,right:0,margin:"auto",bottom:"20px"}} onClick={()=> history.push({
+            pathname: '/Profile',
+            search: '?UserId=' + QuoteStatus.creator,
+            state: { id: QuoteStatus.creator },
+        })}>{QuoteStatus.creator}</p>
+           </div>
+           }
+           {props.title==="Quote"? <div className = "container-inner" style= {{display:"flex" , justifyContent:"flex-end"}}><h4>-{QuoteStatus.creator}</h4></div>:null}
             <hr></hr>
             <div className= ""  style = {{display: "flex", justifyContent:"space-evenly"}}>
                  <div className = "box"  style={{color: LikeState?"#E61D42":null }} onClick ={handleLikeButton}><icons.MdFavorite size = "40" /><Caption caption = {LikeCommentCount.likes} /> </div>
-                 {localStorage.getItem('username') == QuoteStatus.creator ? EditQuote : null}
-                 {localStorage.getItem('username') != QuoteStatus.creator?<div className= "box" style={{color: myShelf ?"green":null}} onClick={handleMyShelf}> 
+                 {localStorage.getItem('username') === QuoteStatus.creator ? EditQuote : null}
+                 {localStorage.getItem('username') !== QuoteStatus.creator?<div className= "box" style={{color: myShelf ?"green":null}} onClick={handleMyShelf}> 
     {!myShelf?<icons.MdAdd  size="30"/>:<icons.MdCheck size="30"/>}<Caption caption={!myShelf?"Shelf":"Added"}/>
     </div>:null}
                  <div className= "box"   >{localStorage.getItem('username') === QuoteStatus.creator? <h3  style={{margin:"5px" , color:"red"}}  data-toggle="modal" data-target="#DeleteModal"  >Delete</h3>:<h3   data-toggle="modal" data-target="#ReportStoryModal">Report {props.title} </h3>}</div>
@@ -367,7 +389,7 @@ class AllComments  extends React.Component
                                 <div className="modal-dialog" >
                                     <div className="modal-content" >
                                     <div className="modal-header">
-                                        <strong  style={{color:"red"}}>Delete Comment{this.props.category}</strong>
+                                        <strong  style={{color:"red"}}>Delete Comment {this.props.category}</strong>
                                     </div>
                                     <div className="modal-body" >
                                            Do you really want to delete the Comment ?  

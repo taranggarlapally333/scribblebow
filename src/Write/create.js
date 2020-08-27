@@ -25,7 +25,7 @@ function Create(props) {
         "Article": "/WriteStory",
         "fanfiction": "/WriteStory",
         "Audio": "/recorder",
-        "Script": "/WriteScript"
+        "Script": "/WriteStory"
     };
 
     function SelectButtons() {

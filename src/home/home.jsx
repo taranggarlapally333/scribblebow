@@ -5,7 +5,7 @@ import Header from '../components/NavHeader' ;
 import * as funs from "./homeFuns";
 // import { categoryAvailable } from "../Write/Story/Atts";
 
-function Home(){
+function Home(props){
     const {currentUser} = useContext(AuthContext);
     var aboutUs = <funs.default/> ; 
     var currentLocation = window.location.pathname;
@@ -13,7 +13,7 @@ function Home(){
     if(localStorage.getItem("username")){
         logged=1;
     }
-    var categoryAvailable = ["Story","Poem" , "Article" , "Fanfiction" ];  
+    var categoryAvailable = ["Story","Poem" , "Article" , "Fanfiction", "Audio"];  
     return (
 
         
@@ -22,7 +22,7 @@ function Home(){
            <Header title="HOME" logged={logged}/> 
           
           {currentLocation == "/home" ? aboutUs : null }
-          {categoryAvailable.map(eachCat =>{ return( <funs.FamousStories title={eachCat}/> ) ; })}
+          {categoryAvailable.map(eachCat =>{ return( <funs.FamousStories title={eachCat} setPlayAudio={eachCat==="Audio"?props.setPlayAudio:null}/> ) ; })}
            
         </div>
 ); 

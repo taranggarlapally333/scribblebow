@@ -41,7 +41,7 @@ export default class Myshelf extends React.Component{
             <div className="col-sm-3 myshelfBtns">
             {this.SelectButtons()}
             </div>
-            <ShelfResults category={this.state.category} key={this.state.category}/>
+            <ShelfResults setPlayAudio={this.props.setPlayAudio} category={this.state.category} key={this.state.category}/>
         </div>
         </div>
     }

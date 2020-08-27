@@ -83,7 +83,7 @@ export default class Discover extends React.PureComponent {
         </div>
         else{
             
-            return <SearchResults searchkey={this.state.searchkey} />
+            return <SearchResults setPlayAudio={this.props.setPlayAudio} searchkey={this.state.searchkey} />
         }
         }
         else{
@@ -100,7 +100,7 @@ export default class Discover extends React.PureComponent {
             </div>
         </div>
             else
-            return <SearchResults searchkey={this.state.searchkey} category={this.state.category} key={this.state.category}/>
+            return <SearchResults setPlayAudio={this.props.setPlayAudio} searchkey={this.state.searchkey} category={this.state.category} key={this.state.category}/>
         }
     }
 

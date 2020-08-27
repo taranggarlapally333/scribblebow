@@ -63,9 +63,9 @@ function App(){
   <AuthProvider>
   <Router>
     <div>
-      <Route exact path="/" component={Home}
+      <Route exact path="/" render={(props) => <Home setPlayAudio={setPlayAudio} {...props} />  }
       />
-      <Route exact path="/home" component={Home}
+      <Route exact path="/home" render={(props) => <Home setPlayAudio={setPlayAudio} {...props} />  }
       />
       <Route exact path="/login" component={Login}
       />
@@ -75,7 +75,8 @@ function App(){
       />
        
        <PrivateRoute exact path="/ReadStory" component={ReadStory}  />
-       <Route exact path="/Profile"  render={(props) => <Profile {...props  }/>}  />
+       <Route exact path="/ReadAudio"  render={(props) => <ReadQuote setPlayAudio={setPlayAudio} {...props  }/>}  />
+       <Route exact path="/Profile"  render={(props) => <Profile setPlayAudio={setPlayAudio} {...props  }/>}  />
        <Route exact path="/StorySeries"  render={(props) => <StorySeries  {...props} />}  />
       <Route exact path="/Create" render={(props) => <Create setPlayAudio={setPlayAudio} {...props} />  } ></Route>
       <Route  exact path= "/WriteQuote"  render={(props) => <WriteQuote {...props} />  } ></Route>
@@ -87,7 +88,7 @@ function App(){
       />
       <PrivateRoute exact path="/unverif" component={Unverif}
       />
-       <PrivateRoute exact path="/my-shelf" component={Myshelf}
+      <Route exact path="/my-shelf" render={(props) => <Myshelf setPlayAudio={setPlayAudio} {...props} />  }
       />
       <PrivateRoute exact path="/recorder" component={Recorder}
       />
