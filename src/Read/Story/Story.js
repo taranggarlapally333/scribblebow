@@ -6,6 +6,8 @@ import * as Story from '../../database/StoryFuns';
 import * as Atts from "../../Write/Story/Atts";  
 import Loading from '../../components/Loading';
 import db from "../../database/db";
+import "firebase/auth";
+import 'firebase/storage';
 import * as firebase from 'firebase';
 
 class ReadStory extends React.PureComponent{
@@ -81,6 +83,7 @@ class ReadStory extends React.PureComponent{
                        let likedUsers = querysnapshot.data().usernames; 
                        console.log(likedUsers) ;
                        let val = likedUsers.find(e => e === localStorage.getItem('username')); 
+                       setTimeout(2000 , ()=>{}) ;
                        this.setState({Liked:val!=null , stage:4 });  
                        console.log("setting to 4 ")
                    }
@@ -107,19 +110,24 @@ class ReadStory extends React.PureComponent{
                     case "Audio": myshelf = qs.data().audio ; break  ; 
                     case "fanFiction": myshelf = qs.data().fanfiction ; break  ;
                     case "Script": myshelf = qs.data().scripts ; break  ;
+<<<<<<< HEAD
+                    case "Article": myshelf = qs.data().articles ; break ; 
+=======
                     case "Article": myshelf = qs.data().articles ; break ;
+>>>>>>> 7d6a77c1e610aef16f91a4a52356448782d28e82
                     default : myshelf = qs.data().stories ; break  ;   
 
                 }
                 console.log(myshelf)
-                console.log("Setting the MySHELF " , this.state.myShelf); 
+                console.log("Setting the MySHELF " , this.state.myShelf , StoryId); 
                 myshelf.forEach(eachStory=>{
                     if(eachStory === StoryId)
                     {   
                         this.setState({myShelf : true}) ; 
+                        console.log("Setting the MySHELF inside " , this.state.myShelf); 
                     }
 
-                })
+                }); 
                
 
             })

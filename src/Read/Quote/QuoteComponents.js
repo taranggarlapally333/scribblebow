@@ -161,7 +161,11 @@ export default function Quote(props)
                                     .delete() ; 
                                     db.firestore().collection("likes").doc(props.QuoteId).delete() ; 
                                     db.firestore().collection("comments").doc(props.QuoteId).delete() ; 
-
+                                    const storage = firebase.storage() ; 
+                                    let tempdirect = props.title == "Quote"  ? "QuoteCoverPages/" : "CoverPages/" ; 
+                                    storage.ref(tempdirect+ props.QuoteId).delete() ; 
+                                    if(props.title == "Audio")
+                                       storage.ref("AudioFiles/" +props.QuoteId ).delete() ; 
                                     db.firestore().collection('users').doc(QuoteStatus.creator).update(
                                         {
                                             "quotes":  firebase.firestore.FieldValue.increment(-1) 

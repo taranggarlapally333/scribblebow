@@ -239,8 +239,11 @@ function StoryDetails(props)
                                     .collection(Atts.documentName[props.title])
                                     .doc(myStoryDetails.myid)
                                     .delete() ; 
+                                    const storage = firebase.storage() ; 
+                                    storage.ref("CoverPages/" + (myStoryDetails.myid)).delete() ; 
                                     db.firestore().collection("likes").doc(myStoryDetails.myid).delete() ; 
                                     db.firestore().collection("comments").doc(myStoryDetails.myid).delete() ; 
+            
                                     db.firestore().collection('users').doc(myStoryDetails.creator).update(
                                         {
                                             [Atts.documentName[props.title]] : firebase.firestore.FieldValue.increment(-1)
