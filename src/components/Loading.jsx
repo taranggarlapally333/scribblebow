@@ -23,7 +23,7 @@ function LoadingPage(props)
 {
     return(
         <div>
-            <Header title="Please Wait"/>
+            {props.head==="no"?null:<Header title="Please Wait"/>}
             <div className="container " style={{display:'flex', justifyContent:"center"}}>
             <ul style={{listStyle:"none" , textAlign:"center" }}>
                 <li><img src = {process.env.PUBLIC_URL + "ripple-nobg.gif"} ></img></li>
