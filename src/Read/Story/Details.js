@@ -321,7 +321,7 @@ function StoryDetails(props)
                         })
                 }}>{myStoryDetails.creator}</p>
                 <div className= "row container">
-                    <a href ="/ReadStory?genre=comedy" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
+                    <a href ="#" ><span className="badge bg-white border box">{myStoryDetails.genre}</span></a>
                 </div> 
                 <hr />
                 <p>Description: {myStoryDetails.description}</p>
