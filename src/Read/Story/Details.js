@@ -29,6 +29,7 @@ function StoryDetails(props)
         }
     );
 
+    
     const [myShelf , setMyShelf] = useState(props.myShelf) ;
     const [ReportStory, setReportStory] = useState({
         message : "" , 
@@ -128,7 +129,7 @@ function StoryDetails(props)
                 });
         }
          
-        if(CommentButton == "Back to Read "+ props.title)
+        if(CommentButton == "Back to "+ props.title)
             handleStoryAllComment(); 
             
         setExpanded(preExpand =>{
@@ -165,7 +166,7 @@ function StoryDetails(props)
         {
             StoryContentElement.style.display = "none" ; 
             CommentSection.style.display ="block" ; 
-            setCommentButton("Back to Read "+ props.title ); 
+            setCommentButton("Back to "+ props.title ); 
 
         }
         else{
@@ -336,6 +337,7 @@ function StoryDetails(props)
                     }): null}
                 </div>
                 {LikeCommentAdd}
+                <Reader content={myStoryDetails.content}/>
                 <div name= "EditnDelete" className= "handy" onClick ={expandEditnDelete} style={{display : currLoc !="/ReadStory" ?"none":"flex" , justifyContent:"flex-end" }}
                 ><img src={process.env.PUBLIC_URL +"3Dots.png"}  style={{ maxHeight:"40px" , maxWidth:"40px"}} ></img></div>
                 
@@ -645,3 +647,31 @@ export {StoryContent , StoryDetails , CoverPage , Comments};
 //     }
     
 // }
+
+
+
+
+class Reader extends React.Component{
+    // constructor(props){
+    //     super(props);
+    //     this.state = {content:this.props.content}
+    //     this.synth = window.speechSynthesis;
+    // }
+    
+
+
+    // readAloud = ()=>{
+    //     var utterThis = new SpeechSynthesisUtterance(this.state.content);
+    //     this.synth.speak(utterThis);
+    //     console.log(this.props.content);
+    // }
+    // PauseAudio = ()=>{
+    //     this.synth.pause();
+    // }
+    render(){
+        return <div>
+        {/* <a onClick={()=>{this.readAloud();}}>Read Aloud</a>
+        <a onClick={()=>{this.PauseAudio();}}>Pause</a>
+         */}</div>
+    }   
+}
