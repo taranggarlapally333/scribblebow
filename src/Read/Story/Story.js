@@ -22,6 +22,7 @@ class ReadStory extends React.PureComponent{
          } , imageAddress: process.env.PUBLIC_URL+"ScribbleBow.png" ,
          AllStoryComments:{ comments:[]},
          stage:0,
+         collab:"",
         Liked:false , 
         myShelf:false  } ; 
             
