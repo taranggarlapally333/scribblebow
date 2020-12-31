@@ -14,7 +14,7 @@ function Aboutus()
 
     db.firestore().collection("quotes").where("published", "==", true).orderBy("nlikes","desc").limit(1).get().then(snapshot => {
         snapshot.forEach(data=>{
-        setTopQuote(data.data().QuoteContent);
+        setTopQuote(data.data().quotecontent);
         setCreator("- "+data.data().creator);
         })
     })
