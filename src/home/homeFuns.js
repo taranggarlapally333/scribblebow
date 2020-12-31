@@ -4,6 +4,7 @@ import * as icons from 'react-icons/md';
 import  * as mdb from "mdbreact";
 import { ContentArea } from '../discover/DiscoverComps';
 import { documentName } from '../Write/Story/Atts';
+import {  useHistory } from "react-router";
 import db from "../database/db" ; 
 
 function Aboutus()
@@ -11,11 +12,13 @@ function Aboutus()
 
     const [topquote,setTopQuote] = useState("Loading Top Quote...");
     const [creator,setCreator] = useState("");
-
+    const [qId,setQId] = useState("");
+    const history = useHistory();
     db.firestore().collection("quotes").where("published", "==", true).orderBy("nlikes","desc").limit(1).get().then(snapshot => {
         snapshot.forEach(data=>{
         setTopQuote(data.data().quotecontent);
-        setCreator("- "+data.data().creator);
+        setCreator(data.data().creator);
+        setQId(data.id);
         })
     })
     return(
@@ -35,8 +38,20 @@ function Aboutus()
             <div className= "col-md-8" style={{height:"100%",color:"", padding:"20px"}} >
                 <h3>TOP QUOTE OF THE DAY</h3>
                 <div className= "container-inner famous" style ={{textAlign:"center" ,color:"white" , height:"300px"}}> 
-                <br /><br /><h4 id="topquote">{topquote}</h4>
-                <br /><h4 id="topquote">{creator}</h4>
+                <br /><br /><h4 className="pointer" onClick={()=>{
+                        history.push({
+                            pathname:"/ReadQuote", 
+                            search: "?title=Quote&QuoteId="+ qId, 
+
+                        })
+                }} id="topquote">{topquote}</h4>
+                <br /><h4 className="pointer" onClick={()=>{
+                        history.push({
+                            pathname:"/Profile", 
+                            search: "?UserId="+ creator, 
+
+                        })
+                }} id="topquote">{creator===""?"":"- "+creator}</h4>
                 </div>
                 
             </div>
